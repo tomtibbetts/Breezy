@@ -1,0 +1,429 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>
+	    <f:metadata>
+	    	<f:viewParam name="boardTemplateId" value="#{boardTemplateBuilderView.boardTemplateId}" />
+	    	<f:viewParam name="action" value="#{boardTemplateBuilderView.action}" />
+	    	<f:event type="preRenderView" listener="#{boardTemplateBuilderView.preRender}"/>
+		</f:metadata>
+      
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="formId">
+					<p:growl id="msgs" showDetail="true"/>
+					<p:messages/>
+					
+				    <p:toolbar>
+				        <f:facet name="left">
+				            <p:commandButton id="saveBoardTemplateId" value="Save" actionListener="#{boardTemplateBuilderView.saveBoardTemplate}"/>
+							<p:spacer width="10"/>
+							<p:commandButton id="deleteBoardTemplateId" value="Delete" actionListener="#{boardTemplateBuilderView.deleteBoardTemplate}">
+				            	<p:confirm header="Confirmation" message="Are you sure you wish to permanently delete this board template?" icon="ui-icon-alert" />
+							</p:commandButton>
+				        </f:facet>
+				    </p:toolbar>
+					
+				    <p:tabView id="tabViewId">
+				        <p:tab title="Description" id="tabDescriptionId">
+				            <p:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 50%" id="tabDescriptionPanelGridId">
+		                		<p:column>
+				                    <h:outputText for="boardTemplateName" value="Name: *" />
+		                		</p:column>
+		                		<p:column>
+				                    <p:inputText id="boardTemplateName" value="#{boardTemplateBuilderView.breezyBoardTemplate.name}" required="false" label="Name" style="width: 100%"/>
+		                		</p:column>
+		                		<p:column>
+				                    <h:outputText for="boardTemplateId" value="File Name: " />
+		                		</p:column>
+		                		<p:column>
+				                    <h:outputText id="boardTemplateId" value="#{boardTemplateBuilderView.breezyBoardTemplate.id}" style="width: 100%"/>
+				                    <h:outputText value=".boardtemplate" />
+		                		</p:column>
+		                		<p:column>
+				                    <h:outputText for="boardTemplateInActive" value="Inactive: " rendered="false"/>
+		                		</p:column>
+		                		<p:column>
+				                    <p:selectBooleanCheckbox id="boardTemplateInActive" value="#{boardTemplateBuilderView.breezyBoardTemplate.inactive}" required="false" label="Inactive" style="width: 100%" rendered="false"/>
+		                		</p:column>
+		                		<p:column>
+				                    <h:outputText for="boardTemplateDescription" value="Description: " />
+		                		</p:column>
+		                		<p:column>
+				                    <p:inputTextarea id="boardTemplateDescription" value="#{boardTemplateBuilderView.breezyBoardTemplate.description}" rows="6" required="false" label="Description" style="width: 100%"/>
+		                		</p:column>
+				            </p:panelGrid>
+				        </p:tab>
+				        <p:tab title="Extensions" id="tabExtensionsId">
+				            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%" id="tabExtensionPanelGridId">
+   								<p:commandButton id="insertFirstExtensionId"
+									value="Define First Extension" 
+									update="tabExtensionPanelGridId"
+									actionListener="#{boardTemplateBuilderView.insertNewExtensionTemplateRowBefore(0)}" 
+									rendered="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates.size() == 0}"/>
+				        	
+					      		<p:dataTable id="extensionTemplateEditTableId" 
+					      			var="extensionTemplate" 
+					      			value="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates}" 
+					      			editable="true" scrollable="false" scrollHeight="350" rowIndexVar="extensionTemplateEditTableRowIndex"
+					      			rendered="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates.size() > 0}">
+							       <p:ajax event="rowEdit" listener="#{boardTemplateBuilderView.onExtensionTemplateRowEdit}" update="formId:tabViewId:inputEditTableId, formId:tabViewId:componentEditTableId" />
+
+					      			<p:column headerText="Type" style="width: 50%;">
+					      				<p:cellEditor>
+					      					<f:facet name="output"><h:outputText value="#{extensionTemplate.extensionType.label}"/></f:facet>
+					      					<f:facet name="input">
+												<p:selectOneMenu id="typeId" value="#{extensionTemplate.extensionType}" style="width:100%">
+													<f:selectItem itemLabel="Select Extension Type" itemValue="" noSelectionOption="true" />
+							                    	<f:selectItems value="#{boardTemplateBuilderView.extensionTypes}" var="extensionType" itemLabel="#{extensionType.label}"/>
+												</p:selectOneMenu>
+					      					</f:facet>
+					      				</p:cellEditor>
+					      			</p:column>
+					      			
+					      			<p:column headerText="Name" style="width: 50%;">
+					      				<p:cellEditor>
+					      					<f:facet name="output"><h:outputText value="#{extensionTemplate.name}"/></f:facet>
+					      					<f:facet name="input"><p:inputText id="extensionTemplateNameId" value="#{extensionTemplate.name}" style="width:100%"/></f:facet>
+					      				</p:cellEditor>
+					      			</p:column>
+							       
+					      			<p:column headerText="Edit" style="width: 75px;">
+					      				<p:rowEditor>
+					      				</p:rowEditor>
+					      			</p:column>
+					      			
+									<p:column headerText="Insert" style="width: 50px;">
+					        			<p:commandButton id="insertExtensionBefore" icon="ui-icon-circle-triangle-n" style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.insertNewExtensionTemplateRowBefore(extensionTemplateEditTableRowIndex)}" 
+					        				update="extensionTemplateEditTableId"/>
+					        			<p:commandButton id="insertExtensionAfter" icon="ui-icon-circle-triangle-s" style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.insertNewExtensionTemplateRowAfter(extensionTemplateEditTableRowIndex)}" 
+					        				update="extensionTemplateEditTableId"/>
+									</p:column>
+									
+									<p:column headerText="Delete" style="width: 50px;">
+					        			<p:commandButton id="deleteExtensionRow" icon="ui-icon-circle-close" style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.deleteExtensionTemplateRow(extensionTemplateEditTableRowIndex)}" 
+					        					update="formId:tabViewId:tabExtensionPanelGridId, formId:tabViewId:inputEditTableId">
+					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this extension definition?" icon="ui-icon-alert" />
+					        			</p:commandButton>
+									</p:column>
+					      		</p:dataTable>
+				            </h:panelGrid>
+				        </p:tab>
+				        <p:tab title="Inputs" id="tabInputsId">
+				            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%;" id="tabInputPanelGridId">
+   								<p:commandButton id="insertFirstInputId"
+									value="Define First Input" 
+									update=":formId:inputPinEditDialogueId, tabInputPanelGridId"
+									actionListener="#{boardTemplateBuilderView.insertNewInputConfigurationTemplateRowBefore(0)}" 
+									rendered="#{boardTemplateBuilderView.breezyBoardTemplate.inputConfigurationTemplates.size() == 0}"
+			        				onclick="PF('inputPinEditDialogue').show()"/>
+				        	
+					      		<p:dataTable id="inputEditTableId" 
+					      			var="inputConfigurationTemplate" 
+					      			value="#{boardTemplateBuilderView.breezyBoardTemplate.inputConfigurationTemplates}" 
+					      			editable="false" 
+					      			scrollable="false" 
+					      			scrollHeight="350" 
+					      			rowIndexVar="inputPinTableRowIndex" 
+									rendered="#{boardTemplateBuilderView.breezyBoardTemplate.inputConfigurationTemplates.size() > 0}">
+							        <p:columnGroup type="header">
+							            <p:row>
+							                <p:column headerText="Name" />
+							                <p:column headerText="Extension" />
+							                <p:column headerText="Mapped Pin" />
+							                <p:column headerText="Pull Up/Down Resistance" />
+							                <p:column headerText="Edit" />
+							                <p:column headerText="Insert" />
+							                <p:column headerText="Delete" />
+										</p:row>
+									</p:columnGroup>
+
+					      			<p:column style="width: 150px;">
+				      					<h:outputText value="#{inputConfigurationTemplate.name}"/>
+					      			</p:column>
+
+					      			<p:column style="width: 150px;">
+					      				<h:outputText value="#{inputConfigurationTemplate.extensionTemplate.name}"/>
+					      			</p:column>
+							       
+					      			<p:column style="width: 150px;">
+				      					<h:outputText value="#{inputConfigurationTemplate.mappedPin}"/>
+					      			</p:column>
+
+					      			<p:column style="width: 150px;">
+				      					<h:outputText value="#{inputConfigurationTemplate.pinPullResistance.label}"/>
+					      			</p:column>
+							       
+					      			<p:column style="width: 50px;">
+										<p:commandButton id="editInputPinButtonId" icon="ui-icon-pencil" 
+											update=":formId:inputPinEditDialogueId"
+											actionListener="#{boardTemplateBuilderView.editInputPin(inputPinTableRowIndex)}" 
+											onclick="PF('inputPinEditDialogue').show();" />
+									</p:column>
+					      			
+									<p:column headerText="Insert" style="width: 50px;">
+					        			<p:commandButton id="insertInputBefore" 
+					        				icon="ui-icon-circle-triangle-n"
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.insertNewInputConfigurationTemplateRowBefore(inputPinTableRowIndex)}" 
+					        				update="inputEditTableId :formId:inputPinEditDialogueId"
+					        				onclick="PF('inputPinEditDialogue').show()"/>
+					        			<br/>
+					        			<p:commandButton id="insertInputAfter" 
+					        				icon="ui-icon-circle-triangle-s"
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.insertNewInputConfigurationTemplateRowAfter(inputPinTableRowIndex)}" 
+					        				update="inputEditTableId :formId:inputPinEditDialogueId"
+					        				onclick="PF('inputPinEditDialogue').show()"/>
+									</p:column>
+									
+									<p:column headerText="Delete" style="width: 50px;">
+					        			<p:commandButton id="deleteInputRow" icon="ui-icon-circle-close" style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.deleteInputConfigurationTemplateRow(inputPinTableRowIndex)}" update="formId:tabViewId:tabInputPanelGridId">
+					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this input configuration?" icon="ui-icon-alert" />
+					        			</p:commandButton>
+									</p:column>
+					      		</p:dataTable>
+				            </h:panelGrid>
+				        </p:tab>
+				        <p:tab title="Components">
+				            <h:panelGrid id="tabComponentPanelGridId" columns="1" cellpadding="10" styleClass="ui-noborder" style="width: 75%">
+   								<p:commandButton id="insertFirstComponentId"
+									value="Define First Component" 
+									update="tabComponentPanelGridId, :formId:componentEditDialogueId"
+									actionListener="#{boardTemplateBuilderView.insertNewComponentConfigurationTemplateRowBefore(0)}" 
+									rendered="#{boardTemplateBuilderView.breezyBoardTemplate.componentConfigurationTemplates.size() == 0}"
+					        		onclick="PF('componentEditDialogue').show()"/>
+
+					      		<p:dataTable id="componentEditTableId" var="componentConfigurationTemplate" 
+					      			value="#{boardTemplateBuilderView.breezyBoardTemplate.componentConfigurationTemplates}" 
+					      			editable="false" scrollable="false" 
+					      			scrollHeight="350" rowIndexVar="componentTableRowIndex"
+					      			rendered="#{boardTemplateBuilderView.breezyBoardTemplate.componentConfigurationTemplates.size() > 0}">
+							        <p:columnGroup type="header">
+							            <p:row>
+							                <p:column rowspan="2" headerText="Component Name" />
+							                <p:column rowspan="2" headerText="Type" />
+							                <p:column colspan="3" headerText="Outputs" />
+							                <p:column rowspan="2" headerText="Edit" />
+							                <p:column rowspan="2" headerText="Insert" />
+							                <p:column rowspan="2" headerText="Delete" />
+							            </p:row>
+							            <p:row>
+							                <p:column headerText="Pin Name" />
+							                <p:column headerText="Extension" />
+							                <p:column headerText="Mapped Pin" />
+							            </p:row>
+							        </p:columnGroup>
+							        
+					      			<p:column style="width: 50%;">
+				      					<h:outputText value="#{componentConfigurationTemplate.name}"/>
+					      			</p:column>
+							       
+					      			<p:column style="width: 50%;">
+				      					<h:outputText value="#{componentConfigurationTemplate.componentType}"/>
+					      			</p:column>
+							       
+					      			<p:column colspan="3" style="width: 50%;">
+							      		<p:dataTable id="componentOutputViewTableId" 
+							      			var="outputConfigurationTemplate"
+							      			value="#{componentConfigurationTemplate.outputConfigurationTemplates}" 
+							      			editable="false" scrollable="false" scrollHeight="350" 
+							      			rowIndexVar="componentOutputViewTableRowIndex" emptyMessage="" styleClass="hide-column-names">
+							      			<p:column style="width: 50%;">
+						      					<h:outputText value="#{outputConfigurationTemplate.name}"/>
+							      			</p:column>
+
+							      			<p:column style="width: 50%;">
+						      					<h:outputText value="#{outputConfigurationTemplate.extensionTemplate.name}"/>
+							      			</p:column>
+
+							      			<p:column style="width: 50%;">
+						      					<h:outputText value="#{outputConfigurationTemplate.mappedPin}"/>
+							      			</p:column>
+							      		</p:dataTable>
+					      			</p:column>
+					      			<p:column headerText="Edit" style="width: 50px;">
+										<p:commandButton id="editComponentButtonId" icon="ui-icon-pencil" 
+											update=":formId:componentEditDialogueId"
+											actionListener="#{boardTemplateBuilderView.editComponent(componentTableRowIndex)}" 
+											onclick="PF('componentEditDialogue').show();" />
+					      			</p:column>
+									<p:column headerText="Insert" style="width: 50px;">
+					        			<p:commandButton id="insertBefore" 
+					        				icon="ui-icon-circle-triangle-n" 
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.insertNewComponentConfigurationTemplateRowBefore(componentTableRowIndex)}" 
+					        				update="componentEditTableId, :formId:componentEditDialogueId"
+					        				onclick="PF('componentEditDialogue').show()"/>
+					        			<br/>
+					        			<p:commandButton id="insertAfter" 
+					        				icon="ui-icon-circle-triangle-s" 
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.insertNewComponentConfigurationTemplateRowAfter(componentTableRowIndex)}" 
+					        				update="componentEditTableId, :formId:componentEditDialogueId"
+					        				onclick="PF('componentEditDialogue').show()"/>
+									</p:column>
+									
+									<p:column headerText="Delete" style="width: 50px;">
+					        			<p:commandButton id="deleteRow" icon="ui-icon-circle-close" style="width=15px; height=15px;" 
+					        				actionListener="#{boardTemplateBuilderView.deleteComponentConfigurationTemplateRow(componentTableRowIndex)}" 
+					        				update="formId:tabViewId:tabComponentPanelGridId">
+					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this component configuration?" icon="ui-icon-alert" />
+					        			</p:commandButton>
+									</p:column>
+					      		</p:dataTable>
+				            </h:panelGrid>
+				        </p:tab>
+				    </p:tabView>
+
+					<p:dialog header="Edit Component" widgetVar="componentEditDialogue" resizable="true" modal="true" position="top">
+			            <p:panelGrid id="componentEditDialogueId" columns="2" cellpadding="10" styleClass="ui-noborder">
+		              		<p:column>
+		                    	<h:outputText for="componentNameId" value="Name: " style="font-weight: bold;"/>
+		              		</p:column>
+		              		<p:column>
+		                    	<p:inputText id="componentNameId" value="#{boardTemplateBuilderView.workingComponentConfigurationTemplate.name}" required="false" label="Name"/>
+		              		</p:column>
+		              		
+		              		<p:column>
+		                    	<h:outputText for="componentTypeId" value="Component Type: " style="font-weight: bold;"/>
+		              		</p:column>
+		              		<p:column>
+								<p:selectOneMenu id="componentTypeId" value="#{boardTemplateBuilderView.workingComponentConfigurationTemplate.componentType}">
+									<p:ajax event="change" listener="#{boardTemplateBuilderView.onComponentConfigurationComponentTypeChange}" update="outputPinsEditTableId" />
+									<f:selectItem itemLabel="Select Component Type" itemValue="" noSelectionOption="true" />
+				                   	<f:selectItems value="#{boardTemplateBuilderView.componentTypes}" var="componentType" itemLabel="#{componentType.componentName}" itemValue="#{componentType.componentName}"/>
+								</p:selectOneMenu>
+		              		</p:column>
+
+		              		<p:column>
+		                    	<h:outputText for="outputPinsEditTableId" value="Output Pins: " style="font-weight: bold;"/>
+		              		</p:column>
+							<p:column>
+								<p:dataTable id="outputPinsEditTableId" var="outputConfigurationTemplate" value="#{boardTemplateBuilderView.workingComponentConfigurationTemplate.outputConfigurationTemplates}" editable="false" emptyMessage="" rowIndexVar="outputConfigurationTemplateRowIndex" style="width: 750px;">
+					      			<p:column headerText="Pin Name">
+		      							<p:inputText id="outputPinNameId" value="#{outputConfigurationTemplate.name}" required="false" label="Name"/>
+					      			</p:column>
+					      			<p:column headerText="Extension">
+										<p:selectOneMenu id="outputConfigurationTemplateExtensionId" 
+											converter="#{boardTemplateBuilderView.extensionTemplateConverter}" 
+											value="#{outputConfigurationTemplate.extensionTemplate}">
+											<p:ajax event="change" update="outputConfigurationTemplateMappedPinId" />
+											<f:selectItem itemLabel="Select Extension" itemValue="" noSelectionOption="true" />
+					                    	<f:selectItems value="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
+										</p:selectOneMenu>
+					      			</p:column>
+					      			<p:column headerText="Mapped Pin">
+										<p:selectOneMenu id="outputConfigurationTemplateMappedPinId" value="#{outputConfigurationTemplate.mappedPin}" style="width:100%">
+					                    	<f:selectItems value="#{boardTemplateBuilderView.getPins(outputConfigurationTemplate.extensionTemplate)}" var="outputConfigurationPin" itemLabel="#{outputConfigurationPin.name}" itemValue="#{outputConfigurationPin.name}"/>
+										</p:selectOneMenu>
+					      			</p:column>
+								</p:dataTable>
+							</p:column>
+		              		
+		              		<p:column>
+			        			<p:commandButton id="saveComponentEditsId" 
+			        				value="Save" 
+			        				actionListener="#{boardTemplateBuilderView.saveComponent}" 
+			        				update=":formId:tabViewId:componentEditTableId" onclick="PF('componentEditDialogue').hide();"/>
+		              		</p:column>
+
+		              		<p:column>
+			        			<p:commandButton id="cancelComponentEditsId" 
+			        				value="Cancel" 
+			        				actionListener="#{boardTemplateBuilderView.cancelComponent}" 
+			        				update=":formId:tabViewId:tabComponentPanelGridId" onclick="PF('componentEditDialogue').hide();"/>
+		              		</p:column>
+			            </p:panelGrid>
+		            </p:dialog>
+					<p:dialog header="Edit Input Pin" widgetVar="inputPinEditDialogue" resizable="true" modal="true" position="top">
+			            <p:panelGrid id="inputPinEditDialogueId" columns="2" cellpadding="10" styleClass="ui-noborder">
+		              		<p:column>
+		                    	<h:outputText for="inputPinNameId" value="Name: " style="font-weight: bold;"/>
+		              		</p:column>
+			      			<p:column style="width: 150px;">
+		      					<p:inputText id="inputPinNameId" value="#{boardTemplateBuilderView.workingInputConfigurationTemplate.name}"/>
+			      			</p:column>
+
+		              		<p:column>
+		                    	<h:outputText for="inputPinExtensionId" value="Extension: " style="font-weight: bold;"/>
+		              		</p:column>
+			      			<p:column style="width: 150px;">
+								<p:selectOneMenu id="inputPinExtensionId" converter="#{boardTemplateBuilderView.extensionTemplateConverter}" value="#{boardTemplateBuilderView.workingInputConfigurationTemplate.extensionTemplate}">
+									<p:ajax event="change" update="inputPinMappedPinId" />
+									<f:selectItem itemLabel="Select Extension" itemValue="" noSelectionOption="true"/>
+			                    	<f:selectItems value="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
+								</p:selectOneMenu>
+			      			</p:column>
+					       
+		              		<p:column>
+		                    	<h:outputText for="inputPinMappedPinId" value="Mapped Pin: " style="font-weight: bold;"/>
+		              		</p:column>
+			      			<p:column style="width: 150px;">
+								<p:selectOneMenu id="inputPinMappedPinId" value="#{boardTemplateBuilderView.workingInputConfigurationTemplate.mappedPin}">
+									<f:selectItem itemLabel="Select Pin" itemValue="" noSelectionOption="true"/>
+			                    	<f:selectItems value="#{boardTemplateBuilderView.getPins(boardTemplateBuilderView.workingInputConfigurationTemplate.extensionTemplate)}" var="breezyPin" itemLabel="#{breezyPin.name}" itemValue="#{breezyPin.name}"/>
+								</p:selectOneMenu>
+			      			</p:column>
+
+		              		<p:column>
+		                    	<h:outputText for="inputPinPullResistanceId" value="Pull Up/Down Resistance: " style="font-weight: bold;"/>
+		              		</p:column>
+			      			<p:column style="width: 300px;">
+								<p:selectOneMenu id="inputPinPullResistanceId" value="#{boardTemplateBuilderView.workingInputConfigurationTemplate.pinPullResistance}">
+									<f:selectItem itemLabel="Select Pull Up/Down State" itemValue="" noSelectionOption="true"/>
+			                    	<f:selectItems var="pinPullResistance" value="#{boardTemplateBuilderView.pinPullResistances}" itemLabel="#{pinPullResistance.label}"/>
+								</p:selectOneMenu>
+			      			</p:column>
+			              		
+		              		<p:column>
+			        			<p:commandButton id="saveInputPinEditId" 
+			        				value="Save" 
+			        				actionListener="#{boardTemplateBuilderView.saveInputPin}" 
+			        				update=":formId:tabViewId:inputEditTableId" onclick="PF('inputPinEditDialogue').hide();"/>
+		              		</p:column>
+
+		              		<p:column>
+			        			<p:commandButton id="cancelInputPinEditId" 
+			        				value="Cancel" actionListener="#{boardTemplateBuilderView.cancelInputPin}" 
+			        				update=":formId:tabViewId:tabInputPanelGridId" onclick="PF('inputPinEditDialogue').hide();"/>
+		              		</p:column>
+			            </p:panelGrid>
+		            </p:dialog>
+
+
+		      		<p:confirmDialog global="true" showEffect="fade">
+		      			<p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+		      			<p:commandButton value="Cancel" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		      		</p:confirmDialog>
+					
+		      	</h:form>
+    		</ui:define>
+    	</ui:composition>
+
+
+
+    </h:body>
+    </f:view>
+      
+</html>  

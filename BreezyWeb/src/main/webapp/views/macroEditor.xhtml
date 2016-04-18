@@ -1,0 +1,318 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>
+	    <f:metadata>
+	    	<f:viewParam name="macroId" value="#{macroBuilderView.macroId}" />
+	    	<f:viewParam name="action" value="#{macroBuilderView.action}" />
+	    	<f:event type="preRenderView" listener="#{macroBuilderView.preRender}"/>
+		</f:metadata>
+      
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="formId">
+					<p:poll interval="1" update="macroEditToolBarId" process="macroEditToolBarId"/>
+
+					<p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
+			
+				    <p:toolbar id="macroEditToolBarId">
+				        <f:facet name="left">
+							<p:commandButton id="saveMacroId" value="Save" actionListener="#{macroBuilderView.saveMacro}"/>
+							<p:spacer width="10"/>
+							<p:commandButton id="deleteMacroId" value="Delete" actionListener="#{macroBuilderView.deleteMacro}">
+				            	<p:confirm header="Confirmation" message="Are you sure you wish to permanently delete this macro?" icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:spacer width="10"/>
+							<p:commandButton id="runMacroId" value="Test" actionListener="#{macroBuilderView.testMacro}" rendered="#{not macroBuilderView.running}" update="macroEditToolBarId"/>
+							<p:commandButton id="stopMacroId" value="Stop" actionListener="#{macroBuilderView.stopMacro}" rendered="#{macroBuilderView.running}" update="macroEditToolBarId"/>
+				        </f:facet>
+				    </p:toolbar>
+			
+				    <p:tabView id="tabViewId">
+				        <p:tab title="Description" id="tabDescriptionId">
+				            <p:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 50%" id="tabDescriptionPanelGridId">
+		                		<p:column>
+				                    <h:outputText for="macroName" value="Name: *" />
+		                		</p:column>
+		                		<p:column>
+				                    <p:inputText id="macroName" value="#{macroBuilderView.macro.name}" required="false" label="Name" style="width: 100%"/>
+		                		</p:column>
+		                		<p:column>
+				                    <h:outputText for="macroId" value="Id: " />
+		                		</p:column>
+		                		<p:column>
+				                    <h:outputText id="macroId" value="#{macroBuilderView.macro.id}" style="width: 100%"/>
+		                		</p:column>
+
+		                		<p:column>
+				                    <h:outputText for="enableAutoStartId" value="Start on boot-up: " />
+		                		</p:column>
+		                		<p:column>
+				                    <p:selectBooleanCheckbox id="enableAutoStartId" value="#{macroBuilderView.macro.autoStart}" required="false" label="Autostart" style="width: 100%" disabled="false"/>
+		                		</p:column>
+		                		
+		                		<p:column>
+				                    <h:outputText for="enabledId" value="Enabled: " />
+		                		</p:column>
+		                		<p:column>
+				                    <p:selectBooleanCheckbox id="enabledId" value="#{macroBuilderView.macro.enabled}" required="false" label="Enabled" style="width: 100%" disabled="false"/>
+		                		</p:column>
+		                		
+		                		<p:column>
+				                    <h:outputText for="macroDescription" value="Description: *" />
+		                		</p:column>
+		                		<p:column>
+				                    <p:inputTextarea id="macroDescription" value="#{macroBuilderView.macro.description}" rows="6" required="false" label="Description" style="width: 100%"/>
+		                		</p:column>
+				            </p:panelGrid>
+				        </p:tab>
+				        <p:tab title="Macro Definition" id="tabMacroDefinitionId">
+				            <h:panelGrid columns="1" cellpadding="10" styleClass="ui-noborder" style="width: 100%;" id="panelMacroDefinitionId">
+								<p:commandButton id="insertFirstStepId"
+									value="Start First Step" 
+									update="panelMacroDefinitionId, :formId:macroStepEditDialogueId"
+									actionListener="#{macroBuilderView.insertEditRowBefore(0)}" 
+									onclick="PF('macroStepEditDialogue').show();" 
+									rendered="#{macroBuilderView.macro.steps.size() == 0}"/>
+					        	
+					      		<p:dataTable id="macroViewTableId" 
+					      			var="macroStep" 
+					      			value="#{macroBuilderView.macro.steps}" 
+					      			editable="false" scrollable="false"
+					      			scrollHeight="350" 
+					      			rendered="#{macroBuilderView.macro.steps.size() > 0}" 
+					      			rowIndexVar="macroStepRowIndex">
+					      			<p:column headerText="Line" style="width: 50px;">
+					      				<h:outputText value="#{macroStepRowIndex + 1}" />
+					      			</p:column>
+					
+					      			<p:column headerText="Tag" style="width: 100px;">
+				      					<h:outputText value="#{macroStep.tag}"/>
+					      			</p:column>
+					
+									<p:column headerText="Mounted Board" style="width: 200px;">
+					      				<h:outputText value="#{macroBuilderView.getMountedBoardName(macroStep.mountedBoardId)}"/>
+									</p:column>
+									
+					      			<p:column headerText="Component" style="width: 125px;">
+				      					<h:outputText value="#{macroBuilderView.getComponentName(macroStep.componentId)}"/>
+					      			</p:column>
+					      			
+					      			<p:column headerText="Function" style="width: 200px;">
+					      				<h:outputText value="#{macroStep.function}" />
+					      			</p:column>
+					      			
+					      			<p:column headerText="Parameters">
+							      		<p:dataTable id="parametersViewTableId" 
+							      			var="methodParameter" value="#{macroStep.methodParameters}" 
+							      			editable="false" 
+							      			emptyMessage="" 
+							      			rowIndexVar="methodRowIndex" 
+							      			styleClass="hide-column-names"
+							      			rendered="#{macroStep.methodParameters.size() > 0}">
+							      			<p:column>
+					      						<h:outputText value="#{methodParameter.fieldName}: " style="font-weight: bold;"/>
+							      			</p:column>
+							      			<p:column>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'MOUNTED_BOARD'}" converter="#{macroBuilderView.mountedBoardConverter}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'INPUT_PIN'}" converter="#{macroBuilderView.digitalInputPinConverter}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'STRING'}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'NUMBER'}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'PIN_STATE'}" converter="#{macroBuilderView.pinStateConverter}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'LOGIC_STATE'}"/>
+							      			</p:column>
+							      		</p:dataTable>
+					      			</p:column>
+					      			
+					      			<p:column headerText="Comment" style="width: 250px;">
+					      				<h:outputText value="#{macroStep.comment}" />
+					      			</p:column>
+					      			
+					      			<p:column headerText="Edit" style="width: 75px;">
+										<p:commandButton id="editMacroStepButtonId" value="Edit" 
+											update=":formId:macroStepEditDialogueId"
+											actionListener="#{macroBuilderView.editMacroStep(macroStepRowIndex)}" 
+											oncomplete="PF('macroStepEditDialogue').show();"/>
+					      			</p:column>
+					      			
+									<p:column headerText="Insert" style="width: 50px;">
+										<p:commandButton id="insertBeforeId" icon="ui-icon-circle-triangle-n" 
+											update="macroViewTableId, :formId:macroStepEditDialogueId"
+											actionListener="#{macroBuilderView.insertEditRowBefore(macroStepRowIndex)}" 
+											onclick="PF('macroStepEditDialogue').show();"/>
+										<p:commandButton id="insertAfterId" icon="ui-icon-circle-triangle-s" 
+											update="macroViewTableId, :formId:macroStepEditDialogueId"
+											actionListener="#{macroBuilderView.insertEditRowAfter(macroStepRowIndex)}" 
+											onclick="PF('macroStepEditDialogue').show();"/>
+									</p:column>
+									
+									<p:column headerText="Delete" style="width: 50px;">
+					        			<p:commandButton id="deleteRow" icon="ui-icon-circle-close" 
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{macroBuilderView.deleteRow(macroStepRowIndex)}" 
+					        				update=":formId:tabViewId:panelMacroDefinitionId">
+					        				<p:confirm header="Confirmation" message="Are you sure you wish to delete this step?" icon="ui-icon-alert"/>
+					        			</p:commandButton>
+									</p:column>
+					      		</p:dataTable>
+				      		</h:panelGrid>
+				        </p:tab>
+					</p:tabView>		
+			
+					<p:dialog header="Edit Macro Step" widgetVar="macroStepEditDialogue" resizable="true" modal="true" position="top">
+			            <p:panelGrid id="macroStepEditDialogueId" columns="2" cellpadding="10" styleClass="ui-noborder">
+		              		<p:column>
+		                    	<h:outputText for="macroStepTagId" value="Tag: " style="font-weight: bold;"/>
+		              		</p:column>
+			            	<p:column>
+			            		<p:inputText id="macroStepTagId" value="#{macroBuilderView.workingMacroStep.tag}" label="Tag"/>
+			            	</p:column>
+		              		<p:column>
+		                    	<h:outputText for="mountedBoardId" value="*Mounted Board: " style="font-weight: bold;"/>
+		              		</p:column>
+			            	<p:column>
+								<p:selectOneMenu id="mountedBoardId" value="#{macroBuilderView.workingMacroStep.mountedBoardId}" required="false" label="Mounted Board" style="width:100%">
+									<p:ajax event="change" listener="#{macroBuilderView.onMountedBoardChange}" update="componentId, functionId" />
+									<f:selectItem itemLabel="Select Mounted Board" itemValue="" noSelectionOption="true" />
+			                    	<f:selectItems value="#{macroBuilderView.mountedBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
+								</p:selectOneMenu>
+			            	</p:column>
+		              		<p:column>
+		                    	<h:outputText for="componentId" value="*Component: " style="font-weight: bold;"/>
+		              		</p:column>
+			            	<p:column>
+								<p:selectOneMenu id="componentId" value="#{macroBuilderView.workingMacroStep.componentId}" required="false" label="Component" style="width:100%">
+									<p:ajax event="change" listener="#{macroBuilderView.onComponentChange}" update="functionId" />
+									<f:selectItem itemLabel="Select Component" itemValue="" noSelectionOption="true" />
+			                    	<f:selectItems value="#{macroBuilderView.components}" var="mountedComponent" itemLabel="#{mountedComponent.name}" itemValue="#{mountedComponent.id}"/>
+								</p:selectOneMenu>
+			            	</p:column>
+		              		<p:column>
+		                    	<h:outputText for="functionId" value="*Function: " style="font-weight: bold;"/>
+		              		</p:column>
+			            	<p:column>
+								<p:selectOneMenu id="functionId" value="#{macroBuilderView.workingMacroStep.function}" required="false" label="Function" style="width:100%">
+									<p:ajax event="change" listener="#{macroBuilderView.onFunctionChange}" update="parametersEditTableId" />
+									<f:selectItem itemLabel="Select Function" itemValue="" noSelectionOption="true" />
+			                    	<f:selectItems value="#{macroBuilderView.functions}"/>
+								</p:selectOneMenu>
+								<p:message for="functionId"/>
+			            	</p:column>
+			            	<p:column>
+				            	<h:outputText for="parametersEditTableId" value="Parameters: " style="font-weight: bold;"/>
+			            	</p:column>
+			            	<p:column>
+					      		<p:dataTable id="parametersEditTableId" 
+					      			var="methodParameter" 
+					      			value="#{macroBuilderView.workingMacroStep.methodParameters}" 
+					      			editable="false" emptyMessage="None Needed" 
+					      			rowIndexVar="methdodParameterRowIndex"
+					      			style="width: 750px;">
+					      			
+					      			<p:column headerText="Parameter Name">
+			      						<h:outputText id="parameterNameEditId" value="*" style="font-weight: bold;" rendered="#{methodParameter.required}"/>
+			      						<h:outputText id="parameterNameEditId1" value="#{methodParameter.fieldName}" style="font-weight: bold;"/>
+			      						<h:outputText id="parameterNameEditId2" value=": " style="font-weight: bold;"/>
+					      			</p:column>
+					      			
+					      			<p:column headerText="Value">
+										<p:selectOneMenu id="parameterMountedBoardId" value="#{methodParameter.fieldValue}" style="width: 100%;" 
+											rendered="#{methodParameter.parameterFieldType eq 'MOUNTED_BOARD'}"
+											required="false"
+											label="#{methodParameter.fieldName}">											>
+											<p:ajax event="change" listener="#{macroBuilderView.onParameterMountedBoardChange}" update="parametersEditTableId" />
+											<f:selectItem itemLabel="Select Mounted Board" itemValue="" noSelectionOption="true" />
+					                    	<f:selectItems value="#{macroBuilderView.mountedBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
+										</p:selectOneMenu>
+	
+										<p:selectOneMenu id="inputPinId" value="#{methodParameter.fieldValue}" style="width: 100%;"
+											rendered="#{methodParameter.parameterFieldType eq 'INPUT_PIN'}"
+											required="false"
+											label="#{methodParameter.fieldName}">
+											<f:selectItem itemLabel="Select Input Pin" itemValue="" noSelectionOption="true" />
+					                    	<f:selectItems value="#{macroBuilderView.inputPins}" var="inputPin" itemLabel="#{inputPin.name}" itemValue="#{inputPin.id}"/>
+										</p:selectOneMenu>
+	
+			      						<p:inputText id="stringParameterValueEditId" value="#{methodParameter.fieldValue}" 
+			      							rendered="#{methodParameter.parameterFieldType eq 'STRING'}" 
+			      							required="false"
+			      							label="#{methodParameter.fieldName}"/>
+	
+			      						<p:inputText id="numberParameterValueEditId" value="#{methodParameter.fieldValue}" 
+			      							rendered="#{methodParameter.parameterFieldType eq 'NUMBER'}" 
+			      							required="false"
+			      							label="#{methodParameter.fieldName}"/>
+			      						
+										<p:selectOneMenu id="pinStateParameterValueEditId" value="#{methodParameter.fieldValue}" style="width:100%" 
+											rendered="#{methodParameter.parameterFieldType eq 'PIN_STATE'}"
+											required="false"
+											label="#{methodParameter.fieldName}">
+											<f:selectItem itemLabel="Select Pin State" itemValue="" noSelectionOption="true"/>
+					                    	<f:selectItems var="pinState" value="#{macroBuilderView.pinStates}" itemLabel="#{pinState.state}"/>
+										</p:selectOneMenu>
+	
+										<p:selectOneMenu id="logicStateId" value="#{methodParameter.fieldValue}" style="width: 100%;" 
+											rendered="#{methodParameter.parameterFieldType eq 'LOGIC_STATE'}"
+											required="false"
+											label="#{methodParameter.fieldName}">
+											<f:selectItem itemLabel="Select Logic State" itemValue="" noSelectionOption="true" />
+					                    	<f:selectItems value="#{macroBuilderView.logicStates}" var="logicState" itemLabel="#{logicState}" itemValue="#{logicState}"/>
+										</p:selectOneMenu>
+					      			</p:column>
+					      			
+					      		</p:dataTable>
+							</p:column>
+		              		<p:column>
+		                    	<h:outputText for="commentId" value="Comment: " style="font-weight: bold;"/>
+		              		</p:column>
+			            	<p:column>
+			            		<p:inputTextarea id="commentId" value="#{macroBuilderView.workingMacroStep.comment}" rows="3" style="width: 750px;"/>
+			            	</p:column>
+		              		<p:column>
+			        			<p:commandButton id="saveMacroStepEditsId" 
+			        				value="Save" 
+			        				actionListener="#{macroBuilderView.saveMacroStep()}" 
+			        				update=":formId:tabViewId:panelMacroDefinitionId, :formId:growl"
+			        				oncomplete="if (args &amp;&amp; !args.validationFailed) PF('macroStepEditDialogue').hide();" />
+		              		</p:column>
+
+		              		<p:column>
+			        			<p:commandButton id="cancelMacroStepEditsId" 
+			        				value="Cancel" 
+			        				actionListener="#{macroBuilderView.cancelEditMacroStep()}" 
+			        				update=":formId:tabViewId:panelMacroDefinitionId" 
+			        				oncomplete="PF('macroStepEditDialogue').hide();"/>
+		              		</p:column>
+			            </p:panelGrid>
+		            </p:dialog>
+		      		
+		      		<p:confirmDialog global="true" showEffect="fade" style="position: absolute;">
+		      			<p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+		      			<p:commandButton value="Cancel" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		      		</p:confirmDialog>
+		      	</h:form>
+    		</ui:define>
+    	</ui:composition>
+
+
+
+    </h:body>
+    </f:view>
+      
+</html>  

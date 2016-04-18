@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="homeForm">
+		            <h:panelGrid columns="1" cellpadding="10">
+					    <p:dataList value="#{homeManagedView.systemStatus.ipAddresses}" var="ipAddress" type="definition">
+					        <f:facet name="header">Hello Breezy User! You can find me at: </f:facet>
+					        #{ipAddress}
+					    </p:dataList>
+		            </h:panelGrid>
+		      	</h:form>
+    		</ui:define>
+    	</ui:composition>
+    </h:body>
+    </f:view>
+      
+</html>  

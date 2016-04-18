@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>  
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="form">
+					<p:button outcome="boardTemplateEditor?action=newBoardTemplate" value="Create New Board Template">
+					    <f:param name="boardTemplateId" value="" />
+					</p:button>
+		      	
+		      		<p:dataTable id="boardTemplateChooserTable" var="boardTemplate" value="#{boardTemplateChooserView.boardTemplates}" editable="false" rowIndexVar="rowIndex">
+		      			<p:column headerText="Board Template Name" style="width: 20%;">
+		      				<p:link outcome="boardTemplateEditor?action=findBoardTemplate" value="#{boardTemplate.name}">
+		      					<f:param name="boardTemplateId" value="#{boardTemplate.id}">
+		      					</f:param>
+		      				</p:link>
+		      			</p:column>
+		
+		      			<p:column headerText="Description" style="width: 80%;">
+		      				<h:outputText value="#{boardTemplate.description}" />
+		      			</p:column>
+		      		</p:dataTable>
+		      	</h:form>
+    		</ui:define>
+    	</ui:composition>
+
+
+
+    </h:body>
+    </f:view>
+      
+</html>  

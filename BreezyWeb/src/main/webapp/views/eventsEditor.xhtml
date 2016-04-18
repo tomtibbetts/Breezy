@@ -1,0 +1,181 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>
+	    <f:metadata>
+	    	<f:event type="preRenderView" listener="#{eventsBuilderView.preRenderView}"/>
+		</f:metadata>
+
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="formId">
+					<p:growl id="msgs" showDetail="true"/>
+					<p:messages/>
+					<p:commandButton id="newEventId" 
+						value="Create New Event" 
+						actionListener="#{eventsBuilderView.newEvent}" 
+						update="eventEditDialogueId"
+						onclick="PF('eventEditDialogue').show();"/>
+		
+		      		<p:dataTable id="eventEditTableId" var="triggerEvent" value="#{eventsBuilderView.triggerEvents}" editable="false" rowIndexVar="eventEditTableRowIndex">
+						<p:columnGroup type="header">
+						    <p:row>
+						        <p:column colspan="2" headerText="When" />
+						        <p:column rowspan="2" headerText="Changes To" />
+						        <p:column rowspan="2" headerText="Run" />
+						        <p:column rowspan="2" headerText="Enabled" />
+						        <p:column rowspan="2" headerText="Comment" />
+						        <p:column rowspan="2" headerText="Edit" />
+						        <p:column rowspan="2" headerText="Delete" />
+						    </p:row>
+						    <p:row>
+						        <p:column headerText="Mounted Board" />
+						        <p:column headerText="Input" />
+						    </p:row>
+						</p:columnGroup>
+
+						<p:column>
+							<h:outputText value="#{triggerEvent.mountedBoardId}" converter="#{eventsBuilderView.mountedBoardConverter}"/>
+						</p:column>
+						
+		      			<p:column style="width: 100px;">
+		      				<h:outputText value="#{triggerEvent.inputPinId}" converter="#{eventsBuilderView.digitalInputPinConverter}"/>
+		      			</p:column>
+		
+		      			<p:column style="width: 250px;">
+	      					<h:outputText value="#{triggerEvent.state.state}"/>
+		      			</p:column>
+		      			
+		      			<p:column style="width: 200px;">
+			      			<h:outputText value="#{eventsBuilderView.getMacroById(triggerEvent.macroId).name}" />
+		      			</p:column>
+		      			
+		      			<p:column style="width: 75px;">
+		      				<p:selectBooleanCheckbox value="#{triggerEvent.enabled}" disabled="true"/>
+		      			</p:column>
+		      			
+		      			<p:column style="width: 250px;">
+			      			<h:outputText value="#{triggerEvent.comment}" />
+		      			</p:column>
+		      			
+		      			<p:column style="width: 75px;">
+							<p:commandButton id="editEventButtonId" icon="ui-icon-pencil" 
+								update=":formId:eventEditDialogueId"
+								actionListener="#{eventsBuilderView.editTriggerEvent(eventEditTableRowIndex)}" 
+								onclick="PF('eventEditDialogue').show();" />
+		      			</p:column>
+		      			
+						<p:column style="width: 50px;">
+		        			<p:commandButton id="deleteRowId" 
+		        				icon="ui-icon-circle-close" 
+		        				style="width=15px; height=15px;" 
+		        				actionListener="#{eventsBuilderView.deleteRow(rowIndex)}" 
+		        				update="eventEditTableId">
+		        				<p:confirm header="Confirmation" message="Are you sure you wish to delete this trigger?" icon="ui-icon-alert" />
+		        			</p:commandButton>
+						</p:column>
+		      		</p:dataTable>
+			
+					<p:dialog header="Edit Event" widgetVar="eventEditDialogue" resizable="true" modal="true">
+			            <p:panelGrid id="eventEditDialogueId" columns="2" cellpadding="10" styleClass="ui-noborder">
+		              		<p:column>
+		                    	<h:outputText for="mountedBoardId" value="Mounted Board: " style="font-weight: bold;"/>
+		              		</p:column>
+			            	<p:column>
+								<p:selectOneMenu id="mountedBoardId" value="#{eventsBuilderView.workingTriggerEvent.mountedBoardId}" style="width: 500px;">
+									<p:ajax event="change" listener="#{eventsBuilderView.onMountedBoardChange}" update="inputPinId" />
+									<f:selectItem itemLabel="Select Mounted Board" itemValue="" noSelectionOption="true" />
+			                    	<f:selectItems value="#{eventsBuilderView.mountedBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
+								</p:selectOneMenu>
+			            	</p:column>
+
+		              		<p:column>
+		                    	<h:outputText for="inputPinId" value="Input: " style="font-weight: bold;"/>
+		              		</p:column>
+							<p:column>
+								<p:selectOneMenu id="inputPinId" value="#{eventsBuilderView.workingTriggerEvent.inputPinId}" style="width: 500px;">
+									<f:selectItem itemLabel="Select Input Pin" itemValue="" noSelectionOption="true" />
+			                    	<f:selectItems value="#{eventsBuilderView.inputPins}" var="inputPin" itemLabel="#{inputPin.name}" itemValue="#{inputPin.id}"/>
+								</p:selectOneMenu>
+							</p:column>
+			            	
+		              		<p:column>
+		                    	<h:outputText for="triggerStateId" value="Logic State: " style="font-weight: bold;"/>
+		              		</p:column>
+		              		<p:column>
+								<p:selectOneMenu id="triggerStateId" value="#{eventsBuilderView.workingTriggerEvent.state}" style="width:100%">
+									<f:selectItem itemLabel="Select Logic State" itemValue="" noSelectionOption="true"/>
+			                    	<f:selectItems var="pinState" value="#{eventsBuilderView.pinStates}" itemLabel="#{pinState.state}"/>
+								</p:selectOneMenu>
+							</p:column>
+
+		              		<p:column>
+		                    	<h:outputText for="macroId" value="Macro: " style="font-weight: bold;"/>
+		              		</p:column>
+		              		<p:column>
+								<p:selectOneMenu id="macroId" value="#{eventsBuilderView.workingTriggerEvent.macroId}" style="width:100%">
+									<f:selectItem itemLabel="Select Macro" itemValue="" noSelectionOption="true"/>
+			                    	<f:selectItems value="#{eventsBuilderView.macros}" var="macro" itemLabel="#{macro.name}" itemValue="#{macro.id.toString()}"/>
+								</p:selectOneMenu>
+							</p:column>
+
+		              		<p:column>
+		                    	<h:outputText for="enabledId" value="Enabled: " style="font-weight: bold;"/>
+		              		</p:column>
+							<p:column>
+			      				<p:selectBooleanCheckbox id="enabledId" value="#{eventsBuilderView.workingTriggerEvent.enabled}"/>
+							</p:column>
+							
+		              		<p:column>
+		                    	<h:outputText for="commentId" value="Comment: " style="font-weight: bold;"/>
+		              		</p:column>
+							<p:column>
+								<p:inputTextarea rows="2" id="commentId" value="#{eventsBuilderView.workingTriggerEvent.comment}" style="width:100%"/>
+							</p:column>																	            
+
+		              		<p:column>
+			        			<p:commandButton id="saveEventEditsId" 
+			        				value="Save" 
+			        				actionListener="#{eventsBuilderView.saveTriggerEvent()}" 
+			        				update=":formId:eventEditTableId" 
+			        				onclick="PF('eventEditDialogue').hide();"/>
+		              		</p:column>
+
+		              		<p:column>
+			        			<p:commandButton id="cancelEventEditsId" 
+			        				value="Cancel" 
+			        				actionListener="#{eventsBuilderView.cancelTriggerEventEdit()}" 
+			        				update=":formId:eventEditTableId" 
+			        				onclick="PF('eventEditDialogue').hide();"/>
+		              		</p:column>
+			            </p:panelGrid>
+		            </p:dialog>
+
+		      		<p:confirmDialog global="true" showEffect="fade">
+		      			<p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+		      			<p:commandButton value="Cancel" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		      		</p:confirmDialog>
+		      	</h:form>
+    		</ui:define>
+    	</ui:composition>
+
+    </h:body>
+    </f:view>
+      
+</html>  

@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.windhaven_consulting.breezy</groupId>
+  <artifactId>BreezyWeb</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>BreezyWeb Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+	<dependency>
+		<groupId>javax</groupId>
+		<artifactId>javaee-web-api</artifactId>
+		<version>7.0</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.windhaven_consulting.breezy</groupId>
+		<artifactId>breezy-adapter-pi</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+    	<dependency>
+    		<groupId>com.fasterxml.jackson.jaxrs</groupId>
+    		<artifactId>jackson-jaxrs-json-provider</artifactId>
+    		<version>2.4.0</version>
+    		<scope>compile</scope>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.primefaces</groupId>
+    		<artifactId>primefaces</artifactId>
+    		<version>5.2</version>
+    	</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+		
+		<dependency>  
+		    <groupId>org.primefaces.themes</groupId>  
+		    <artifactId>cupertino</artifactId>  
+		    <version>1.0.10</version>  
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+  </dependencies>
+  <build>
+    <finalName>BreezyWeb</finalName>
+    <!-- plugins>
+		<plugin>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.1</version>
+		    <configuration>
+		         <source>1.8</source> 
+		         <target>1.8</target> 
+		    </configuration>
+		</plugin>
+    </plugins -->
+  </build>
+  <properties>
+    <!-- Explicitly declaring the source encoding eliminates the following 
+        message: -->
+    <!-- [WARNING] Using platform encoding (UTF-8 actually) to copy filtered 
+        resources, i.e. build is platform dependent! -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- JBoss dependency versions -->
+
+    <version.jboss.maven.plugin>7.4.Final</version.jboss.maven.plugin>
+
+    <version.jboss.spec.javaee.6.0>3.0.2.Final-redhat-7</version.jboss.spec.javaee.6.0>
+
+    <!-- other plugin versions -->
+    <version.war.plugin>2.1.1</version.war.plugin>
+  	<maven.compiler.target>1.8</maven.compiler.target>
+  	<maven.compiler.source>1.8</maven.compiler.source>
+  </properties>
+</project>

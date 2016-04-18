@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>  
+      	<h:form id="errorForm">
+			<h:outputText value="Message:#{pfExceptionHandler.message}" />
+			<h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
+		</h:form>
+	</h:body>
+	</f:view>
+</html>	

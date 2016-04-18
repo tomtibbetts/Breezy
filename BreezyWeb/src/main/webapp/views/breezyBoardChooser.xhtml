@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>  
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="form">
+					<p:button outcome="breezyBoardEditor?action=newBoard" value="Create New Board">
+					    <f:param name="breezyBoardId" value="" />
+					</p:button>
+		      	
+		      		<p:dataTable id="breezyBoardChooserTable" var="breezyBoard" value="#{breezyBoardChooserView.breezyBoards}" editable="false" rowIndexVar="rowIndex">
+		      			<p:column headerText="Board Name" style="width: 35%;">
+		      				<p:link outcome="breezyBoardEditor?action=findBoard" value="#{breezyBoard.name}">
+		      					<f:param name="breezyBoardId" value="#{breezyBoard.id}">
+		      					</f:param>
+		      				</p:link>
+		      			</p:column>
+
+		      			<p:column headerText="Mounted">
+		      				<p:selectBooleanCheckbox value="#{breezyBoard.mounted}" style="width: 75px;" disabled="true"/>
+		      			</p:column>
+		
+		      			<p:column headerText="Description" style="width: 60%;">
+		      				<h:outputText value="#{breezyBoard.description}" />
+		      			</p:column>
+		      		</p:dataTable>
+		      	</h:form>
+    		</ui:define>
+    	</ui:composition>
+    </h:body>
+    </f:view>
+      
+</html>  

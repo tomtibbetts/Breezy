@@ -1,0 +1,16 @@
+package com.windhaven_consulting.breezy.manager;
+
+import java.util.List;
+
+import com.windhaven_consulting.breezy.persistence.domain.BreezyBoard;
+
+public interface BreezyBoardManager {
+
+	List<BreezyBoard> getAllBreezyBoards();
+
+	BreezyBoard getBreezyBoardById(String id);
+
+	void saveBoard(BreezyBoard breezyBoard);
+
+	void deleteBoard(BreezyBoard breezyBoard);
+}

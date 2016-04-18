@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>  
+      	<h:form id="homeForm">
+		    <p:tabView>
+		        <p:tab title="Home">
+		            <h:panelGrid columns="1" cellpadding="10">
+					    <p:dataList value="#{homeManagedBean.systemStatus.ipAddresses}" var="ipAddress" type="definition">
+					        <f:facet name="header">Hello Breezy User! You can find me at: </f:facet>
+					        #{ipAddress}
+					    </p:dataList>
+		            </h:panelGrid>
+		        </p:tab>
+		        <p:tab title="Macros">
+		            <!-- h:panelGrid columns="2" cellpadding="10">
+		                <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+		                <h:outputText value="Francis Ford Coppola's legendary..." />
+		            </h:panelGrid -->
+		        </p:tab>
+		        <p:tab title="Event Triggers">
+		            <!-- h:panelGrid columns="2" cellpadding="10">
+		                <p:graphicImage name="demo/images/godfather/godfather3.jpg" />
+		                <h:outputText value="After a break of more than 15 years..." />
+		            </h:panelGrid -->
+		        </p:tab>
+		    </p:tabView>
+      	</h:form>
+    </h:body>
+    </f:view>
+      
+</html>  

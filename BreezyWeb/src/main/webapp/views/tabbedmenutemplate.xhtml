@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>  
+      	<h:form id="tabbedMenuForm">
+      		<p:tabMenu activeIndex="0">
+      			<p:menuitem value="Home" outcome="home" url="home.jsf"/>
+      			<p:menuitem value="Macros" outcome="macros" url="macroChooser.jsf"/>
+      			<p:menuitem value="Event Triggers" outcome="eventTriggers" url="eventsEditor.jsf"/>
+      			<p:menuitem value="Monitor Running Macros" outcome="macroMonitor" url="macroMonitor.jsf"/>
+      			<p:menuitem value="Boards" outcome="boards" url="breezyBoardChooser.jsf"/>
+      			<p:menuitem value="Board Templates" outcome="boardTemplates" url="boardTemplateChooser.jsf"/>
+      		</p:tabMenu>
+      	</h:form>
+	    <div id="content">
+		  	<ui:insert name="content" >
+		 	  <h1>Place page content here.</h1>
+		   	</ui:insert>
+	    </div>
+
+		<p:ajaxExceptionHandler type="java.lang.NullPointerException"
+		                        update="exceptionDialog"
+		                        onexception="PF('exceptionDialog').show();" />
+		
+		<p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occured!" widgetVar="exceptionDialog" height="500px">
+		    Message: #{pfExceptionHandler.message} <br/>
+		    StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" /> <br />
+		</p:dialog>      	
+    </h:body>
+    </f:view>
+      
+</html>  
