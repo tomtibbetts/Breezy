@@ -56,13 +56,13 @@ public class MacroExecutor implements MacroControllerComponent {
 
 	public void start() {
 		if(!isRunning) {
-			LOG.debug("Starting Macro '" + macro.getName() + "'.");
+//			LOG.debug("Starting Macro '" + macro.getName() + "'.");
 
 			// start executing the macro
 			if(executorThread == null) {
 				executorThread = new Thread(new Executor(this));
 			} else {
-				LOG.debug(this.getClass().getName() + "::start() attempting to start and already running macro.");
+//				LOG.debug(this.getClass().getName() + "::start() attempting to start and already running macro.");
 				executorThread.interrupt();
 				executorThread = new Thread(new Executor(this));
 			}
@@ -73,7 +73,7 @@ public class MacroExecutor implements MacroControllerComponent {
 	}
 
 	public void stop() {
-		LOG.debug(this.getClass().getName() + "::stopping for macro, '" + macro.getName() + "'");
+//		LOG.debug(this.getClass().getName() + "::stopping for macro, '" + macro.getName() + "'");
 		
 		isRunning = false;
 	}
@@ -184,7 +184,7 @@ public class MacroExecutor implements MacroControllerComponent {
 		
 		@Override
 		public void run() {
-			LOG.debug("************************* " + this.getClass().getName() + "::run: starting execution for macro, '" + macro.getName() + "' ******************************");
+//			LOG.debug("************************* " + this.getClass().getName() + "::run: starting execution for macro, '" + macro.getName() + "' ******************************");
 
 			for(currentStep = 0; currentStep < macro.getSteps().size() && isRunning; currentStep++) {
 				MacroStep macroStep = macro.getSteps().get(currentStep);
@@ -241,7 +241,7 @@ public class MacroExecutor implements MacroControllerComponent {
 				
 			}
 
-			LOG.debug("************************* " + this.getClass().getName() + "::run: ending execution for macro, '" + macro.getName() + "' ******************************\n");
+//			LOG.debug("************************* " + this.getClass().getName() + "::run: ending execution for macro, '" + macro.getName() + "' ******************************\n");
 
 			macroExecutorManager.notifyStopped(macro);
 		}

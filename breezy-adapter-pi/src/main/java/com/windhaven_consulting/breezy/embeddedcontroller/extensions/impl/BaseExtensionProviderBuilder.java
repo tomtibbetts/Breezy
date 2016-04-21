@@ -5,6 +5,9 @@ import javax.annotation.Resource;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPin;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
@@ -16,6 +19,8 @@ import com.windhaven_consulting.breezy.embeddedcontroller.StateChangeEvent;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JControllerProxyImpl;
 
 public class BaseExtensionProviderBuilder {
+	static final Logger LOG = LoggerFactory.getLogger(BaseExtensionProviderBuilder.class);
+
 	@Resource
 	private Boolean windowsEnvironment;
 	
@@ -34,10 +39,13 @@ public class BaseExtensionProviderBuilder {
 	}
 	
 	private void initializeInputListener() {
+//		LOG.debug("Creating a digital pin listener\n");
 		gpioPinListenerDigital = new GpioPinListenerDigital() {
 		
 			@Override
 			public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+//				LOG.debug("Firing StateChangeEvent: " + event.getPin().getProperty(BreezyPinProperty.NAME.name()) + ", id: " + event.getPin().getProperty(BreezyPinProperty.ID.name()));
+				
 				GpioPin gpioPin = event.getPin();
 				com.pi4j.io.gpio.PinState pinState = event.getState();
 				

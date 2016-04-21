@@ -98,7 +98,7 @@ public class MCP23017ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void initialize() {
-		LOG.debug("Initializing MCP23017ExtensionProviderImpl");
+//		LOG.debug("Initializing MCP23017ExtensionProviderImpl");
 		
 		validateProperties();
 		
@@ -115,7 +115,7 @@ public class MCP23017ExtensionProviderImpl implements ExtensionProvider {
 			}
 		}
 
-		LOG.debug("End Initializing MCP23017ExtensionProviderImpl");
+//		LOG.debug("End Initializing MCP23017ExtensionProviderImpl");
 	}
 
 	private void validateProperties() {

@@ -52,6 +52,8 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 
 	@Override
 	public DigitalInputPin provisionDigitalInputPin(String name, String pinName, UUID pinId, PinPullResistance pinPullResistance, Integer debounce, boolean isEventTrigger) {
+//		LOG.debug("provisioning Input Pin, name: " + name + ", pinName: " + pinName + ", pinId: " + pinId.toString() + ", isEventTrigger: " + isEventTrigger);
+		
 		if(isWindowsEnvironment()) {
 			return new MockDigitalInputPinProxyImpl(name, pinId);
 		}
@@ -66,9 +68,11 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 			
 			if(isEventTrigger) {
+//				LOG.debug("Adding event trigger. Listener is not null = " + (gpioPinListenerDigital != null));
 				gpioPin.addListener(gpioPinListenerDigital);
 			}
 			
+//			LOG.debug("end provisioning digital input pin.\n");
 			return new Pi4JDigitalInputPinProxyImpl(name, pinId, gpioPin);
 		}
 	}
@@ -99,16 +103,16 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void initialize() {
-		LOG.debug("Initializing MCP23S17ExtensionProviderImpl");
+//		LOG.debug("Initializing MCP23S17ExtensionProviderImpl");
 		
 		validateProperties();
 		
 		if(!isWindowsEnvironment()) {
 			String spiChannel = properties.get(MCP23S17Property.CHANNEL.name());
-			LOG.debug("Channel: " + spiChannel);
+//			LOG.debug("Channel: " + spiChannel);
 			BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
 			byte address = Byte.decode(properties.get(MCP23S17Property.ADDRESS.name()));
-			LOG.debug("address: " + address);
+//			LOG.debug("address: " + address);
 			
 			try {
 				mcp23S17GpioProvider = new MCP23S17GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
@@ -119,7 +123,7 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 			}
 		}
 
-		LOG.debug("End Initializing MCP23S17ExtensionProviderImpl");
+//		LOG.debug("End Initializing MCP23S17ExtensionProviderImpl");
 	}
 
 	private void validateProperties() {

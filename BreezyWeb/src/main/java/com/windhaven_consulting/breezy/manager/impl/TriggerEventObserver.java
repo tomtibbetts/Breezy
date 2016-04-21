@@ -28,11 +28,11 @@ public class TriggerEventObserver {
 	
 	@PostConstruct
 	public void postConstruct() {
-		LOG.debug("*************************** TriggerEventObserver::postConstruct *************************");
+//		LOG.debug("*************************** TriggerEventObserver::postConstruct *************************");
 	}
 	
 	public void observeInputs(@Observes @StateChange StateChangeEvent stateChangeEvent) {
-		LOG.debug("**************************** TriggerEventObserver::observeInputs (start): id: " + stateChangeEvent.getId() + ", id = " + stateChangeEvent.getId() + ", pinState = " + stateChangeEvent.getPinState() + "**************************");
+//		LOG.debug("**************************** TriggerEventObserver::observeInputs (start): id: " + stateChangeEvent.getId() + ", id = " + stateChangeEvent.getId() + ", pinState = " + stateChangeEvent.getPinState() + "**************************");
 
 		Macro macro = null;
 		
@@ -47,12 +47,12 @@ public class TriggerEventObserver {
 		}
 
 		if(macro != null) {
-			LOG.debug(this.getClass().getName() + "::observed state change for macro, '" + macro.getName() + "'");
+//			LOG.debug(this.getClass().getName() + "::observed state change for macro, '" + macro.getName() + "'");
 			
 			macroManager.runMacro(macro);
 		}
 		
-		LOG.debug("**************************** TriggerEventObserver::observeInputs (end): id: " + stateChangeEvent.getId() + ", pinState = " + stateChangeEvent.getPinState() + "**************************");
+//		LOG.debug("**************************** TriggerEventObserver::observeInputs (end): id: " + stateChangeEvent.getId() + ", pinState = " + stateChangeEvent.getPinState() + "**************************");
 	}
 
 }
