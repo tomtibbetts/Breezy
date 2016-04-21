@@ -29,6 +29,8 @@ public class MCP23017ExtensionProviderBuilderImpl extends BaseExtensionProviderB
 
 	@PostConstruct
 	public void postConstruct() {
+		super.postConstruct();
+
 		propertyValueByPropertyMap.put(MCP23017Property.ADDRESS, Arrays.asList(MCP23017Address.values()));
 		propertyValueByPropertyMap.put(MCP23017Property.BUS_NUMBER, Arrays.asList(BreezyI2CBus.values()));
 	}

@@ -29,6 +29,8 @@ public class MCP23S17ExtensionProviderBuilderImpl extends BaseExtensionProviderB
 
 	@PostConstruct
 	public void postConstruct() {
+		super.postConstruct();
+		
 		propertyValueByPropertyMap.put(MCP23S17Property.ADDRESS, Arrays.asList(MCP23S17Address.values()));
 		propertyValueByPropertyMap.put(MCP23S17Property.CHANNEL, Arrays.asList(BreezySPIChannel.values()));
 	}

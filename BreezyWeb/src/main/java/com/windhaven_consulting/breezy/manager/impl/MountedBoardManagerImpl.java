@@ -90,7 +90,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 
 	@Override
 	public void unmount(BreezyBoard breezyBoard) {
-		LOG.debug("unmount for " + breezyBoard.getName());
+//		LOG.debug("unmount for " + breezyBoard.getName());
 		
 		Map<String, ExtensionProvider> extensionProviderMap = new HashMap<String, ExtensionProvider>();
 
@@ -179,74 +179,5 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 
 		return mountedBoard;
 	}
-//
-//	private void buildBoardCache() {
-//		LOG.debug("******************************** Starting buildBoardCache *******************************");
-//		List<BreezyBoard> breezyBoards = breezyBoardDataService.findAll();
-//		
-//		for(BreezyBoard breezyBoard : breezyBoards) {
-//			if(breezyBoard.isMounted()) {
-//				Map<String, ExtensionProvider> extensionProviderMap = new HashMap<String, ExtensionProvider>();
-//				
-//				/**
-//				 * initialize the extensions first
-//				 */
-//				LOG.debug("********* Initializing extension providers for breezy board: " + breezyBoard.getName());
-//
-//				for(Extension extension : breezyBoard.getExtensions()) {
-//					ExtensionProvider extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getType(), extension.getProperties());
-//					
-//					extensionProviderMap.put(extension.getName(), extensionProvider);
-//				}
-//				
-//				MountedBoard mountedBoard = new MountedBoard();
-//				mountedBoard.setId(breezyBoard.getId().toString());
-//				mountedBoard.setName(breezyBoard.getName());
-//				mountedBoard.setDescription(breezyBoard.getDescription());
-//				
-//				LOG.debug("********* Initializing input pins for breezy board: " + breezyBoard.getName());
-//				for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {
-//					ExtensionProvider extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension());
-//					
-//					DigitalInputPin digitalInputPin = extensionProvider.provisionDigitalInputPin(
-//							inputPinConfiguration.getName(), 
-//							inputPinConfiguration.getExtensionMappedPin(), 
-//							inputPinConfiguration.getPinPullResistance(),
-//							inputPinConfiguration.getDebounce(),
-//							inputPinConfiguration.isEventTrigger());
-//					mountedBoard.addInputPin(digitalInputPin);
-//				}
-//				
-//				LOG.debug("********* Initializing components for breezy board: " + breezyBoard.getName());
-//				for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
-//					try {
-//						Component component = componentLibraryManager.getNewComponentByType(componentConfiguration.getComponentType());
-//						component.setName(componentConfiguration.getName());
-//						component.setId(componentConfiguration.getId().toString());
-//						
-//						for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
-//							ExtensionProvider extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension());
-//							
-//							DigitalOutputPin digitalOutputPin = extensionProvider.provisionDigitalOutputPin(outputPinConfiguration.getName(), outputPinConfiguration.getExtensionMappedPin());
-//							component.addOutputPin(digitalOutputPin);
-//						}
-//						
-//						mountedBoard.addComponent(component);
-//					} catch (Exception e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					
-//				}
-//				
-//				mountedBoards.add(mountedBoard);
-//				mountedBoardMap.put(mountedBoard.getId(), mountedBoard);
-//				mountedBoardByNameMap.put(mountedBoard.getName(), mountedBoard);
-//			}
-//		}
-//		
-//		LOG.debug("******************************** Ending buildBoardCache *******************************");
-//
-//	}
 
 }
