@@ -76,4 +76,10 @@ public class MockDigitalOutputPinProxyImpl extends MockPinProxyImpl implements D
 		LOG.debug("pulse: onTime = " + onTime + ", pinState = " + pinState + ", blockToCompletion = " + blockToCompletion);
 	}
 
+	@Override
+	public PinState getState() {
+		LOG.debug("getState: ");
+		return PinState.LOW;
+	}
+
 }

@@ -49,6 +49,8 @@ public class ComponentTemplateLibraryManager implements Serializable {
 					break;
 				}
 			}
+			
+			// if this bean does not have the ControlledComponent annotation, see if one of its superclasses do
 		}
 	}
 	

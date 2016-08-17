@@ -131,7 +131,7 @@
 							      			</p:column>
 							      			<p:column>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'MOUNTED_BOARD'}" converter="#{macroBuilderView.mountedBoardConverter}"/>
-					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'INPUT_PIN'}" converter="#{macroBuilderView.digitalInputPinConverter}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_INPUT_PIN'}" converter="#{macroBuilderView.digitalInputPinConverter}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'STRING'}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'NUMBER'}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'PIN_STATE'}" converter="#{macroBuilderView.pinStateConverter}"/>
@@ -242,7 +242,7 @@
 										</p:selectOneMenu>
 	
 										<p:selectOneMenu id="inputPinId" value="#{methodParameter.fieldValue}" style="width: 100%;"
-											rendered="#{methodParameter.parameterFieldType eq 'INPUT_PIN'}"
+											rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_INPUT_PIN}"
 											required="false"
 											label="#{methodParameter.fieldName}">
 											<f:selectItem itemLabel="Select Input Pin" itemValue="" noSelectionOption="true" />

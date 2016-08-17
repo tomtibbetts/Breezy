@@ -11,23 +11,23 @@ public class BiColorSemaphore extends AbstractSemaphore {
 	private static final long serialVersionUID = 1L;
 
 	@ControlledMethod("Turn On")
-	public void turnOn(@ControlledParameter(name = "Color Index", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex) {
+	public void turnOn(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex) {
 		super.turnOn(colorIndex);
 	}
 	
 	@ControlledMethod("Turn Off")
-	public void turnOff(@ControlledParameter(name = "Color Index", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex) {
+	public void turnOff(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex) {
 		super.turnOff(colorIndex);
 	}
 	
 	@ControlledMethod("Blink Forever")
-	public void blink(@ControlledParameter(name = "Color Index", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex,
+	public void blink(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex,
 			@ControlledParameter(name = "On Time (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long onTime ) {
 		super.blink(colorIndex, onTime);
 	}
 	
 	@ControlledMethod("Blink Timed")
-	public void blink(@ControlledParameter(name = "Color Index", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex,
+	public void blink(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex,
 			@ControlledParameter(name = "On Time (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long onTime,
 			@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
 			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
@@ -36,7 +36,7 @@ public class BiColorSemaphore extends AbstractSemaphore {
 	}
 	
 	@ControlledMethod("Pulse")
-	public void pulse(@ControlledParameter(name = "Color Index", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex,
+	public void pulse(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.NUMBER, required = true) int colorIndex,
 			@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
 			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
 		blockToCompletion = (blockToCompletion == null ? false : blockToCompletion);
