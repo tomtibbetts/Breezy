@@ -2,7 +2,10 @@ package com.windhaven_consulting.breezy.component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 
@@ -15,6 +18,7 @@ public abstract class Component implements Comparable<Component>, Serializable {
 	private String id;
 	
 	private List<DigitalOutputPin> outputPins = new ArrayList<DigitalOutputPin>();
+	private Map<UUID, DigitalOutputPin> idToDigitalOutputPinMap = new HashMap<UUID, DigitalOutputPin>();
 	
 	public String getName() {
 		return name;
@@ -26,6 +30,7 @@ public abstract class Component implements Comparable<Component>, Serializable {
 
 	public void addOutputPin(DigitalOutputPin pin) {
 		outputPins.add(pin);
+		idToDigitalOutputPinMap.put(pin.getId(), pin);
 	}
 	
 	public String getId() {
@@ -46,6 +51,10 @@ public abstract class Component implements Comparable<Component>, Serializable {
 	
 	protected DigitalOutputPin getOutputPin() {
 		return outputPins.get(0);
+	}
+	
+	protected DigitalOutputPin getDigitalOutputPin(UUID digitalOutputPinId) {
+		return idToDigitalOutputPinMap.get(digitalOutputPinId);
 	}
 
 	@Override

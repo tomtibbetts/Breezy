@@ -36,14 +36,14 @@ public class MountedBoard implements Serializable {
 	
 	private boolean mounted;
 
-	private List<DigitalInputPin> inputPins = new ArrayList<DigitalInputPin>();
+	private List<DigitalInputPin> digitalInputPins = new ArrayList<DigitalInputPin>();
 
-	private List<DigitalOutputPin> outputPins = new ArrayList<DigitalOutputPin>();
+	private List<DigitalOutputPin> digitalOutputPins = new ArrayList<DigitalOutputPin>();
 
 	public void addInputPin(DigitalInputPin digitalInputPin) {
 		pinNameToInputPinMap.put(digitalInputPin.getName(), digitalInputPin);
 		pinIdToInputPinMap.put(digitalInputPin.getId(), digitalInputPin);
-		inputPins.add(digitalInputPin);
+		digitalInputPins.add(digitalInputPin);
 	}
 	
 	public void addComponent(Component component) {
@@ -51,7 +51,7 @@ public class MountedBoard implements Serializable {
 		
 		for(DigitalOutputPin digitalOutputPin : component.getOutputPins()) {
 			pinIdToOutputPinMap.put(digitalOutputPin.getId(), digitalOutputPin);
-			outputPins.add(digitalOutputPin);
+			digitalOutputPins.add(digitalOutputPin);
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class MountedBoard implements Serializable {
 	}
 	
 	public List<DigitalInputPin> getInputPins() {
-		return inputPins;
+		return digitalInputPins;
 	}
 	
 	public Map<String, DigitalInputPin> getInputPinMap() {
@@ -122,7 +122,7 @@ public class MountedBoard implements Serializable {
 	}
 
 	public List<DigitalOutputPin> getOutputPins() {
-		return outputPins;
+		return digitalOutputPins;
 	}
 
 	public String toString() {

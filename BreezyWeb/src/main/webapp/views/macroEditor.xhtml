@@ -136,6 +136,7 @@
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'NUMBER'}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'PIN_STATE'}" converter="#{macroBuilderView.pinStateConverter}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'LOGIC_STATE'}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_OUTPUT_PIN'}" converter="#{macroBuilderView.digitalOutputPinConverter}"/>
 							      			</p:column>
 							      		</p:dataTable>
 					      			</p:column>
@@ -241,8 +242,8 @@
 					                    	<f:selectItems value="#{macroBuilderView.mountedBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
 										</p:selectOneMenu>
 	
-										<p:selectOneMenu id="inputPinId" value="#{methodParameter.fieldValue}" style="width: 100%;"
-											rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_INPUT_PIN}"
+										<p:selectOneMenu id="digitalInputPinId" value="#{methodParameter.fieldValue}" style="width: 100%;"
+											rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_INPUT_PIN'}"
 											required="false"
 											label="#{methodParameter.fieldName}">
 											<f:selectItem itemLabel="Select Input Pin" itemValue="" noSelectionOption="true" />
@@ -274,6 +275,15 @@
 											<f:selectItem itemLabel="Select Logic State" itemValue="" noSelectionOption="true" />
 					                    	<f:selectItems value="#{macroBuilderView.logicStates}" var="logicState" itemLabel="#{logicState}" itemValue="#{logicState}"/>
 										</p:selectOneMenu>
+
+										<p:selectOneMenu id="digitalOutputPinId" value="#{methodParameter.fieldValue}" style="width: 100%;"
+											rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_OUTPUT_PIN'}"
+											required="false"
+											label="#{methodParameter.fieldName}">
+											<f:selectItem itemLabel="Select Output Pin" itemValue="" noSelectionOption="true" />
+					                    	<f:selectItems value="#{macroBuilderView.digitalOutputPins}" var="digitalOutputPin" itemLabel="#{digitalOutputPin.name}" itemValue="#{digitalOutputPin.id}"/>
+										</p:selectOneMenu>
+	
 					      			</p:column>
 					      			
 					      		</p:dataTable>
