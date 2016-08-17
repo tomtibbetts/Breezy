@@ -265,10 +265,12 @@ public class MacroBuilderView implements Serializable {
 				if(componentMethodsMap != null) {
 					functions = new ArrayList<String>(componentToMethods.get(workingMacroStep.getComponentId()).keySet());
 					Collections.sort(functions);
+					digitalOutputPins = componentIdToComponentMap.get(workingMacroStep.getComponentId()).getOutputPins();
 				}
 				else {
 					functions = Collections.emptyList();
 					workingMacroStep.getMethodParameters().clear();
+					digitalOutputPins.clear();
 				}
 			}
 			
@@ -280,7 +282,7 @@ public class MacroBuilderView implements Serializable {
 						inputPins = parameterMountedbBoard.getInputPins();
 					}
 					else {
-						inputPins.clear();;
+						inputPins.clear();
 					}
 				}
 			}
