@@ -2,7 +2,7 @@ package com.windhaven_consulting.breezy.manager;
 
 import java.util.List;
 
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoardTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoardTemplate;
 
 public interface BreezyBoardTemplateManager {
 

@@ -1,10 +1,11 @@
-package com.windhaven_consulting.breezy.persistence.domain;
+package com.windhaven_consulting.breezy.manager.viewobject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
+import com.windhaven_consulting.breezy.persistence.domain.PersistentObject;
 
 public class BreezyBoard extends PersistentObject implements Serializable, Revisionable {
 

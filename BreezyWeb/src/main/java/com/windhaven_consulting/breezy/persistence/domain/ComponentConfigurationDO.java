@@ -1,29 +1,19 @@
 package com.windhaven_consulting.breezy.persistence.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class ComponentConfiguration extends PersistentObject implements Serializable {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-	private static final long serialVersionUID = 1L;
-
+public class ComponentConfigurationDO extends PersistentObject {
 	private String componentType;
 	
 	private String description;
 	
-	private List<OutputPinConfiguration> outputPinConfigurations = new ArrayList<OutputPinConfiguration>();
+	private List<OutputPinConfigurationDO> outputPinConfigurationDOs = new ArrayList<OutputPinConfigurationDO>();
 	
-	private boolean inverted;
-	
-	private boolean provisionable = true;
-	
-	private Integer forwardLatency = NumberUtils.INTEGER_ZERO;
-	
-	private Integer trailingLatency = NumberUtils.INTEGER_ZERO;
-
 	public String getComponentType() {
 		return componentType;
 	}
@@ -40,12 +30,14 @@ public class ComponentConfiguration extends PersistentObject implements Serializ
 		this.description = description;
 	}
 
-	public List<OutputPinConfiguration> getOutputPinConfigurations() {
-		return outputPinConfigurations;
+	@JsonProperty("outputPinConfigurations")
+	public List<OutputPinConfigurationDO> getOutputPinConfigurationDOs() {
+		return outputPinConfigurationDOs;
 	}
 
-	public void setOutputPinConfigurations(List<OutputPinConfiguration> outputPinConfigurations) {
-		this.outputPinConfigurations = outputPinConfigurations;
+	@JsonProperty("outputPinConfigurations")
+	public void setOutputPinConfigurationDOs(List<OutputPinConfigurationDO> outputPinConfigurationDOs) {
+		this.outputPinConfigurationDOs = outputPinConfigurationDOs;
 	}
 
 	public boolean isInverted() {
@@ -79,5 +71,13 @@ public class ComponentConfiguration extends PersistentObject implements Serializ
 	public void setTrailingLatency(Integer trailingLatency) {
 		this.trailingLatency = trailingLatency;
 	}
+
+	private boolean inverted;
 	
+	private boolean provisionable = true;
+	
+	private Integer forwardLatency = NumberUtils.INTEGER_ZERO;
+	
+	private Integer trailingLatency = NumberUtils.INTEGER_ZERO;
+
 }

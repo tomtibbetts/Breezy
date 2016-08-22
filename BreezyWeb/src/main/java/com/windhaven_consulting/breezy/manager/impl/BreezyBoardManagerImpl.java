@@ -6,33 +6,41 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.windhaven_consulting.breezy.manager.BreezyBoardManager;
-import com.windhaven_consulting.breezy.persistence.dataservice.BreezyBoardDataService;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoard;
+import com.windhaven_consulting.breezy.manager.ViewDiskObjectMapper;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
+import com.windhaven_consulting.breezy.persistence.dataservice.BreezyBoardDODataService;
+import com.windhaven_consulting.breezy.persistence.domain.BreezyBoardDO;
 
 @ApplicationScoped
 public class BreezyBoardManagerImpl implements BreezyBoardManager {
 
 	@Inject
-	private BreezyBoardDataService breezyBoardDataService;
+	private ViewDiskObjectMapper<BreezyBoard, BreezyBoardDO> breezyBoardViewMapper;
+	
+	@Inject
+	private BreezyBoardDODataService breezyBoardDODataService;
 	
 	@Override
 	public List<BreezyBoard> getAllBreezyBoards() {
-		return breezyBoardDataService.findAll();
+		return breezyBoardViewMapper.getAsViewObjects(breezyBoardDODataService.findAll());
 	}
 
 	@Override
 	public BreezyBoard getBreezyBoardById(String id) {
-		return breezyBoardDataService.findById(id);
+		return breezyBoardViewMapper.getAsViewObject(breezyBoardDODataService.findById(id));
 	}
 
 	@Override
 	public void saveBoard(BreezyBoard breezyBoard) {
-		breezyBoardDataService.save(breezyBoard);
+		BreezyBoardDO breezyBoardDO = breezyBoardViewMapper.getAsDiskObject(breezyBoard);
+		breezyBoardDODataService.save(breezyBoardDO);
+		breezyBoard.setId(breezyBoardDO.getId());
 	}
 
 	@Override
 	public void deleteBoard(BreezyBoard breezyBoard) {
-		breezyBoardDataService.delete(breezyBoard);
+		BreezyBoardDO breezyBoardDO = breezyBoardViewMapper.getAsDiskObject(breezyBoard);
+		breezyBoardDODataService.delete(breezyBoardDO);
 	}
 
 }

@@ -1,6 +1,7 @@
-package com.windhaven_consulting.breezy.persistence.domain;
+package com.windhaven_consulting.breezy.manager.viewobject;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
+import com.windhaven_consulting.breezy.persistence.domain.PersistentObject;
 
 public class InputConfigurationTemplate extends PersistentObject {
 

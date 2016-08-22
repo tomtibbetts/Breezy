@@ -29,11 +29,11 @@ import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
 import com.windhaven_consulting.breezy.manager.BreezyBoardTemplateManager;
 import com.windhaven_consulting.breezy.manager.ExtensionProviderManager;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoardTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.ComponentConfigurationTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.ExtensionTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.InputConfigurationTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.OutputConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoardTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ComponentConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ExtensionTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.InputConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.OutputConfigurationTemplate;
 
 @ManagedBean
 @ViewScoped

@@ -8,7 +8,7 @@ import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 
 import com.windhaven_consulting.breezy.manager.BreezyBoardManager;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoard;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
 
 @ManagedBean
 @SessionScoped

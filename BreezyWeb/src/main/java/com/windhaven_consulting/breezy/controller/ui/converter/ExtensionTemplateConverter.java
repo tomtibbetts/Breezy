@@ -8,7 +8,7 @@ import javax.faces.convert.Converter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.windhaven_consulting.breezy.persistence.domain.ExtensionTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ExtensionTemplate;
 
 public class ExtensionTemplateConverter implements Converter {
 	

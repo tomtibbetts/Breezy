@@ -1,20 +1,17 @@
 package com.windhaven_consulting.breezy.persistence.domain;
 
-import java.io.Serializable;
+import java.util.UUID;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 
-public class InputPinConfiguration extends PersistentObject implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
+public class InputPinConfigurationDO extends PersistentObject {
 	private String description;
 	
 	private PinPullResistance pinPullResistance;
 	
-	private String extension;
+	private UUID extensionId;
 	
 	private String extensionMappedPin;
 	
@@ -40,14 +37,14 @@ public class InputPinConfiguration extends PersistentObject implements Serializa
 		this.pinPullResistance = pinPullResistance;
 	}
 
-	public String getExtension() {
-		return extension;
+	public UUID getExtensionId() {
+		return extensionId;
 	}
 
-	public void setExtension(String extension) {
-		this.extension = extension;
+	public void setExtensionId(UUID extensionId) {
+		this.extensionId = extensionId;
 	}
-	
+
 	public String getExtensionMappedPin() {
 		return extensionMappedPin;
 	}
@@ -79,5 +76,5 @@ public class InputPinConfiguration extends PersistentObject implements Serializa
 	public void setProvisionable(boolean provisionable) {
 		this.provisionable = provisionable;
 	}
-	
+
 }

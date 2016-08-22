@@ -1,10 +1,12 @@
-package com.windhaven_consulting.breezy.persistence.domain;
+package com.windhaven_consulting.breezy.manager.viewobject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
+import com.windhaven_consulting.breezy.persistence.domain.PersistentObject;
 
+// since this a manager level object, should it extend PersistentObject?  And, do I care about Revisionable at this point?
 public class BreezyBoardTemplate extends PersistentObject implements Revisionable {
 
 	private List<ExtensionTemplate> extensionTemplates = new ArrayList<ExtensionTemplate>();

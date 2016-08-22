@@ -2,8 +2,8 @@ package com.windhaven_consulting.breezy;
 
 import java.util.UUID;
 
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoard;
-import com.windhaven_consulting.breezy.persistence.domain.ComponentConfiguration;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
+import com.windhaven_consulting.breezy.manager.viewobject.ComponentConfiguration;
 
 public class SystemBoardFactory {
 	private static final String SYSTEM = "System";
