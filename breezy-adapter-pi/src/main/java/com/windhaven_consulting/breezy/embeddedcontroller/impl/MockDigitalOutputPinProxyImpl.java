@@ -23,57 +23,63 @@ public class MockDigitalOutputPinProxyImpl extends MockPinProxyImpl implements D
 
 	@Override
 	public void pulse(long duration, PinState startState) {
-		LOG.debug("pulse: duration = " + duration + ", startState = " + startState);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulse: duration = " + duration + ", startState = " + startState);
 	}
 
 	@Override
 	public void blink(long onTime, long duration) {
-		LOG.debug("blink: onTime = " + onTime + ", duration = " + duration);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: onTime = " + onTime + ", duration = " + duration);
 	}
 
 	@Override
 	public void toggle() {
-		LOG.debug("toggle:");
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", toggle:");
 	}
 
 	@Override
 	public void setLow() {
-		LOG.debug("setLow:");
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setLow:");
 	}
 
 	@Override
 	public void setHigh() {
-		LOG.debug("setHigh:");
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setHigh:");
 	}
 
 	@Override
 	public void blink(long onTime) {
-		LOG.debug("blink: onTime = " + onTime);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: onTime = " + onTime);
 	}
 
 	@Override
 	public void blink(long onTime, PinState pinState) {
-		LOG.debug("blink: onTime = " + onTime + ", pinState = " + pinState);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: onTime = " + onTime + ", pinState = " + pinState);
 	}
 
 	@Override
 	public void blink(long delay, long duration, PinState pinState, boolean blockToCompletion) {
-		LOG.debug("blink: delay = " + delay + ", duration = " + duration + ", pinState = " + pinState + ", blockToCompletion = " + blockToCompletion);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: delay = " + delay + ", duration = " + duration + ", pinState = " + pinState + ", blockToCompletion = " + blockToCompletion);
 	}
 
 	@Override
 	public void pulse(long onTime) {
-		LOG.debug("pulse: onTime = " + onTime);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulse: onTime = " + onTime);
 	}
 
 	@Override
 	public void pulse(long onTime, boolean blockToCompletion) {
-		LOG.debug("pulse: onTime = " + onTime + ", blockToCompletion = " + blockToCompletion);
+		LOG.debug("name: " + getName() + ", pulse: onTime = " + onTime + ", blockToCompletion = " + blockToCompletion);
 	}
 
 	@Override
 	public void pulse(long onTime, PinState pinState, boolean blockToCompletion) {
-		LOG.debug("pulse: onTime = " + onTime + ", pinState = " + pinState + ", blockToCompletion = " + blockToCompletion);
+		LOG.debug("name: " + getName() + ", pulse: onTime = " + onTime + ", pinState = " + pinState + ", blockToCompletion = " + blockToCompletion);
+	}
+
+	@Override
+	public PinState getState() {
+		LOG.debug("getState: ");
+		return PinState.LOW;
 	}
 
 }

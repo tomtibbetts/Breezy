@@ -8,19 +8,20 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoardTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ComponentConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ExtensionTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.InputConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.OutputConfigurationTemplate;
 import com.windhaven_consulting.breezy.persistence.dataservice.BreezyBoardTemplateDODataService;
 import com.windhaven_consulting.breezy.persistence.dataservice.BreezyBoardTemplateDataService;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoardTemplate;
 import com.windhaven_consulting.breezy.persistence.domain.BreezyBoardTemplateDO;
-import com.windhaven_consulting.breezy.persistence.domain.ComponentConfigurationTemplate;
 import com.windhaven_consulting.breezy.persistence.domain.ComponentConfigurationTemplateDO;
-import com.windhaven_consulting.breezy.persistence.domain.ExtensionTemplate;
 import com.windhaven_consulting.breezy.persistence.domain.ExtensionTemplateDO;
-import com.windhaven_consulting.breezy.persistence.domain.InputConfigurationTemplate;
 import com.windhaven_consulting.breezy.persistence.domain.InputConfigurationTemplateDO;
-import com.windhaven_consulting.breezy.persistence.domain.OutputConfigurationTemplate;
 import com.windhaven_consulting.breezy.persistence.domain.OutputConfigurationTemplateDO;
 
+@Deprecated
 public class BreezyBoardTemplateDataServiceImpl extends BaseDataServiceImpl<BreezyBoardTemplate> implements BreezyBoardTemplateDataService {
 
 	@Inject

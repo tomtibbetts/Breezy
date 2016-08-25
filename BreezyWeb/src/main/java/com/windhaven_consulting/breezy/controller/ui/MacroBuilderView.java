@@ -30,9 +30,11 @@ import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibrar
 import com.windhaven_consulting.breezy.component.library.MethodTemplate;
 import com.windhaven_consulting.breezy.component.library.ParameterTemplate;
 import com.windhaven_consulting.breezy.controller.ui.converter.DigitalInputPinConverter;
+import com.windhaven_consulting.breezy.controller.ui.converter.DigitalOutputPinConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.MountedBoardConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.PinStateConverter;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 import com.windhaven_consulting.breezy.manager.MacroManager;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
@@ -61,13 +63,17 @@ public class MacroBuilderView implements Serializable {
 	
 	private Map<String, String> mountedBoardIdToNameMap = new HashMap<String, String>();
 	
-	private Map<String, String> componentIdToNameMap = new HashMap<String, String>();
+//	private Map<String, String> componentIdToNameMap = new HashMap<String, String>();
 	
+	private Map<String, Component> componentIdToComponentMap = new HashMap<String, Component>();
+
 	private List<Component> components = new ArrayList<Component>();
 	
 	private List<String> functions = new ArrayList<String>();
 	
 	private List<DigitalInputPin> inputPins = new ArrayList<DigitalInputPin>();
+
+	private List<DigitalOutputPin> digitalOutputPins = new ArrayList<DigitalOutputPin>();
 
 	private Map<String, Map<String, List<ParameterTemplate>>> componentToMethods = new HashMap<String, Map<String, List<ParameterTemplate>>>();
 	
@@ -88,6 +94,8 @@ public class MacroBuilderView implements Serializable {
 	private PinStateConverter pinStateConverter;
 	
 	private DigitalInputPinConverter digitalInputPinConverter;
+
+	private DigitalOutputPinConverter digitalOutputPinConverter;
 
 	private List<String> logicStates = new ArrayList<String>();
 
@@ -146,14 +154,16 @@ public class MacroBuilderView implements Serializable {
 	}
 	
 	public void onComponentChange(final AjaxBehaviorEvent event) {
-		String value = (String) ((UIOutput) event.getSource()).getValue();
+		String key = (String) ((UIOutput) event.getSource()).getValue();
 		
-		if(StringUtils.isNotEmpty(value)) {
-			functions = new ArrayList<String>(componentToMethods.get(value).keySet());
+		if(StringUtils.isNotEmpty(key)) {
+			functions = new ArrayList<String>(componentToMethods.get(key).keySet());
 			Collections.sort(functions);
+        	digitalOutputPins = componentIdToComponentMap.get(key).getOutputPins();
 		}
 		else {
 			functions.clear();
+			digitalOutputPins.clear();
 		}
 	}
 	
@@ -197,7 +207,17 @@ public class MacroBuilderView implements Serializable {
 	}
 	
 	public String getComponentName(String id) {
-		return componentIdToNameMap.get(id);
+		String name = StringUtils.EMPTY;
+		
+		if(StringUtils.isNotEmpty(id)) {
+			Component component = componentIdToComponentMap.get(id);
+			
+			if(component != null) {
+				name = componentIdToComponentMap.get(id).getName();
+			}
+		}
+
+		return name;
 	}
 	
     public Macro getMacro() {
@@ -216,6 +236,10 @@ public class MacroBuilderView implements Serializable {
 		return inputPins;
 	}
 
+	public List<DigitalOutputPin> getDigitalOutputPins() {
+		return digitalOutputPins;
+	}
+	
 	public List<PinState> getPinStates() {
 		return Arrays.asList(PinState.values());
 	}
@@ -241,10 +265,12 @@ public class MacroBuilderView implements Serializable {
 				if(componentMethodsMap != null) {
 					functions = new ArrayList<String>(componentToMethods.get(workingMacroStep.getComponentId()).keySet());
 					Collections.sort(functions);
+					digitalOutputPins = componentIdToComponentMap.get(workingMacroStep.getComponentId()).getOutputPins();
 				}
 				else {
 					functions = Collections.emptyList();
 					workingMacroStep.getMethodParameters().clear();
+					digitalOutputPins.clear();
 				}
 			}
 			
@@ -256,7 +282,7 @@ public class MacroBuilderView implements Serializable {
 						inputPins = parameterMountedbBoard.getInputPins();
 					}
 					else {
-						inputPins.clear();;
+						inputPins.clear();
 					}
 				}
 			}
@@ -348,9 +374,14 @@ public class MacroBuilderView implements Serializable {
 		return pinStateConverter;
 	}
 	
+	public DigitalOutputPinConverter getDigitalOutputPinConverter() {
+		return digitalOutputPinConverter;
+	}
+	
 	private void initialize() {
 		mountedBoardIdToNameMap.clear();
-		componentIdToNameMap.clear();
+//		componentIdToNameMap.clear();
+		componentIdToComponentMap.clear();
 		componentToMethods.clear();
 		logicStates.clear();
 		
@@ -358,6 +389,7 @@ public class MacroBuilderView implements Serializable {
 		logicStates.add(Boolean.TRUE.toString().toUpperCase());
 		
 		List<DigitalInputPin> digitalInputPins = new ArrayList<DigitalInputPin>();
+		List<DigitalOutputPin> digitalOutputPins = new ArrayList<DigitalOutputPin>();
 		mountedBoards = mountedBoardManager.getAllMountedBoards();
 		
 		for(MountedBoard mountedBoard : mountedBoards) {
@@ -365,29 +397,32 @@ public class MacroBuilderView implements Serializable {
 			mountedBoardIdToNameMap.put(mountedBoard.getId(), mountedBoard.getName());
 			
 			for(Component component : mountedBoard.getComponents()) {
-				componentIdToNameMap.put(component.getId(), component.getName());
+//				componentIdToNameMap.put(component.getId(), component.getName());
+				componentIdToComponentMap.put(component.getId(), component);
 				
 				if(!componentToMethods.containsKey(component.getId())) {
 					Map<String, List<ParameterTemplate>> methods = new TreeMap<String, List<ParameterTemplate>>();
-					ComponentTemplate componentDescriptor = componentLibraryManager.getComponentTemplateFor(component);
+					ComponentTemplate componentTemplate = componentLibraryManager.getComponentTemplateFor(component);
 					
-					for(MethodTemplate methodDescriptor : componentDescriptor.getMethods()) {
+					for(MethodTemplate methodTemplate : componentTemplate.getMethods()) {
 						List<ParameterTemplate> parameterTemplates = new ArrayList<ParameterTemplate>();
 						
-						for(ParameterTemplate parameterTemplate : methodDescriptor.getParameters()) {
+						for(ParameterTemplate parameterTemplate : methodTemplate.getParameters()) {
 							parameterTemplates.add(parameterTemplate);
 						}
 						
-						methods.put(methodDescriptor.getComponentMethodName(), parameterTemplates);
+						methods.put(methodTemplate.getComponentMethodName(), parameterTemplates);
 					}
 					
 					componentToMethods.put(component.getId(), methods);
+					digitalOutputPins.addAll(component.getOutputPins());
 				}
 			}
 		}
 
 		mountedBoardConverter = new MountedBoardConverter(mountedBoards);
 		digitalInputPinConverter = new DigitalInputPinConverter(digitalInputPins);
+		digitalOutputPinConverter = new DigitalOutputPinConverter(digitalOutputPins);
 		pinStateConverter = new PinStateConverter();
 	}
 	

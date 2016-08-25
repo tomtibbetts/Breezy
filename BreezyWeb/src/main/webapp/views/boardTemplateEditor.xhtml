@@ -32,7 +32,11 @@
 					
 				    <p:toolbar>
 				        <f:facet name="left">
-				            <p:commandButton id="saveBoardTemplateId" value="Save" actionListener="#{boardTemplateBuilderView.saveBoardTemplate}"/>
+				            <p:commandButton id="saveBoardTemplateId" value="Save" actionListener="#{boardTemplateBuilderView.saveBoardTemplate}" update="formId"/>
+							<p:spacer width="10"/>
+				            <p:commandButton id="saveBoardTemplateAsId" value="Save As" 
+								update=":formId:saveAsDialogueId"
+				            	onclick="PF('saveAsDialogue').show();"/>
 							<p:spacer width="10"/>
 							<p:commandButton id="deleteBoardTemplateId" value="Delete" actionListener="#{boardTemplateBuilderView.deleteBoardTemplate}">
 				            	<p:confirm header="Confirmation" message="Are you sure you wish to permanently delete this board template?" icon="ui-icon-alert" />
@@ -411,6 +415,30 @@
 			            </p:panelGrid>
 		            </p:dialog>
 
+					<p:dialog header="Save Template As" widgetVar="saveAsDialogue" resizable="true" modal="true" position="top">
+			            <p:panelGrid id="saveAsDialogueId" columns="2" cellpadding="10" styleClass="ui-noborder">
+		              		<p:column>
+		                    	<h:outputText for="saveAsNameId" value="New Template Name: " style="font-weight: bold;"/>
+		              		</p:column>
+			      			<p:column style="width: 300px;">
+		      					<p:inputText id="saveAsNameId" value="#{boardTemplateBuilderView.saveBoardTemplateAsName}"/>
+			      			</p:column>
+			              		
+		              		<p:column>
+			        			<p:commandButton id="saveAsId" 
+			        				value="Save" 
+			        				actionListener="#{boardTemplateBuilderView.saveBoardTemplateAs}" 
+			        				update=":formId"
+			        				onclick="PF('saveAsDialogue').hide();"/>
+		              		</p:column>
+
+		              		<p:column>
+			        			<p:commandButton id="cancelSaveAsId" 
+			        				value="Cancel" actionListener="#{boardTemplateBuilderView.cancelSaveBoardTemplateAs}" 
+			        				onclick="PF('saveAsDialogue').hide();"/>
+		              		</p:column>
+			            </p:panelGrid>
+		            </p:dialog>
 
 		      		<p:confirmDialog global="true" showEffect="fade">
 		      			<p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>

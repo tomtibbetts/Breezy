@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.windhaven_consulting.breezy.manager.BreezyBoardManager;
 import com.windhaven_consulting.breezy.manager.MacroManager;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoard;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
 import com.windhaven_consulting.breezy.persistence.domain.Macro;
 
 @WebListener

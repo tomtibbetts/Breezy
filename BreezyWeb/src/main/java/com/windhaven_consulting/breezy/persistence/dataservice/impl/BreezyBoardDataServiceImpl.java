@@ -4,12 +4,12 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
+import com.windhaven_consulting.breezy.manager.viewobject.ComponentConfiguration;
+import com.windhaven_consulting.breezy.manager.viewobject.Extension;
+import com.windhaven_consulting.breezy.manager.viewobject.InputPinConfiguration;
+import com.windhaven_consulting.breezy.manager.viewobject.OutputPinConfiguration;
 import com.windhaven_consulting.breezy.persistence.dataservice.BreezyBoardDataService;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoard;
-import com.windhaven_consulting.breezy.persistence.domain.ComponentConfiguration;
-import com.windhaven_consulting.breezy.persistence.domain.Extension;
-import com.windhaven_consulting.breezy.persistence.domain.InputPinConfiguration;
-import com.windhaven_consulting.breezy.persistence.domain.OutputPinConfiguration;
 
 public class BreezyBoardDataServiceImpl extends BaseDODataServiceImpl<BreezyBoard> implements BreezyBoardDataService {
 

@@ -63,7 +63,7 @@
 				            		<h:outputText for="breezyBoardTemplateId" value="Template" />
 				            	</p:column>
 				            	<p:column rendered="#{breezyBoardBuilderView.newBoard}">
-									<p:selectOneMenu id="breezyBoardTemplateId" value="#{breezyBoardBuilderView.selectedBoardTemplateId}">
+									<p:selectOneMenu id="breezyBoardTemplateId" value="#{breezyBoardBuilderView.selectedBoardTemplateId}" style="width: 300px">
 										<p:ajax event="change" listener="#{breezyBoardBuilderView.onBreezyBoardTemplateChange}" update="tabDescriptionPanelGridId, extensionEditTableId, inputEditTableId, componentEditTableId"/>
 										<f:selectItem itemLabel="Select Template" itemValue="" noSelectionOption="true" />
 				                    	<f:selectItems value="#{breezyBoardBuilderView.breezyBoardTemplates}" var="breezyBoardTemplate" itemLabel="#{breezyBoardTemplate.name}" itemValue="#{breezyBoardTemplate.id}"/>
@@ -102,7 +102,7 @@
 					      			editable="false" scrollable="false" 
 					      			scrollHeight="350" rowIndexVar="extensionTableRowIndex">
 					      			<p:column headerText="Type" style="width: 50%;">
-					      				<h:outputText value="#{extension.type.label}"/>
+					      				<h:outputText value="#{extension.extensionType.label}"/>
 					      			</p:column>
 					      			
 					      			<p:column headerText="Name" style="width: 50%;">
@@ -118,11 +118,11 @@
 							      			styleClass="hide-column-names"
 							      			rendered="#{extension.properties.entrySet().size() > 0}">
 							      			<p:column style="width: 50%;">
-						      					<h:outputText value="#{extensionPropertyEntry.key}" converter="#{breezyBoardBuilderView.getExtensionPropertyKeyConverter(extension.type)}" style="font-weight: bold;"/>
+						      					<h:outputText value="#{extensionPropertyEntry.key}" converter="#{breezyBoardBuilderView.getExtensionPropertyKeyConverter(extension.extensionType)}" style="font-weight: bold;"/>
 							      			</p:column>
 
 							      			<p:column style="width: 50%;">
-						      					<h:outputText value="#{extensionPropertyEntry.value}" converter="#{breezyBoardBuilderView.getExtensionPropertyValueConverter(extension.type, extensionPropertyEntry.key)}"/>
+						      					<h:outputText value="#{extensionPropertyEntry.value}" converter="#{breezyBoardBuilderView.getExtensionPropertyValueConverter(extension.extensionType, extensionPropertyEntry.key)}"/>
 							      			</p:column>
 							      		</p:dataTable>
 					      			</p:column>
@@ -144,7 +144,7 @@
 					      			</p:column>
 
 					      			<p:column headerText="Extension" style="width: 150px;">
-				      					<h:outputText value="#{inputConfiguration.extension}"/>
+				      					<h:outputText value="#{inputConfiguration.extension.name}"/>
 					      			</p:column>
 							       
 					      			<p:column headerText="Mapped Pin" style="width: 150px;">
@@ -213,7 +213,7 @@
 							      			</p:column>
 
 							      			<p:column style="width: 50%;">
-						      					<h:outputText value="#{outputPinConfiguration.extension}"/>
+						      					<h:outputText value="#{outputPinConfiguration.extension.name}"/>
 							      			</p:column>
 
 							      			<p:column style="width: 50%;">
@@ -319,7 +319,7 @@
 			                    	<h:outputText for="extensionId" value="Extension: " style="font-weight: bold;"/>
 			              		</p:column>
 			              		<p:column>
-			                    	<h:outputText id="extensionId" value="#{breezyBoardBuilderView.workingInputPinConfiguration.extension}" required="false" label="Extension"/>
+			                    	<h:outputText id="extensionId" value="#{breezyBoardBuilderView.workingInputPinConfiguration.extension.name}" required="false" label="Extension"/>
 			              		</p:column>
 			              		
 			              		<p:column>
@@ -396,7 +396,7 @@
 			      							<p:inputText id="outputPinNameId" value="#{outputConfiguration.name}" required="false" label="Name"/>
 						      			</p:column>
 						      			<p:column headerText="Extension">
-											<h:outputText id="outputConfigurationExtensionId" value="#{outputConfiguration.extension}"/>
+											<h:outputText id="outputConfigurationExtensionId" value="#{outputConfiguration.extension.name}"/>
 						      			</p:column>
 						      			<p:column headerText="Mapped Pin">
 											<h:outputText id="outputConfigurationMappedPinId" value="#{outputConfiguration.extensionMappedPin}" style="width:100%"/>

@@ -29,7 +29,7 @@ public class MacroControllerComponentImpl extends Component implements MacroCont
 
 	@ControlledMethod("Wait On")
 	public void waitOn(@ControlledParameter(name = "Mounted Board", parameterFieldType = ParameterFieldType.MOUNTED_BOARD, required = true) String mountedBoardId,
-			@ControlledParameter(name = "Input", parameterFieldType = ParameterFieldType.INPUT_PIN, required = true) String inputPinId,
+			@ControlledParameter(name = "Input", parameterFieldType = ParameterFieldType.DIGITAL_INPUT_PIN, required = true) String inputPinId,
 			@ControlledParameter(name = "State", parameterFieldType = ParameterFieldType.PIN_STATE, required = true) PinState inputState) {
 		/**
 		 * Do nothing.  This will never execute.  Throw exception here.
@@ -47,7 +47,7 @@ public class MacroControllerComponentImpl extends Component implements MacroCont
 
 	@ControlledMethod("Jump On")
 	public void jumpOn(@ControlledParameter(name = "Mounted Board", parameterFieldType = ParameterFieldType.MOUNTED_BOARD, required = true) String mountedBoardId,
-			@ControlledParameter(name = "Input", parameterFieldType = ParameterFieldType.INPUT_PIN, required = true) String inputPinId,
+			@ControlledParameter(name = "Input", parameterFieldType = ParameterFieldType.DIGITAL_INPUT_PIN, required = true) String inputPinId,
 			@ControlledParameter(name = "State", parameterFieldType = ParameterFieldType.PIN_STATE, required = true) PinState inputState,
 			@ControlledParameter(name = "Tag", required = true) String tag) {
 		/**

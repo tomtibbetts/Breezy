@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -28,16 +29,16 @@ import com.windhaven_consulting.breezy.manager.BreezyBoardTemplateManager;
 import com.windhaven_consulting.breezy.manager.ExtensionProviderManager;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
 import com.windhaven_consulting.breezy.manager.impl.MountedBoard;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoard;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoardTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.ComponentConfiguration;
-import com.windhaven_consulting.breezy.persistence.domain.ComponentConfigurationTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.Extension;
-import com.windhaven_consulting.breezy.persistence.domain.ExtensionTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.InputConfigurationTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.InputPinConfiguration;
-import com.windhaven_consulting.breezy.persistence.domain.OutputConfigurationTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.OutputPinConfiguration;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoardTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ComponentConfiguration;
+import com.windhaven_consulting.breezy.manager.viewobject.ComponentConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.Extension;
+import com.windhaven_consulting.breezy.manager.viewobject.ExtensionTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.InputConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.InputPinConfiguration;
+import com.windhaven_consulting.breezy.manager.viewobject.OutputConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.OutputPinConfiguration;
 
 @ManagedBean
 @SessionScoped
@@ -278,7 +279,7 @@ public class BreezyBoardBuilderView implements Serializable {
 	}
 	
 	public List<String> getExtensionProperties(Extension extension) {
-		return extensionProviderManager.getPropertyFieldNames(extension.getType());
+		return extensionProviderManager.getPropertyFieldNames(extension.getExtensionType());
 	}
 	
 	public List<PropertyValueEnum> getPropertyValues(ExtensionType extensionType, String property) {
@@ -330,10 +331,13 @@ public class BreezyBoardBuilderView implements Serializable {
 		breezyBoard.setName(breezyBoardTemplate.getName());
 		breezyBoard.setDescription(breezyBoardTemplate.getDescription());
 
+		Map<UUID, Extension> extensionIdToExtensionMap = new HashMap<UUID, Extension>();
+		
 		for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
 			Extension extension = new Extension();
 			extension.setName(extensionTemplate.getName());
-			extension.setType(extensionTemplate.getExtensionType());
+			extension.setExtensionType(extensionTemplate.getExtensionType());
+			extension.setId(extensionTemplate.getId());
 			
 			buildExtensionPropertyKeyConverter(extensionTemplate.getExtensionType());
 			
@@ -342,12 +346,13 @@ public class BreezyBoardBuilderView implements Serializable {
 			}
 			
 			breezyBoard.getExtensions().add(extension);
+			extensionIdToExtensionMap.put(extension.getId(), extension);
 		}
 		
 		for(InputConfigurationTemplate inputConfigurationTemplate : breezyBoardTemplate.getInputConfigurationTemplates()) {
 			InputPinConfiguration inputPinConfiguration = new InputPinConfiguration();
 			inputPinConfiguration.setName(inputConfigurationTemplate.getName());
-			inputPinConfiguration.setExtension(inputConfigurationTemplate.getExtensionTemplate().getName());
+			inputPinConfiguration.setExtension(extensionIdToExtensionMap.get(inputConfigurationTemplate.getExtensionTemplate().getId()));
 			inputPinConfiguration.setExtensionMappedPin(inputConfigurationTemplate.getMappedPin());
 			inputPinConfiguration.setPinPullResistance(inputConfigurationTemplate.getPinPullResistance());
 			
@@ -362,7 +367,7 @@ public class BreezyBoardBuilderView implements Serializable {
 			for(OutputConfigurationTemplate outputConfigurationTemplate : componentConfigurationTemplate.getOutputConfigurationTemplates()) {
 				OutputPinConfiguration outputPinConfiguration = new OutputPinConfiguration();
 				outputPinConfiguration.setName(outputConfigurationTemplate.getName());
-				outputPinConfiguration.setExtension(outputConfigurationTemplate.getExtensionTemplate().getName());
+				outputPinConfiguration.setExtension(extensionIdToExtensionMap.get(outputConfigurationTemplate.getExtensionTemplate().getId()));
 				outputPinConfiguration.setExtensionMappedPin(outputConfigurationTemplate.getMappedPin());
 				
 				componentConfiguration.getOutputPinConfigurations().add(outputPinConfiguration);
@@ -388,7 +393,7 @@ public class BreezyBoardBuilderView implements Serializable {
 		boardBuilderExtensionDecorator.setDescription(extension.getDescription());
 		boardBuilderExtensionDecorator.setId(extension.getId());
 		boardBuilderExtensionDecorator.setName(extension.getName());
-		boardBuilderExtensionDecorator.setType(extension.getType());
+		boardBuilderExtensionDecorator.setType(extension.getExtensionType());
 		
 		for(Entry<String, String> entry : extension.getProperties().entrySet()) {
 			MapEntryView<String, String> mapEntryView = new MapEntryView<String, String>(entry);
@@ -410,7 +415,7 @@ public class BreezyBoardBuilderView implements Serializable {
 		extension.setDescription(boardBuilderExtensionView.getDescription());
 		extension.setId(boardBuilderExtensionView.getId());
 		extension.setName(boardBuilderExtensionView.getName());
-		extension.setType(boardBuilderExtensionView.getType());
+		extension.setExtensionType(boardBuilderExtensionView.getType());
 		
 		for(MapEntryView<String, String> mapEntryView : boardBuilderExtensionView.getPropertyEntries()) {
 			extension.getProperties().put(mapEntryView.getKey(), mapEntryView.getValue());
@@ -477,7 +482,7 @@ public class BreezyBoardBuilderView implements Serializable {
 		extensionPropertyValueConverterByExtensionPropertyMap.clear();
 
 		for(Extension extension : breezyBoard.getExtensions()) {
-			buildExtensionPropertyKeyConverter(extension.getType());
+			buildExtensionPropertyKeyConverter(extension.getExtensionType());
 		}
 	}
 

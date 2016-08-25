@@ -24,4 +24,6 @@ public interface DigitalOutputPin extends BreezyPin {
 
     void pulse(long onTime, PinState pinState, boolean blockToCompletion);
 
+	PinState getState();
+
 }

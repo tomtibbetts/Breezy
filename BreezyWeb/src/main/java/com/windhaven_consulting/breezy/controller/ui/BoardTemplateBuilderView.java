@@ -23,16 +23,17 @@ import org.primefaces.event.RowEditEvent;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplate;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibraryManager;
 import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionTemplateConverter;
+import com.windhaven_consulting.breezy.controller.ui.utils.BoardTemplateUtility;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
 import com.windhaven_consulting.breezy.manager.BreezyBoardTemplateManager;
 import com.windhaven_consulting.breezy.manager.ExtensionProviderManager;
-import com.windhaven_consulting.breezy.persistence.domain.BreezyBoardTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.ComponentConfigurationTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.ExtensionTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.InputConfigurationTemplate;
-import com.windhaven_consulting.breezy.persistence.domain.OutputConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoardTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ComponentConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.ExtensionTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.InputConfigurationTemplate;
+import com.windhaven_consulting.breezy.manager.viewobject.OutputConfigurationTemplate;
 
 @ManagedBean
 @ViewScoped
@@ -76,6 +77,8 @@ public class BoardTemplateBuilderView implements Serializable {
 	private int selectedInputPinIndex;
 
 	private InputConfigurationTemplate workingInputConfigurationTemplate = new InputConfigurationTemplate();
+	
+	private String saveBoardTemplateAsName;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -87,22 +90,9 @@ public class BoardTemplateBuilderView implements Serializable {
 			nameToExtensionTemplateMap.clear();
 			
 			breezyBoardTemplate = new BreezyBoardTemplate();
-//			breezyBoardTemplate.getComponentConfigurationTemplates().add(new ComponentConfigurationTemplate());
-//			breezyBoardTemplate.getExtensionTemplates().add(new ExtensionTemplate());
-//			breezyBoardTemplate.getInputConfigurationTemplates().add(new InputConfigurationTemplate());
 		}
 		else if("findBoardTemplate".equals(action)) {
-			if(StringUtils.isNotEmpty(boardTemplateId)) {
-				breezyBoardTemplate = breezyBoardTemplateManager.getBoardTemplateById(boardTemplateId);
-				
-				if(breezyBoardTemplate != null) {
-					nameToExtensionTemplateMap.clear();
-
-					for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
-						nameToExtensionTemplateMap.put(extensionTemplate.getName(), extensionTemplate);
-					}
-				}
-			}
+			loadBoardTemplate(boardTemplateId);
 		}
 		
 		action = StringUtils.EMPTY;
@@ -113,6 +103,19 @@ public class BoardTemplateBuilderView implements Serializable {
 	 */
 	public void saveBoardTemplate() {
 		breezyBoardTemplateManager.saveBoardTemplate(breezyBoardTemplate);
+	}
+	
+	public void saveBoardTemplateAs() {
+		BreezyBoardTemplate newBreezyBoardTemplate = BoardTemplateUtility.cloneNew(breezyBoardTemplate);
+		newBreezyBoardTemplate.setName(saveBoardTemplateAsName);
+//		breezyBoardTemplate = newBreezyBoardTemplate;
+		breezyBoardTemplateManager.saveBoardTemplate(newBreezyBoardTemplate);
+		
+		loadBoardTemplate(newBreezyBoardTemplate.getId().toString());
+	}
+
+	public void cancelSaveBoardTemplateAs() {
+		// Do nothing
 	}
 	
 	public void deleteBoardTemplate() throws IOException {
@@ -178,7 +181,6 @@ public class BoardTemplateBuilderView implements Serializable {
 	 * Input Configuration Template Section
 	 * 
 	 */
-	
 	public void saveInputPin() {
 		copyInputConfigurationTemplate(breezyBoardTemplate.getInputConfigurationTemplates().get(selectedInputPinIndex), workingInputConfigurationTemplate);
 		isNewLineMode = false;
@@ -395,6 +397,28 @@ public class BoardTemplateBuilderView implements Serializable {
 
 	public InputConfigurationTemplate getWorkingInputConfigurationTemplate() {
 		return workingInputConfigurationTemplate;
+	}
+	
+	public void setSaveBoardTemplateAsName(String saveBoardTemplateAsName) {
+		this.saveBoardTemplateAsName = saveBoardTemplateAsName;
+	}
+	
+	public String getSaveBoardTemplateAsName() {
+		return "Copy of " + breezyBoardTemplate.getName();
+	}
+	
+	private void loadBoardTemplate(String id) {
+		if(StringUtils.isNotEmpty(id)) {
+			breezyBoardTemplate = breezyBoardTemplateManager.getBoardTemplateById(id);
+			
+			if(breezyBoardTemplate != null) {
+				nameToExtensionTemplateMap.clear();
+
+				for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
+					nameToExtensionTemplateMap.put(extensionTemplate.getName(), extensionTemplate);
+				}
+			}
+		}
 	}
 	
 	private ComponentConfigurationTemplate copyComponentConfigurationTemplate(ComponentConfigurationTemplate componentConfigurationTemplate) {

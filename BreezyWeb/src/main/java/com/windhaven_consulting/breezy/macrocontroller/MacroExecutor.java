@@ -168,6 +168,7 @@ public class MacroExecutor implements MacroControllerComponent {
 		valueConverterMap.put(int.class, new IntConverterImpl());
 		valueConverterMap.put(PinState.class, new PinStateConverterImpl());
 		valueConverterMap.put(Boolean.class, new BooleanConverterImpl());
+		valueConverterMap.put(UUID.class, new UUIDConverterImpl());
 	}
 	
 	private String getExceptionMessage(String exceptionMessage) {

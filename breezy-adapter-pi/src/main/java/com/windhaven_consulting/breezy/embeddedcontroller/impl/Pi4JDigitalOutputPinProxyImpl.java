@@ -81,4 +81,9 @@ public class Pi4JDigitalOutputPinProxyImpl extends Pi4JPinProxyImpl implements D
 		return (GpioPinDigitalOutput) getGpioPin();
 	}
 
+	@Override
+	public PinState getState() {
+		return PinState.find(getDigitalOutputPin().getState().getValue());
+	}
+
 }
