@@ -1,0 +1,274 @@
+{
+  "name" : "PiRyte Multi S Rev 1 - Stall Motors as individual line outs",
+  "id" : "3bcff708-23a8-446d-977a-45b5dafd826b",
+  "description" : "8 Stall Motors as digital outputs\r\n8 Open Collector Outputs\r\n16 Active Low Inputs",
+  "inactive" : false,
+  "releaseRevisionNumber" : ".8",
+  "extensionTemplates" : [ {
+    "name" : "Output Extender - Even Address",
+    "id" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+    "extensionType" : "MCP23S17"
+  }, {
+    "name" : "Input Extender - Odd Address",
+    "id" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "extensionType" : "MCP23S17"
+  } ],
+  "inputConfigurationTemplates" : [ {
+    "name" : "Input 1",
+    "id" : "1bb4e9b7-9991-4106-bb2d-2907812efb2a",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A0",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 2",
+    "id" : "bc1e91d4-c416-4ab4-8b20-93aa38edca98",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A1",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 3",
+    "id" : "9a792886-ff96-47cb-bdcb-1786a6b53418",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A2",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 4",
+    "id" : "df19f0c3-495f-4fd9-a615-4de1e0711066",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A3",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 5",
+    "id" : "1c1367d8-54c7-4b5d-a746-677f3c2f949c",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A4",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 6",
+    "id" : "aa1674f2-1313-4400-b8a8-eb52d6ab4526",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A5",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 7",
+    "id" : "b96688b9-9b6a-4322-b6eb-7755ea0f27af",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A6",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 8",
+    "id" : "5cecc844-234f-40cc-b593-f41a65ad58d9",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_A7",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 9",
+    "id" : "33823ff7-f090-4931-b246-8182d15112a6",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B0",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 10",
+    "id" : "1f3e4c86-400e-4e04-9663-1af71f528aaf",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B1",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 11",
+    "id" : "1be0b302-3d39-4dbb-b00b-3064cf560f6f",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B2",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 12",
+    "id" : "14eeb980-2501-4882-8963-8b05d721bb7e",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B3",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 13",
+    "id" : "21e16630-d8f7-4975-9c8c-7ca1221e8f16",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B4",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 14",
+    "id" : "69589122-9bec-47d6-8448-96039ca32725",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B5",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 15",
+    "id" : "002a8607-851d-4e69-a41c-d5590254db3c",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B6",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 16",
+    "id" : "475250c4-71db-4305-a8e3-cab0f828e5aa",
+    "extensionTemplateId" : "aef931f3-7399-4089-9946-33a1640461f2",
+    "mappedPin" : "GPIO_B7",
+    "pinPullResistance" : "PULL_UP"
+  } ],
+  "componentConfigurationTemplates" : [ {
+    "name" : "Stall Motor 1",
+    "id" : "f7175461-a721-490f-ab6f-cd7db20b915c",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 1",
+      "id" : "c05d996a-bcdd-4bd6-a330-d5e329d3ca53",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B0"
+    } ]
+  }, {
+    "name" : "Stall Motor 2",
+    "id" : "4c65ebe0-b496-40c0-82d6-ea5a4f291b1c",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 2",
+      "id" : "f6e86632-c4f3-4b56-a150-1a98effc3d27",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B1"
+    } ]
+  }, {
+    "name" : "Stall Motor 3",
+    "id" : "d6f3fef4-91d1-4898-a368-a88888725f7e",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 3",
+      "id" : "eababd8a-642a-4f04-a7c7-33d3654ef9ae",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B2"
+    } ]
+  }, {
+    "name" : "Stall Motor 4",
+    "id" : "2f595537-6796-4b6c-b7cf-0cd1351bad8a",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 4",
+      "id" : "17ad6a0f-53f1-47a2-8067-ab4e9112c6e7",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B3"
+    } ]
+  }, {
+    "name" : "Stall Motor 5",
+    "id" : "ed523906-d6dc-4a78-a873-cf0979fc5057",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 5",
+      "id" : "7b3ec48d-cdc4-461b-a171-9f7ece3d3343",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B4"
+    } ]
+  }, {
+    "name" : "Stall Motor 6",
+    "id" : "832c26a8-53f0-4d77-8647-f878737f5b3a",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 6",
+      "id" : "6ed82404-f591-4a64-b7b1-983ec093d806",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B5"
+    } ]
+  }, {
+    "name" : "Stall Motor 7",
+    "id" : "5da8403e-0802-47a3-9df5-86a67e1f97ce",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 7",
+      "id" : "5f3b7b87-8c2b-4a26-818e-471e4df55ed6",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B6"
+    } ]
+  }, {
+    "name" : "Stall Motor 8",
+    "id" : "38f872b2-59dc-4681-9ddb-8af493a41630",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Stall Motor 8",
+      "id" : "9f266455-9426-4174-a5fc-b9a6ba387bb0",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_B7"
+    } ]
+  }, {
+    "name" : "OC Output 1",
+    "id" : "dae6da19-a137-4dd0-be2d-3a4234d160bf",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 1",
+      "id" : "e72055f8-fcb7-478e-b93c-66dc82f99591",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A0"
+    } ]
+  }, {
+    "name" : "OC Output 2",
+    "id" : "05e13ec6-4685-4ecf-8a4d-cb9f401a1648",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 2",
+      "id" : "11a74a58-2be2-4ee9-af1d-0d8c991cc063",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A1"
+    } ]
+  }, {
+    "name" : "OC Output 3",
+    "id" : "0869f03c-aef0-460c-aa94-ea1efbfbd731",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 3",
+      "id" : "eef79923-f106-4e76-8e29-26c5dbea7d54",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A2"
+    } ]
+  }, {
+    "name" : "OC Output 4",
+    "id" : "a97ab688-de5e-455e-b810-80e8200e0b6c",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 4",
+      "id" : "798d0666-dc5d-4f32-9090-6080bee26f8e",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A3"
+    } ]
+  }, {
+    "name" : "OC Output 5",
+    "id" : "f323f319-ee63-497f-8c04-09f15694607e",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 5",
+      "id" : "f928536b-8936-4531-addb-cca8173385ec",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A4"
+    } ]
+  }, {
+    "name" : "OC Output 6",
+    "id" : "d86e5305-2865-4bea-adfc-a5537ca853e4",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 6",
+      "id" : "36bdfc18-2ace-447c-a779-63d9c335d598",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A5"
+    } ]
+  }, {
+    "name" : "OC Output 7",
+    "id" : "09d31054-46e5-4a93-9e10-3449d2f33c77",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 7",
+      "id" : "0b757fa6-0b4e-4da6-8397-e3ce9dc715dc",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A6"
+    } ]
+  }, {
+    "name" : "OC Output 8",
+    "id" : "76ed1304-b89f-46fc-9d9b-a5172c33e3c7",
+    "componentType" : "Digital Output",
+    "outputConfigurationTemplates" : [ {
+      "name" : "OC Output 8",
+      "id" : "ac9996d2-bf21-4b80-87b3-5ec02570a865",
+      "extensionTemplateId" : "d14a7943-a39b-448e-98f4-5119f7240daf",
+      "mappedPin" : "GPIO_A7"
+    } ]
+  } ]
+}

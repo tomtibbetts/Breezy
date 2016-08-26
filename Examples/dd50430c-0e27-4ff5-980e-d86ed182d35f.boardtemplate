@@ -1,0 +1,110 @@
+{
+  "name" : "PiRyte Multi S Rev 1 - inputs only",
+  "id" : "dd50430c-0e27-4ff5-980e-d86ed182d35f",
+  "description" : "Supports:\r\n16 inputs",
+  "inactive" : false,
+  "releaseRevisionNumber" : ".8",
+  "extensionTemplates" : [ {
+    "name" : "Input Extender - Odd Address",
+    "id" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "extensionType" : "MCP23S17"
+  } ],
+  "inputConfigurationTemplates" : [ {
+    "name" : "Input 1",
+    "id" : "c92a4631-d875-4d6c-9ab6-469679042bb3",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A0",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 2",
+    "id" : "075a6abc-01ec-4092-86f6-30a81e2f52a5",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A1",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 3",
+    "id" : "7c52b27d-bc2c-4613-bf42-41097dd313c0",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A2",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 4",
+    "id" : "d77940ed-157c-4732-a141-fd8da0a98201",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A3",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 5",
+    "id" : "64ce5fa1-0a93-4dde-83a7-6adf6afcbd91",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A4",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 6",
+    "id" : "c930a13d-c39e-49fa-988a-9a4111785d16",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A5",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 7",
+    "id" : "d9a16c19-35ac-48a9-a6a7-64f15bb24302",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A6",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 8",
+    "id" : "61903c8f-f2aa-410d-a95c-48a5ac4f533a",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_A7",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 9",
+    "id" : "742d617a-5ec4-4268-88f1-05b3681543a6",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B0",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 10",
+    "id" : "0013afaf-c87d-4a04-9522-6e59b4aeb701",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B1",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 11",
+    "id" : "ab216d2d-8c06-42e5-aa0a-8d2b4a9188f8",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B2",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 12",
+    "id" : "c4659d5b-42eb-4abb-a231-33c16755c651",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B3",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 13",
+    "id" : "e57c4775-acf7-4432-b615-e9c7559dfae0",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B4",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 14",
+    "id" : "1569e681-8280-4078-ba24-031aae213477",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B5",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 15",
+    "id" : "1bd7d1ee-2c89-4598-af3c-2306ada50c5c",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B6",
+    "pinPullResistance" : "PULL_UP"
+  }, {
+    "name" : "Input 16",
+    "id" : "cdadfee6-e668-4038-aac4-39a46e33d4cf",
+    "extensionTemplateId" : "a39e06fb-e8b1-4588-b7fa-fe64cbceaffa",
+    "mappedPin" : "GPIO_B7",
+    "pinPullResistance" : "PULL_UP"
+  } ],
+  "componentConfigurationTemplates" : [ ]
+}
