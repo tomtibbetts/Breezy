@@ -1,0 +1,69 @@
+{
+  "name" : "PiRyte Multi S Rev 1 Traffic Semaphores",
+  "id" : "6927399d-6081-4e2c-8af8-576c1cec0a06",
+  "description" : "Supports:\r\nTraffic semaphores\r\nDoes not define inputs\r\n",
+  "inactive" : false,
+  "releaseRevisionNumber" : ".8",
+  "extensionTemplates" : [ {
+    "name" : "Output Extender - Even Address",
+    "id" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+    "extensionType" : "MCP23S17"
+  } ],
+  "inputConfigurationTemplates" : [ ],
+  "componentConfigurationTemplates" : [ {
+    "name" : "Left Turn Lane",
+    "id" : "38382c06-f210-469d-9a8e-f0899f3ae79c",
+    "componentType" : "Tri-color Semaphore",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Red Arrow",
+      "id" : "6652e9b3-9663-4ab9-b926-0008267b9e74",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A0"
+    }, {
+      "name" : "Yellow Arrow",
+      "id" : "7f1cd1fa-7af6-4729-aed6-22a549c6b5cc",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A1"
+    }, {
+      "name" : "Green Arrow",
+      "id" : "e4b049ad-5856-4f46-b76b-359d297bdc67",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A2"
+    } ]
+  }, {
+    "name" : "Go Ahead Lane",
+    "id" : "1f578920-125b-46c7-81a1-8d124b8f204c",
+    "componentType" : "Tri-color Semaphore",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Red",
+      "id" : "8e1f111f-a6a4-40ae-8b31-fc93d7055ccf",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A3"
+    }, {
+      "name" : "Yellow",
+      "id" : "f138739e-b1bb-49a3-815a-44343c6b6fcf",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A4"
+    }, {
+      "name" : "Green",
+      "id" : "ca004678-9b65-43f3-9ab0-7d9f6cc3040d",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A5"
+    } ]
+  }, {
+    "name" : "Walk/Don't Walk",
+    "id" : "84997663-9329-4c66-8f78-be0d96d00d78",
+    "componentType" : "Bi-color Semaphore",
+    "outputConfigurationTemplates" : [ {
+      "name" : "Don't Walk",
+      "id" : "3fe131e9-d541-4f9a-9a51-1a29889365fe",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A6"
+    }, {
+      "name" : "Walk",
+      "id" : "ddf888d8-b558-4180-af7a-edf4ca28c973",
+      "extensionTemplateId" : "c26d7372-1c91-4f04-b2fd-a9e3b9fcc2d1",
+      "mappedPin" : "GPIO_A7"
+    } ]
+  } ]
+}
