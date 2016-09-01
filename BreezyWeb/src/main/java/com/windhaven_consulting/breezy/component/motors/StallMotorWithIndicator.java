@@ -16,7 +16,7 @@ public class StallMotorWithIndicator extends Component {
 
 	private static final long serialVersionUID = 1L;
 
-	@ControlledMethod("Normal")
+	@ControlledMethod("Normal Blinking")
 	public void normal(@ControlledParameter(name = "On Time (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long onTime,
 			@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
 			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
@@ -28,7 +28,7 @@ public class StallMotorWithIndicator extends Component {
 		}
 	}
 	
-	@ControlledMethod("Reverse")
+	@ControlledMethod("Reverse Blinking")
 	public void reverse(@ControlledParameter(name = "On Time (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long onTime,
 			@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
 			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
@@ -40,7 +40,7 @@ public class StallMotorWithIndicator extends Component {
 		}
 	}
 	
-	@ControlledMethod("Toggle")
+	@ControlledMethod("Toggle Blinking")
 	public void toggle(@ControlledParameter(name = "On Time (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long onTime,
 			@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
 			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
