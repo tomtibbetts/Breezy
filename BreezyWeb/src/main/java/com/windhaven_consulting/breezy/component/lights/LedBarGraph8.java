@@ -1,17 +1,19 @@
 package com.windhaven_consulting.breezy.component.lights;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.AbstractMultiDigitalOutComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledMethod;
 import com.windhaven_consulting.breezy.component.annotation.ControlledParameter;
 import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 
-@ControlledComponent(value="Led Eight Segment Bar Graph", numberOfOutputs=8)
-public class LedBarGraph8 extends Component {
+@ControlledComponent(value="Led Eight Segment Bar Graph",
+	numberOfOutputs=8,
+	pinNames={"LED 1", "LED 2", "LED 3", "LED 4", "LED 5", "LED 6", "LED 7", "LED 8"})
+public class LedBarGraph8 extends AbstractMultiDigitalOutComponent {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@ControlledMethod("Cylon")
 	public void cylon(@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration) {
 		for(DigitalOutputPin digitalOutputPin : getOutputPins()) {

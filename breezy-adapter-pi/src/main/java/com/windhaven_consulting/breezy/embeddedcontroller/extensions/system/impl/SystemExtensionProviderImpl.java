@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPin;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
+import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPinProperty;
@@ -67,7 +68,7 @@ public class SystemExtensionProviderImpl implements ExtensionProvider {
 			BreezyPin breezyPin = SystemPin.getByName(pinName);
 			com.pi4j.io.gpio.Pin pi4JPin = SystemPinToPi4JPin.getPin(breezyPin);
 
-			GpioPin gpioPin = gpioController.provisionDigitalOutputPin(pi4JPin);
+			GpioPin gpioPin = gpioController.provisionDigitalOutputPin(pi4JPin, PinState.LOW);
 			gpioPin.setProperty(BreezyPinProperty.NAME.name(), name);
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 

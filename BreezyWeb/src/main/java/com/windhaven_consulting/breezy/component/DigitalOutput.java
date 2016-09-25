@@ -10,7 +10,7 @@ import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
 import com.windhaven_consulting.breezy.component.motors.StallMotor;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 
-@ControlledComponent("Digital Output")
+@ControlledComponent(value = "Digital Output", pinNames={"Digital Out"})
 public class DigitalOutput extends Component {
 	private static final Logger LOG = LoggerFactory.getLogger(StallMotor.class);
 

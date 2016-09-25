@@ -15,4 +15,6 @@ public @interface ControlledComponent {
 	String value() default "";
 	
 	int numberOfOutputs() default 1;
+	
+	String[] pinNames() default {};
 }
