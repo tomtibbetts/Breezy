@@ -45,15 +45,15 @@ public abstract class Component implements Comparable<Component>, Serializable {
 		return outputPins;
 	}
 	
-	protected DigitalOutputPin getOutputPin(int index) {
+	public DigitalOutputPin getOutputPin(int index) {
 		return outputPins.get(index);
 	}
 	
-	protected DigitalOutputPin getOutputPin() {
+	public DigitalOutputPin getOutputPin() {
 		return outputPins.get(0);
 	}
 	
-	protected DigitalOutputPin getDigitalOutputPin(UUID digitalOutputPinId) {
+	public DigitalOutputPin getDigitalOutputPin(UUID digitalOutputPinId) {
 		return idToDigitalOutputPinMap.get(digitalOutputPinId);
 	}
 

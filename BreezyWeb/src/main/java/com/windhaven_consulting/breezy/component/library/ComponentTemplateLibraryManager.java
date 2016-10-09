@@ -49,8 +49,6 @@ public class ComponentTemplateLibraryManager implements Serializable {
 					break;
 				}
 			}
-			
-			// if this bean does not have the ControlledComponent annotation, see if one of its superclasses do
 		}
 	}
 	
@@ -90,20 +88,24 @@ public class ComponentTemplateLibraryManager implements Serializable {
 		return componentDescriptorByTypeMap.get(componentName);
 	}
 	
-    // harvest the class level annotations
+    // harvest the class level annotations up through the superclass layers
     private ComponentTemplate getComponentTemplate(Class<?> beanClass, Annotation classAnnotation) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	ControlledComponent controlledComponent = (ControlledComponent) classAnnotation;
     	int numberOfOutputs = controlledComponent.numberOfOutputs();
     	String name = controlledComponent.value();
+    	String[] pinNames = controlledComponent.pinNames();
     	
-    	ComponentTemplate componentTemplate = new ComponentTemplate(beanClass.getName(), name, numberOfOutputs);
+    	ComponentTemplate componentTemplate = new ComponentTemplate(beanClass.getName(), name, numberOfOutputs, pinNames);
     	
-    	for(Method classMethod : beanClass.getDeclaredMethods()) {
-    		for(Annotation classMethodAnnotation : classMethod.getDeclaredAnnotations()) {
-        		MethodTemplate methodTemplate = getMethodTemplate(classMethod, classMethodAnnotation);
-        		
-        		componentTemplate.add(methodTemplate);
-    		}
+    	while(beanClass != null) {
+        	for(Method classMethod : beanClass.getDeclaredMethods()) {
+        		for(Annotation classMethodAnnotation : classMethod.getDeclaredAnnotations()) {
+            		MethodTemplate methodTemplate = getMethodTemplate(classMethod, classMethodAnnotation);
+               		componentTemplate.add(methodTemplate);
+        		}
+        	}
+        	
+        	beanClass = beanClass.getSuperclass();
     	}
     	
 		return componentTemplate;

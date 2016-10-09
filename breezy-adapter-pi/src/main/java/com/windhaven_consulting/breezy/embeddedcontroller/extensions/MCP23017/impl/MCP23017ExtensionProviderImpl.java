@@ -11,6 +11,7 @@ import com.pi4j.gpio.extension.mcp.MCP23017GpioProvider;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyI2CBus;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
@@ -80,7 +81,7 @@ public class MCP23017ExtensionProviderImpl implements ExtensionProvider {
 		else {
 			BreezyPin breezyPin = MCP23017Pin.getByName(pinName);
 			com.pi4j.io.gpio.Pin pi4JPin = BreezyToMCP23017Pin.getPin(breezyPin);
-			GpioPinDigitalOutput gpioPin = gpioController.provisionDigitalOutputPin(mcp23017GpioProvider, pi4JPin);
+			GpioPinDigitalOutput gpioPin = gpioController.provisionDigitalOutputPin(mcp23017GpioProvider, pi4JPin, PinState.LOW);
 			
 			gpioPin.setProperty(BreezyPinProperty.NAME.name(), name);
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());

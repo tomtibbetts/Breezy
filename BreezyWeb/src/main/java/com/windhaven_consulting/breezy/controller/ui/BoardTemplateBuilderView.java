@@ -253,20 +253,18 @@ public class BoardTemplateBuilderView implements Serializable {
 		ComponentTemplate componentTemplate = componentTemplateLibraryManager.getComponentTemplateFor(componentType);
 		String currentMappedPin = StringUtils.EMPTY;
 		ExtensionTemplate currentExtensionTemplate = null;
-		String currentConfigurationTemplateName = StringUtils.EMPTY;
 		
 		if(!workingComponentConfigurationTemplate.getOutputConfigurationTemplates().isEmpty()) {
 			OutputConfigurationTemplate currentOutputConfigurationTemplate = workingComponentConfigurationTemplate.getOutputConfigurationTemplates().get(0);
 			currentMappedPin = currentOutputConfigurationTemplate.getMappedPin();
 			currentExtensionTemplate = currentOutputConfigurationTemplate.getExtensionTemplate();
-			currentConfigurationTemplateName = workingComponentConfigurationTemplate.getName();
 		}
 		
 		workingComponentConfigurationTemplate.getOutputConfigurationTemplates().clear();
 		
 		for(int i = 0; i < componentTemplate.getNumberOfOutputs(); i++) {
 			OutputConfigurationTemplate outputConfigurationTemplate = new OutputConfigurationTemplate();
-			outputConfigurationTemplate.setName(currentConfigurationTemplateName + "_" + i);
+			outputConfigurationTemplate.setName(componentTemplate.getPinNameAt(i));
 			outputConfigurationTemplate.setMappedPin(currentMappedPin);
 			outputConfigurationTemplate.setExtensionTemplate(currentExtensionTemplate);
 			

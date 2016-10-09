@@ -7,7 +7,7 @@ import com.windhaven_consulting.breezy.component.Component;
 import com.windhaven_consulting.breezy.component.annotation.ControlledComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledMethod;
 
-@ControlledComponent("Stall Motor")
+@ControlledComponent(value = "Stall Motor", pinNames={"Motor Out"})
 public class StallMotor extends Component {
 	static final Logger LOG = LoggerFactory.getLogger(StallMotor.class);
 
