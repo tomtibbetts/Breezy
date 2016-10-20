@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17;
 
 import java.util.HashMap;
 import java.util.Map;

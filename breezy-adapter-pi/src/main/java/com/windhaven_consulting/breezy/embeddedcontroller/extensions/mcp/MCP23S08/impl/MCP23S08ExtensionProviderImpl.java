@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.impl;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.impl;
 
 import java.io.IOException;
 import java.util.Map;
@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pi4j.gpio.extension.mcp.MCP23S17GpioProvider;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
@@ -21,10 +20,9 @@ import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23017.MCP23017Property;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.BreezyToMCP23S17Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.MCP23S17Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.MCP23S17Property;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.BreezyToMCP23S08Pin;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.MCP23S08Pin;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.MCP23S08Property;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JPinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JSPIChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockDigitalInputPinProxyImpl;
@@ -32,17 +30,18 @@ import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockDigitalOutput
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalInputPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutputPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
+import com.windhaven_consulting.breezy.pi4j.custom.extension.mcp.MCP23S08GpioProvider;
 
-public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
-	static final Logger LOG = LoggerFactory.getLogger(MCP23S17ExtensionProviderImpl.class);
+public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
+	static final Logger LOG = LoggerFactory.getLogger(MCP23S08ExtensionProviderImpl.class);
 
 	private boolean windowsEnvironment;
 	private GpioController gpioController;
 	private GpioPinListenerDigital gpioPinListenerDigital;
 	private Map<String, String> properties;
-	private MCP23S17GpioProvider mcp23S17GpioProvider;
+	private MCP23S08GpioProvider mcp23S08GpioProvider;
 
-	public MCP23S17ExtensionProviderImpl(GpioController gpioController, GpioPinListenerDigital gpioPinListenerDigital, Map<String, String> properties, boolean windowsEnvironment) {
+	public MCP23S08ExtensionProviderImpl(GpioController gpioController, GpioPinListenerDigital gpioPinListenerDigital, Map<String, String> properties, boolean windowsEnvironment) {
 		this.gpioController = gpioController;
 		this.gpioPinListenerDigital = gpioPinListenerDigital;
 		this.properties = properties;
@@ -59,10 +58,10 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 			return new MockDigitalInputPinProxyImpl(name, pinId);
 		}
 		else {
-			BreezyPin breezyPin = MCP23S17Pin.getByName(pinName);
-			com.pi4j.io.gpio.Pin pi4JPin = BreezyToMCP23S17Pin.getPin(breezyPin);
+			BreezyPin breezyPin = MCP23S08Pin.getByName(pinName);
+			com.pi4j.io.gpio.Pin pi4JPin = BreezyToMCP23S08Pin.getPin(breezyPin);
 			com.pi4j.io.gpio.PinPullResistance pi4JPinPullResistance = BreezyToPi4JPinPullResistance.getPinPullResistance(pinPullResistance);
-			GpioPinDigitalInput gpioPin = gpioController.provisionDigitalInputPin(mcp23S17GpioProvider, pi4JPin, pi4JPinPullResistance);
+			GpioPinDigitalInput gpioPin = gpioController.provisionDigitalInputPin(mcp23S08GpioProvider, pi4JPin, pi4JPinPullResistance);
 			
 			gpioPin.setDebounce(debounce);
 			gpioPin.setProperty(BreezyPinProperty.NAME.name(), name);
@@ -84,9 +83,9 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 			return new MockDigitalOutputPinProxyImpl(name, pinId);
 		}
 		else {
-			BreezyPin breezyPin = MCP23S17Pin.getByName(pinName);
-			com.pi4j.io.gpio.Pin pi4JPin = BreezyToMCP23S17Pin.getPin(breezyPin);
-			GpioPinDigitalOutput gpioPin = gpioController.provisionDigitalOutputPin(mcp23S17GpioProvider, pi4JPin, PinState.LOW);
+			BreezyPin breezyPin = MCP23S08Pin.getByName(pinName);
+			com.pi4j.io.gpio.Pin pi4JPin = BreezyToMCP23S08Pin.getPin(breezyPin);
+			GpioPinDigitalOutput gpioPin = gpioController.provisionDigitalOutputPin(mcp23S08GpioProvider, pi4JPin, PinState.LOW);
 			
 			gpioPin.setProperty(BreezyPinProperty.NAME.name(), name);
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
@@ -109,18 +108,18 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 		validateProperties();
 		
 		if(!isWindowsEnvironment()) {
-			String spiChannel = properties.get(MCP23S17Property.CHANNEL.name());
+			String spiChannel = properties.get(MCP23S08Property.CHANNEL.name());
 //			LOG.debug("Channel: " + spiChannel);
 			BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
-			byte address = Byte.decode(properties.get(MCP23S17Property.ADDRESS.name()));
+			byte address = Byte.decode(properties.get(MCP23S08Property.ADDRESS.name()));
 //			LOG.debug("address: " + address);
 			
 			try {
-				mcp23S17GpioProvider = new MCP23S17GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
+				mcp23S08GpioProvider = new MCP23S08GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
 			} catch (IOException e) {
 				LOG.debug("Cannot create MCP23S17GpioProvider, IO Exception thrown: " + e.getMessage());
 				
-				throw new EmbeddedControllerException("Cannot create MCP23S17GpioProvider, IO Exception thrown", e);
+				throw new EmbeddedControllerException("Cannot create MCP23S08GpioProvider, IO Exception thrown", e);
 			}
 		}
 
@@ -128,12 +127,12 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void validateProperties() {
-		if(!properties.containsKey(MCP23S17Property.CHANNEL.name())) {
-			throw new EmbeddedControllerException("MCP23S17 extension channel number was not provided");
+		if(!properties.containsKey(MCP23S08Property.CHANNEL.name())) {
+			throw new EmbeddedControllerException("MCP23S08 extension channel number was not provided");
 		}
 		
-		if(!properties.containsKey(MCP23017Property.ADDRESS.name())) {
-			throw new EmbeddedControllerException("MCP23S17 extension address was not provided");
+		if(!properties.containsKey(MCP23S08Property.ADDRESS.name())) {
+			throw new EmbeddedControllerException("MCP23S08 extension address was not provided");
 		}
 	}
 

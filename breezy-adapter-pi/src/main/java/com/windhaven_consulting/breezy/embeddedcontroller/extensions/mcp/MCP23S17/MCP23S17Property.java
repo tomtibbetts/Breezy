@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23017;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,18 +6,17 @@ import java.util.List;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 
 
-public enum MCP23017Property implements PropertyValueEnum {
+public enum MCP23S17Property implements PropertyValueEnum {
 	// Please keep enumerations in alphabetical order
 	ADDRESS("Address"),
-	BUS_NUMBER("Bus Number");
+	CHANNEL("Channel");
 	
 	private String label;
 
-	private MCP23017Property(String label) {
+	private MCP23S17Property(String label) {
 		this.label = label;
 	}
 	
-	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -34,6 +33,6 @@ public enum MCP23017Property implements PropertyValueEnum {
 
 	@Override
 	public List<PropertyValueEnum> getProperties() {
-		return Arrays.asList(MCP23017Property.values());
+		return Arrays.asList(MCP23S17Property.values());
 	}
 }

@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.impl;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,10 +15,10 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezySPIChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderBuilder;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.MCP23S17Address;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.MCP23S17Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17.MCP23S17Property;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.BaseExtensionProviderBuilder;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17.MCP23S17Address;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17.MCP23S17Pin;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17.MCP23S17Property;
 
 
 @Named("mcp23S17ExtensionProviderBuilder")

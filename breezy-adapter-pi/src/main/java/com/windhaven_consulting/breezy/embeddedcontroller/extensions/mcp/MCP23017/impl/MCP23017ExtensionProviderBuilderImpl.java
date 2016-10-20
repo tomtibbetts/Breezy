@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23017.impl;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,10 +15,10 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderBuilder;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23017.MCP23017Address;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23017.MCP23017Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23017.MCP23017Property;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.BaseExtensionProviderBuilder;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Address;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Pin;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Property;
 
 
 @Named("mcp23017ExtensionProviderBuilder")

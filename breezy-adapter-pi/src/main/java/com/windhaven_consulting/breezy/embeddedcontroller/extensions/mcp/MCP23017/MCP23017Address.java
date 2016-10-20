@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23017;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017;
 
 import java.util.Arrays;
 import java.util.List;

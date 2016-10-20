@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 
 
-public enum MCP23S17Address implements PropertyValueEnum {
+public enum MCP23S08Address implements PropertyValueEnum {
 	ADDRESS_0("Address 0", "0x40"),
 	ADDRESS_1("Address 1", "0x42"),
 	ADDRESS_2("Address 2", "0x44"),
@@ -19,7 +19,7 @@ public enum MCP23S17Address implements PropertyValueEnum {
 	private String label;
 	private String value;
 	
-	private MCP23S17Address(String label, String value) {
+	private MCP23S08Address(String label, String value) {
 		this.label = label;
 		this.value = value;
 	}
@@ -39,7 +39,7 @@ public enum MCP23S17Address implements PropertyValueEnum {
 
 	@Override
 	public List<PropertyValueEnum> getProperties() {
-		return Arrays.asList(MCP23S17Address.values());
+		return Arrays.asList(MCP23S08Address.values());
 	}
 
 }

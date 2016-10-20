@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.MCP23S17;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 
-public class MCP23S17Pin implements BreezyPin {
+public class MCP23017Pin implements BreezyPin {
 
 	private final static Map<String, BreezyPin> pinMap = new LinkedHashMap<String, BreezyPin>();
 
@@ -51,12 +51,12 @@ public class MCP23S17Pin implements BreezyPin {
 		return id;
 	}
 
-	private MCP23S17Pin(String pinName) {
+	private MCP23017Pin(String pinName) {
 		this.name = pinName;
 	}
 
 	private static BreezyPin createPin(String pinName) {
-		BreezyPin breezyPin = new MCP23S17Pin(pinName);
+		BreezyPin breezyPin = new MCP23017Pin(pinName);
 		pinMap.put(pinName, breezyPin);
 		
 		return breezyPin;
