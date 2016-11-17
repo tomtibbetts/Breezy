@@ -10,11 +10,7 @@ public enum MCP23S08Address implements PropertyValueEnum {
 	ADDRESS_0("Address 0", "0x40"),
 	ADDRESS_1("Address 1", "0x42"),
 	ADDRESS_2("Address 2", "0x44"),
-	ADDRESS_3("Address 3", "0x46"),
-	ADDRESS_4("Address 4", "0x48"),
-	ADDRESS_5("Address 5", "0x4a"),
-	ADDRESS_6("Address 6", "0x4c"),
-	ADDRESS_7("Address 7", "0x4e");
+	ADDRESS_3("Address 3", "0x46");
 	
 	private String label;
 	private String value;
