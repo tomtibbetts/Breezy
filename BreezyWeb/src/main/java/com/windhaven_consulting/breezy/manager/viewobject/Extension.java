@@ -1,8 +1,8 @@
 package com.windhaven_consulting.breezy.manager.viewobject;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
 import com.windhaven_consulting.breezy.persistence.domain.PersistentObject;
@@ -15,7 +15,7 @@ public class Extension extends PersistentObject implements Serializable {
 
 	private String description;
 	
-	private Map<String, String> properties = new HashMap<String, String>();
+	private Map<String, String> properties = new TreeMap<String, String>();
 	
 	public ExtensionType getExtensionType() {
 		return extensionType;
@@ -37,8 +37,8 @@ public class Extension extends PersistentObject implements Serializable {
 		return properties;
 	}
 
-	public void setProperties(Map<String, String> properties) {
-		this.properties = properties;
+	public void addProperties(Map<String, String> properties) {
+		this.properties.putAll(properties);
 	}
 	
 }

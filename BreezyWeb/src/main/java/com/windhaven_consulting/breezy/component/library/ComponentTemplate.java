@@ -10,6 +10,8 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.windhaven_consulting.breezy.component.annotation.ComponentType;
+
 public class ComponentTemplate implements Serializable {
 	/**
 	 * 
@@ -26,12 +28,15 @@ public class ComponentTemplate implements Serializable {
 	
 	private List<String> pinNames;
 
-	public ComponentTemplate(String clazzName, String componentName, int numberOfOutputs, String[] pinNames) {
+	private ComponentType componentType;
+	
+	public ComponentTemplate(String clazzName, String componentName, int numberOfOutputs, String[] pinNames, ComponentType componentType) {
 		this.clazzName = clazzName;
 		this.componentName = componentName;
 		this.numberOfOutputs = numberOfOutputs;
 		this.pinNames = new ArrayList<String>(pinNames.length);
 		Collections.addAll(this.pinNames, pinNames);
+		this.componentType = componentType;
 	}
 	
 	public void add(MethodTemplate methodTemplate) {
@@ -72,5 +77,9 @@ public class ComponentTemplate implements Serializable {
 		}
 		
 		return result;
+	}
+	
+	public ComponentType getComponentTYpe() {
+		return componentType;
 	}
 }

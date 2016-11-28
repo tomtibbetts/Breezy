@@ -18,6 +18,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.annotation.ComponentType;
 import com.windhaven_consulting.breezy.component.annotation.ControlledComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledParameter;
 import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
@@ -94,8 +95,9 @@ public class ComponentTemplateLibraryManager implements Serializable {
     	int numberOfOutputs = controlledComponent.numberOfOutputs();
     	String name = controlledComponent.value();
     	String[] pinNames = controlledComponent.pinNames();
+    	ComponentType componentType = controlledComponent.componentType();
     	
-    	ComponentTemplate componentTemplate = new ComponentTemplate(beanClass.getName(), name, numberOfOutputs, pinNames);
+    	ComponentTemplate componentTemplate = new ComponentTemplate(beanClass.getName(), name, numberOfOutputs, pinNames, componentType);
     	
     	while(beanClass != null) {
         	for(Method classMethod : beanClass.getDeclaredMethods()) {

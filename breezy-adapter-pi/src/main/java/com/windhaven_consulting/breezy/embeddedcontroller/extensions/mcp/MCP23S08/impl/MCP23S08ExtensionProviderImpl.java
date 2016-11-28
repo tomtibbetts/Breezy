@@ -20,9 +20,9 @@ import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.SPIBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.BreezyToMCP23S08Pin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.MCP23S08Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.MCP23S08Property;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JPinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JSPIChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockDigitalInputPinProxyImpl;
@@ -52,7 +52,7 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 
 	@Override
 	public DigitalInputPin provisionDigitalInputPin(String name, String pinName, UUID pinId, PinPullResistance pinPullResistance, Integer debounce, boolean isEventTrigger) {
-//		LOG.debug("provisioning Input Pin, name: " + name + ", pinName: " + pinName + ", pinId: " + pinId.toString() + ", isEventTrigger: " + isEventTrigger);
+		LOG.debug("provisioning Input Pin, name: " + name + ", pinName: " + pinName + ", pinId: " + pinId.toString() + ", isEventTrigger: " + isEventTrigger);
 		
 		if(isWindowsEnvironment()) {
 			return new MockDigitalInputPinProxyImpl(name, pinId);
@@ -68,11 +68,11 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 			
 			if(isEventTrigger) {
-//				LOG.debug("Adding event trigger. Listener is not null = " + (gpioPinListenerDigital != null));
+				LOG.debug("Adding event trigger. Listener is null = " + (gpioPinListenerDigital == null));
 				gpioPin.addListener(gpioPinListenerDigital);
 			}
 			
-//			LOG.debug("end provisioning digital input pin.\n");
+			LOG.debug("end provisioning digital input pin.\n");
 			return new Pi4JDigitalInputPinProxyImpl(name, pinId, gpioPin);
 		}
 	}
@@ -103,16 +103,16 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void initialize() {
-//		LOG.debug("Initializing MCP23S17ExtensionProviderImpl");
+		LOG.debug("Initializing MCP23S08ExtensionProviderImpl");
 		
 		validateProperties();
 		
 		if(!isWindowsEnvironment()) {
-			String spiChannel = properties.get(MCP23S08Property.CHANNEL.name());
-//			LOG.debug("Channel: " + spiChannel);
+			String spiChannel = properties.get(SPIBusProperty.CHANNEL.name());
+			LOG.debug("Channel: " + spiChannel);
 			BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
-			byte address = Byte.decode(properties.get(MCP23S08Property.ADDRESS.name()));
-//			LOG.debug("address: " + address);
+			byte address = Byte.decode(properties.get(SPIBusProperty.ADDRESS.name()));
+			LOG.debug("address: " + address);
 			
 			try {
 				mcp23S08GpioProvider = new MCP23S08GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
@@ -123,15 +123,15 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 			}
 		}
 
-//		LOG.debug("End Initializing MCP23S17ExtensionProviderImpl");
+		LOG.debug("End Initializing MCP23S08ExtensionProviderImpl");
 	}
 
 	private void validateProperties() {
-		if(!properties.containsKey(MCP23S08Property.CHANNEL.name())) {
+		if(!properties.containsKey(SPIBusProperty.CHANNEL.name())) {
 			throw new EmbeddedControllerException("MCP23S08 extension channel number was not provided");
 		}
 		
-		if(!properties.containsKey(MCP23S08Property.ADDRESS.name())) {
+		if(!properties.containsKey(SPIBusProperty.ADDRESS.name())) {
 			throw new EmbeddedControllerException("MCP23S08 extension address was not provided");
 		}
 	}

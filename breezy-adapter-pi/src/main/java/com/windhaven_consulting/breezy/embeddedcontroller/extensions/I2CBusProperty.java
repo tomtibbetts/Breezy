@@ -1,4 +1,4 @@
-package com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08;
+package com.windhaven_consulting.breezy.embeddedcontroller.extensions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,17 +6,18 @@ import java.util.List;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 
 
-public enum MCP23S08Property implements PropertyValueEnum {
+public enum I2CBusProperty implements PropertyValueEnum {
 	// Please keep enumerations in alphabetical order
 	ADDRESS("Address"),
-	CHANNEL("Channel");
+	BUS_NUMBER("Bus Number");
 	
 	private String label;
 
-	private MCP23S08Property(String label) {
+	private I2CBusProperty(String label) {
 		this.label = label;
 	}
 	
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -33,6 +34,6 @@ public enum MCP23S08Property implements PropertyValueEnum {
 
 	@Override
 	public List<PropertyValueEnum> getProperties() {
-		return Arrays.asList(MCP23S08Property.values());
+		return Arrays.asList(I2CBusProperty.values());
 	}
 }

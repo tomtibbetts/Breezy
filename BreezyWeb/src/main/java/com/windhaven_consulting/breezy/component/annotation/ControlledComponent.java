@@ -17,4 +17,6 @@ public @interface ControlledComponent {
 	int numberOfOutputs() default 1;
 	
 	String[] pinNames() default {};
+	
+	ComponentType componentType() default ComponentType.DIGITAL_OUT; 
 }

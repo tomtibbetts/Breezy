@@ -1,7 +1,7 @@
 package com.windhaven_consulting.breezy.persistence.domain;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
@@ -11,7 +11,7 @@ public class ExtensionDO extends PersistentObject {
 
 	private String description;
 	
-	private Map<String, String> properties = new HashMap<String, String>();
+	private Map<String, String> properties = new TreeMap<String, String>();
 
 	@JsonProperty("type")
 	public ExtensionType getExtensionType() {

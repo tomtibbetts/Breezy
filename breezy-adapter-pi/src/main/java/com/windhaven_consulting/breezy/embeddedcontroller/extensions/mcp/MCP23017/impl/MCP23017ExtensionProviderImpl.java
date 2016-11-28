@@ -21,9 +21,9 @@ import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.I2CBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.BreezyToMCP23017Pin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Property;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JI2CBus;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JPinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockDigitalInputPinProxyImpl;
@@ -104,10 +104,10 @@ public class MCP23017ExtensionProviderImpl implements ExtensionProvider {
 		validateProperties();
 		
 		if(!isWindowsEnvironment()) {
-			String busNumber = properties.get(MCP23017Property.BUS_NUMBER.name());
+			String busNumber = properties.get(I2CBusProperty.BUS_NUMBER.name());
 			BreezyI2CBus breezyI2CBus = BreezyI2CBus.valueOf(busNumber);
 			
-			int address = Integer.decode(properties.get(MCP23017Property.ADDRESS.name()));
+			int address = Integer.decode(properties.get(I2CBusProperty.ADDRESS.name()));
 			
 			try {
 				mcp23017GpioProvider = new MCP23017GpioProvider(BreezyToPi4JI2CBus.getBus(breezyI2CBus).intValue(), address);
@@ -120,11 +120,11 @@ public class MCP23017ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void validateProperties() {
-		if(!properties.containsKey(MCP23017Property.BUS_NUMBER.name())) {
+		if(!properties.containsKey(I2CBusProperty.BUS_NUMBER.name())) {
 			throw new EmbeddedControllerException("MCP23017 extension bus number was not provided");
 		}
 		
-		if(!properties.containsKey(MCP23017Property.ADDRESS.name())) {
+		if(!properties.containsKey(I2CBusProperty.ADDRESS.name())) {
 			throw new EmbeddedControllerException("MCP23017 extension address was not provided");
 		}
 	}

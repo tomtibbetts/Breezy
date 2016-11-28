@@ -1,5 +1,10 @@
 package com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.event.Event;
@@ -14,12 +19,20 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPinProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
+import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.StateChange;
 import com.windhaven_consulting.breezy.embeddedcontroller.StateChangeEvent;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderBuilder;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JControllerProxyImpl;
 
-public class BaseExtensionProviderBuilder {
+public abstract class BaseExtensionProviderBuilder implements ExtensionProviderBuilder {
 	static final Logger LOG = LoggerFactory.getLogger(BaseExtensionProviderBuilder.class);
+
+	private Map<PropertyValueEnum, List<PropertyValueEnum>> propertyValueByPropertyEnumMap = new HashMap<PropertyValueEnum, List<PropertyValueEnum>>();
+
+	private Map<String, List<PropertyValueEnum>> propertyValueByPropertyNameMap = new HashMap<String, List<PropertyValueEnum>>();
+	
+	private List<PropertyValueEnum> propertyValueEnums = new ArrayList<PropertyValueEnum>();
 
 	@Resource
 	private Boolean windowsEnvironment;
@@ -37,26 +50,31 @@ public class BaseExtensionProviderBuilder {
 	public void postConstruct() {
 		initializeInputListener();
 	}
-	
-	private void initializeInputListener() {
-//		LOG.debug("Creating a digital pin listener\n");
-		gpioPinListenerDigital = new GpioPinListenerDigital() {
-		
-			@Override
-			public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
-//				LOG.debug("Firing StateChangeEvent: " + event.getPin().getProperty(BreezyPinProperty.NAME.name()) + ", id: " + event.getPin().getProperty(BreezyPinProperty.ID.name()));
-				
-				GpioPin gpioPin = event.getPin();
-				com.pi4j.io.gpio.PinState pinState = event.getState();
-				
-				StateChangeEvent stateChangeEvent = new StateChangeEvent();
-				stateChangeEvent.setName(gpioPin.getProperty(BreezyPinProperty.NAME.name()));
-				stateChangeEvent.setId(gpioPin.getProperty(BreezyPinProperty.ID.name()));
-				stateChangeEvent.setPinState(PinState.find(pinState.getValue()));
 
-				events.fire(stateChangeEvent);
-			}
-		}; 
+	@Override
+	public List<String> getPropertyFieldNames() {
+		List<String> propertyFieldNames = new ArrayList<String>();
+		
+		for(PropertyValueEnum propertyValueEnum : propertyValueEnums) {
+			propertyFieldNames.add(propertyValueEnum.getName());
+		}
+
+		return propertyFieldNames;
+	}
+
+	@Override
+	public List<PropertyValueEnum> getProperties() {
+		return propertyValueEnums;
+	}
+
+	@Override
+	public List<PropertyValueEnum> getPropertyValues(PropertyValueEnum property) {
+		return propertyValueByPropertyEnumMap.get(property);
+	}
+
+	@Override
+	public List<PropertyValueEnum> getPropertyValues(String property) {
+		return propertyValueByPropertyNameMap.get(property);
 	}
 
 	protected boolean isWindowsEnvironment() {
@@ -71,4 +89,30 @@ public class BaseExtensionProviderBuilder {
 		return pi4JControllerProxy.getGpioController();
 	}
 	
+	protected void addProperties(PropertyValueEnum propertyValueEnum, List<PropertyValueEnum> properties) {
+		propertyValueByPropertyEnumMap.put(propertyValueEnum, properties);
+		propertyValueByPropertyNameMap.put(propertyValueEnum.getName(), properties);
+		propertyValueEnums.add(propertyValueEnum);
+	}
+
+	private void initializeInputListener() {
+		LOG.debug("Creating a digital pin listener\n");
+		gpioPinListenerDigital = new GpioPinListenerDigital() {
+		
+			@Override
+			public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
+				LOG.debug("Firing StateChangeEvent: " + event.getPin().getProperty(BreezyPinProperty.NAME.name()) + ", id: " + event.getPin().getProperty(BreezyPinProperty.ID.name()));
+				
+				GpioPin gpioPin = event.getPin();
+				com.pi4j.io.gpio.PinState pinState = event.getState();
+				
+				StateChangeEvent stateChangeEvent = new StateChangeEvent();
+				stateChangeEvent.setName(gpioPin.getProperty(BreezyPinProperty.NAME.name()));
+				stateChangeEvent.setId(gpioPin.getProperty(BreezyPinProperty.ID.name()));
+				stateChangeEvent.setPinState(PinState.find(pinState.getValue()));
+
+				events.fire(stateChangeEvent);
+			}
+		}; 
+	}
 }

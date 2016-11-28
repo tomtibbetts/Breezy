@@ -35,7 +35,7 @@ public enum MCP23S08Address implements PropertyValueEnum {
 
 	@Override
 	public List<PropertyValueEnum> getProperties() {
-		return Arrays.asList(MCP23S08Address.values());
+		return Arrays.asList(MCP23S08Address.values()); // returns all the enums in this set
 	}
 
 }

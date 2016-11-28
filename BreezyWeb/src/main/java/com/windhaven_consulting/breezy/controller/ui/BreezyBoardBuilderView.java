@@ -311,7 +311,7 @@ public class BreezyBoardBuilderView implements Serializable {
 	}
 
 	public ExtensionPropertyKeyConverter getExtensionPropertyKeyConverter(ExtensionType extensionType) {
-		return extensionPropertyKeyConverterByExtensionTypeMap .get(extensionType);
+		return extensionPropertyKeyConverterByExtensionTypeMap.get(extensionType);
 	}
 	
 	public ExtensionPropertyValueConverter getExtensionPropertyValueConverter(ExtensionType extensionType, String property) {

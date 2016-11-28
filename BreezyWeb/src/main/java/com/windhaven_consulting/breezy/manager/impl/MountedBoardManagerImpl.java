@@ -130,6 +130,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		Map<UUID, ExtensionProvider> extensionProviderMap = new HashMap<UUID, ExtensionProvider>();
 
 		for(Extension extension : breezyBoard.getExtensions()) {
+			LOG.debug("Using extension properties: " + extension.getProperties().toString());
 			ExtensionProvider extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
 			
 			extensionProviderMap.put(extension.getId(), extensionProvider);

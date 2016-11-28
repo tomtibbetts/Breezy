@@ -190,7 +190,8 @@ public class BreezyBoardViewMapper implements ViewDiskObjectMapper<BreezyBoard, 
 		extension.setName(extensionDO.getName());
 		extension.setId(extensionDO.getId());
 		extension.setExtensionType(extensionDO.getExtensionType());
-		extension.setProperties(extensionDO.getProperties());
+//		extension.addProperties(extensionDO.getProperties());
+		extension.addProperties(extensionDO.getProperties());
 		
 		return extension;
 	}
