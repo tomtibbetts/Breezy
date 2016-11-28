@@ -2,6 +2,7 @@ package com.windhaven_consulting.breezy.controller.ui;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,6 +26,7 @@ import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibrar
 import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionTemplateConverter;
 import com.windhaven_consulting.breezy.controller.ui.utils.BoardTemplateUtility;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.OutputType;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
 import com.windhaven_consulting.breezy.manager.BreezyBoardTemplateManager;
@@ -165,6 +167,7 @@ public class BoardTemplateBuilderView implements Serializable {
 		if(extensionTemplate != null) {
 			nameToExtensionTemplateMap.remove(extensionTemplate);
 			
+			// TODO: do the same for components as for inputs?
 			for(InputConfigurationTemplate inputConfigurationTemplate : breezyBoardTemplate.getInputConfigurationTemplates()) {
 				if(inputConfigurationTemplate.getExtensionTemplate() != null && inputConfigurationTemplate.getExtensionTemplate().equals(extensionTemplate)) {
 					inputConfigurationTemplate.setExtensionTemplate(null);
@@ -371,6 +374,22 @@ public class BoardTemplateBuilderView implements Serializable {
 		return extensionTemplateConverter;
 	}
 	
+	public List<ExtensionTemplate> getExtensionTemplatesByComponentType(String componentType) {
+		List<ExtensionTemplate> extensionTemplates = new ArrayList<ExtensionTemplate>();
+		
+		ComponentTemplate componentTemplate = componentTemplateLibraryManager.getComponentTemplateFor(componentType);
+		
+		if(componentTemplate != null) {
+			for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
+				if(componentTemplate.getOutputType() == extensionTemplate.getExtensionType().getOutputType()) {
+					extensionTemplates.add(extensionTemplate);
+				}
+			}
+		}
+		
+		return extensionTemplates;
+	}
+	
 	public List<BreezyPin> getAvailablePins() {
 		return availableBreezyPins;
 	}
@@ -386,7 +405,16 @@ public class BoardTemplateBuilderView implements Serializable {
 	}
 	
 	public Collection<ComponentTemplate> getComponentTypes() {
-		return componentTemplateLibraryManager.getComponentTemplates();
+		Collection<ComponentTemplate> componentTemplates;
+		
+		List<OutputType> outputTypes = new ArrayList<OutputType>();
+		for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
+			outputTypes.add(extensionTemplate.getExtensionType().getOutputType());
+		}
+		
+		componentTemplates = componentTemplateLibraryManager.getComponentTemplates(outputTypes);
+		
+		return componentTemplates;
 	}
 	
 	public ComponentConfigurationTemplate getWorkingComponentConfigurationTemplate() {

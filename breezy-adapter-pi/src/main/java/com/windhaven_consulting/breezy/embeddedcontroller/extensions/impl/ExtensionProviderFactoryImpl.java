@@ -34,6 +34,10 @@ public class ExtensionProviderFactoryImpl implements ExtensionProviderFactory {
 	@Named("mcp23S17ExtensionProviderBuilder")
 	private ExtensionProviderBuilder mcp23S17ExtensionProviderBuilder;
 	
+	@Inject
+	@Named("pca9685ExtensionProviderBuilder")
+	private ExtensionProviderBuilder pca9685ExtensionProviderBuilder;
+	
 	private Map<ExtensionType, ExtensionProviderBuilder> extensionTypeToProviderBuilderMap = new HashMap<ExtensionType, ExtensionProviderBuilder>();;
 	
 	@PostConstruct
@@ -42,6 +46,7 @@ public class ExtensionProviderFactoryImpl implements ExtensionProviderFactory {
 		extensionTypeToProviderBuilderMap.put(ExtensionType.MCP23S08, mcp23S08ExtensionProviderBuilder);
 		extensionTypeToProviderBuilderMap.put(ExtensionType.MCP23017, mcp23017ExtensionProviderBuilder);
 		extensionTypeToProviderBuilderMap.put(ExtensionType.MCP23S17, mcp23S17ExtensionProviderBuilder);
+		extensionTypeToProviderBuilderMap.put(ExtensionType.PCA9685, pca9685ExtensionProviderBuilder);
 	}
 	
 	@Override

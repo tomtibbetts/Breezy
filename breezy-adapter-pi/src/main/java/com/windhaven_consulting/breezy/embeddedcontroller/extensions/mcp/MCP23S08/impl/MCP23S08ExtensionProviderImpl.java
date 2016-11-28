@@ -52,7 +52,7 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 
 	@Override
 	public DigitalInputPin provisionDigitalInputPin(String name, String pinName, UUID pinId, PinPullResistance pinPullResistance, Integer debounce, boolean isEventTrigger) {
-		LOG.debug("provisioning Input Pin, name: " + name + ", pinName: " + pinName + ", pinId: " + pinId.toString() + ", isEventTrigger: " + isEventTrigger);
+//		LOG.debug("provisioning Input Pin, name: " + name + ", pinName: " + pinName + ", pinId: " + pinId.toString() + ", isEventTrigger: " + isEventTrigger);
 		
 		if(isWindowsEnvironment()) {
 			return new MockDigitalInputPinProxyImpl(name, pinId);
@@ -68,11 +68,11 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 			
 			if(isEventTrigger) {
-				LOG.debug("Adding event trigger. Listener is null = " + (gpioPinListenerDigital == null));
+//				LOG.debug("Adding event trigger. Listener is null = " + (gpioPinListenerDigital == null));
 				gpioPin.addListener(gpioPinListenerDigital);
 			}
 			
-			LOG.debug("end provisioning digital input pin.\n");
+//			LOG.debug("end provisioning digital input pin.\n");
 			return new Pi4JDigitalInputPinProxyImpl(name, pinId, gpioPin);
 		}
 	}
@@ -103,16 +103,16 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void initialize() {
-		LOG.debug("Initializing MCP23S08ExtensionProviderImpl");
+//		LOG.debug("Initializing MCP23S08ExtensionProviderImpl");
 		
 		validateProperties();
 		
 		if(!isWindowsEnvironment()) {
 			String spiChannel = properties.get(SPIBusProperty.CHANNEL.name());
-			LOG.debug("Channel: " + spiChannel);
+//			LOG.debug("Channel: " + spiChannel);
 			BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
 			byte address = Byte.decode(properties.get(SPIBusProperty.ADDRESS.name()));
-			LOG.debug("address: " + address);
+//			LOG.debug("address: " + address);
 			
 			try {
 				mcp23S08GpioProvider = new MCP23S08GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
@@ -123,7 +123,7 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 			}
 		}
 
-		LOG.debug("End Initializing MCP23S08ExtensionProviderImpl");
+//		LOG.debug("End Initializing MCP23S08ExtensionProviderImpl");
 	}
 
 	private void validateProperties() {

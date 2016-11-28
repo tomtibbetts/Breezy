@@ -6,6 +6,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.windhaven_consulting.breezy.embeddedcontroller.OutputType;
+
 
 
 @Retention(RUNTIME)
@@ -18,5 +20,5 @@ public @interface ControlledComponent {
 	
 	String[] pinNames() default {};
 	
-	ComponentType componentType() default ComponentType.DIGITAL_OUT; 
+	OutputType outputType() default OutputType.DIGITAL_OUTPUT; 
 }
