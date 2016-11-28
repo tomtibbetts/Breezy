@@ -192,7 +192,7 @@ public class MacroExecutor implements MacroControllerComponent {
 				MountedBoard mountedBoard = mountedBoardManager.getById(macroStep.getMountedBoardId());
 				
 				if(mountedBoard == null) {
-					throw new BreezyApplicationException(getExceptionMessage("no mounted board found."));
+					throw new BreezyApplicationException(getExceptionMessage("no mounted board found for: " + macroStep.getMountedBoardId() + "."));
 				}
 				
 				Component component = mountedBoard.getComponent(macroStep.getComponentId());

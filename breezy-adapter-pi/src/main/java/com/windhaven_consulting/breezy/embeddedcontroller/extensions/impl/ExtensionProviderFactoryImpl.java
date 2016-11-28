@@ -23,6 +23,10 @@ public class ExtensionProviderFactoryImpl implements ExtensionProviderFactory {
 	private ExtensionProviderBuilder systemExtensionProviderBuilder;
 	
 	@Inject
+	@Named("mcp23S08ExtensionProviderBuilder")
+	private ExtensionProviderBuilder mcp23S08ExtensionProviderBuilder;
+	
+	@Inject
 	@Named("mcp23017ExtensionProviderBuilder")
 	private ExtensionProviderBuilder mcp23017ExtensionProviderBuilder;
 	
@@ -35,6 +39,7 @@ public class ExtensionProviderFactoryImpl implements ExtensionProviderFactory {
 	@PostConstruct
 	public void postConstruct() {
 		extensionTypeToProviderBuilderMap.put(ExtensionType.SYSTEM, systemExtensionProviderBuilder);
+		extensionTypeToProviderBuilderMap.put(ExtensionType.MCP23S08, mcp23S08ExtensionProviderBuilder);
 		extensionTypeToProviderBuilderMap.put(ExtensionType.MCP23017, mcp23017ExtensionProviderBuilder);
 		extensionTypeToProviderBuilderMap.put(ExtensionType.MCP23S17, mcp23S17ExtensionProviderBuilder);
 	}
