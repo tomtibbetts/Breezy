@@ -10,15 +10,15 @@ import javax.inject.Named;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderBuilder;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.I2CBusProperty;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.I2CBusExtensionProviderBuilder;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.I2CBusExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.pca.PCA9685.PCA9685Address;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.pca.PCA9685.PCA9685Pin;
 
-@Named("pca9685ExtensionProviderBuilder")
+@Named("pca9685ExtensionProviderFactory")
 @ApplicationScoped
-public class PCA9685ExtensionProviderBuilderImpl extends I2CBusExtensionProviderBuilder implements ExtensionProviderBuilder {
+public class PCA9685ExtensionProviderFactoryImpl extends I2CBusExtensionProviderFactory implements ExtensionProviderFactory {
 	
 	@PostConstruct
 	public void postConstruct() {

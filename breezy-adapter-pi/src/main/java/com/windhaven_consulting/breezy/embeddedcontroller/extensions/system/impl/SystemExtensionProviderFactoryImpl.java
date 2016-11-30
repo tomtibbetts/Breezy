@@ -10,13 +10,13 @@ import javax.inject.Named;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderBuilder;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.BaseExtensionProviderBuilder;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.BaseExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.system.SystemPin;
 
-@Named("systemExtensionProviderBuilder")
+@Named("systemExtensionProviderFactory")
 @ApplicationScoped
-public class SystemExtensionProviderBuilderImpl extends BaseExtensionProviderBuilder implements ExtensionProviderBuilder {
+public class SystemExtensionProviderFactoryImpl extends BaseExtensionProviderFactory implements ExtensionProviderFactory {
 	
 	@Override
 	public ExtensionProvider get(Map<String, String> properties) {

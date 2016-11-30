@@ -21,7 +21,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderAbstractFactory;
 import com.windhaven_consulting.breezy.exceptions.BreezyApplicationException;
 import com.windhaven_consulting.breezy.macrocontroller.MacroExecutor;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
@@ -48,7 +48,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	private ComponentTemplateLibraryManager componentLibraryManager;
 	
 	@Inject
-	private ExtensionProviderFactory extensionProviderFactory;
+	private ExtensionProviderAbstractFactory extensionProviderFactory;
 	
 	@Deprecated
 	public Collection<MountedComponent> getAllMountedComponents() {

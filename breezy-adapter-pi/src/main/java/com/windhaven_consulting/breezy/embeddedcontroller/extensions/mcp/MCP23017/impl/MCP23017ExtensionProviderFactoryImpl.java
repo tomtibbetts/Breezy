@@ -10,16 +10,16 @@ import javax.inject.Named;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderBuilder;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.I2CBusExtensionProviderBuilder;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.I2CBusExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Address;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Pin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Property;
 
 
-@Named("mcp23017ExtensionProviderBuilder")
+@Named("mcp23017ExtensionProviderFactory")
 @ApplicationScoped
-public class MCP23017ExtensionProviderBuilderImpl extends I2CBusExtensionProviderBuilder implements ExtensionProviderBuilder {
+public class MCP23017ExtensionProviderFactoryImpl extends I2CBusExtensionProviderFactory implements ExtensionProviderFactory {
 
 	@PostConstruct
 	public void postConstruct() {

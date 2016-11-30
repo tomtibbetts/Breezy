@@ -22,11 +22,11 @@ import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.StateChange;
 import com.windhaven_consulting.breezy.embeddedcontroller.StateChangeEvent;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderBuilder;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JControllerProxyImpl;
 
-public abstract class BaseExtensionProviderBuilder implements ExtensionProviderBuilder {
-	static final Logger LOG = LoggerFactory.getLogger(BaseExtensionProviderBuilder.class);
+public abstract class BaseExtensionProviderFactory implements ExtensionProviderFactory {
+	static final Logger LOG = LoggerFactory.getLogger(BaseExtensionProviderFactory.class);
 
 	private Map<PropertyValueEnum, List<PropertyValueEnum>> propertyValueByPropertyEnumMap = new HashMap<PropertyValueEnum, List<PropertyValueEnum>>();
 

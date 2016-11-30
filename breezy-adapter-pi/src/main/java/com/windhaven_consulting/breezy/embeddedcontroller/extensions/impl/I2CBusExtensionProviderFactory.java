@@ -5,7 +5,7 @@ import java.util.Arrays;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyI2CBus;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.I2CBusProperty;
 
-public abstract class I2CBusExtensionProviderBuilder extends BaseExtensionProviderBuilder {
+public abstract class I2CBusExtensionProviderFactory extends BaseExtensionProviderFactory {
 	
 	public void postConstruct() {
 		super.postConstruct();
