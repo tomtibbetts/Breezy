@@ -9,7 +9,8 @@ import java.util.UUID;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 
-public abstract class ComponentGeneric<T extends BreezyPin> implements Comparable<ComponentGeneric>, Serializable {
+public abstract class GenericComponent<T extends BreezyPin> implements Comparable<GenericComponent<BreezyPin>>, Serializable {
+//public abstract class GenericComponent<T extends BreezyPin & Comparable<T>> implements Comparable<GenericComponent<T>>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +19,7 @@ public abstract class ComponentGeneric<T extends BreezyPin> implements Comparabl
 	private String id;
 	
 	private List<T> outputPins = new ArrayList<T>();
-	private Map<UUID, T> idToDigitalOutputPinMap = new HashMap<UUID, T>();
+	private Map<UUID, T> idToOutputPinMap = new HashMap<UUID, T>();
 	
 	public String getName() {
 		return name;
@@ -30,7 +31,7 @@ public abstract class ComponentGeneric<T extends BreezyPin> implements Comparabl
 
 	public void addOutputPin(T pin) {
 		outputPins.add(pin);
-		idToDigitalOutputPinMap.put(pin.getId(), pin);
+		idToOutputPinMap.put(pin.getId(), pin);
 	}
 	
 	public String getId() {
@@ -53,12 +54,12 @@ public abstract class ComponentGeneric<T extends BreezyPin> implements Comparabl
 		return outputPins.get(0);
 	}
 	
-	public T getDigitalOutputPin(UUID digitalOutputPinId) {
-		return idToDigitalOutputPinMap.get(digitalOutputPinId);
+	public T getOutputPin(UUID digitalOutputPinId) {
+		return idToOutputPinMap.get(digitalOutputPinId);
 	}
 
 	@Override
-	public int compareTo(ComponentGeneric o) {
+	public int compareTo(GenericComponent<BreezyPin> o) {
 		return this.name.compareTo(o.getName());
 	}
 
