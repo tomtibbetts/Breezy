@@ -93,7 +93,7 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 			return new Pi4JDigitalOutputPinProxyImpl(name, pinId, gpioPin);
 		}
 	}
-
+	
 	@Override
 	public void unprovisionPin(BreezyPin breezyPin) {
 		if(!windowsEnvironment) {

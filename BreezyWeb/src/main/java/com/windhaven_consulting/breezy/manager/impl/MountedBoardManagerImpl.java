@@ -162,6 +162,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 				component.setName(componentConfiguration.getName());
 				component.setId(componentConfiguration.getId().toString());
 				
+				// TODO: put in a check for digital/analog/PWM
 				for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
 					ExtensionProvider extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
 					

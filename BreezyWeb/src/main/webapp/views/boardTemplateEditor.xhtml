@@ -209,7 +209,7 @@
 					      		</p:dataTable>
 				            </h:panelGrid>
 				        </p:tab>
-				        <p:tab title="Digital Components">
+				        <p:tab title="Components">
 				            <h:panelGrid id="tabComponentPanelGridId" columns="1" cellpadding="10" styleClass="ui-noborder" style="width: 75%">
    								<p:commandButton id="insertFirstComponentId"
 									value="Define First Component" 
@@ -376,7 +376,8 @@
 								<p:selectOneMenu id="inputPinExtensionId" converter="#{boardTemplateBuilderView.extensionTemplateConverter}" value="#{boardTemplateBuilderView.workingInputConfigurationTemplate.extensionTemplate}">
 									<p:ajax event="change" update="inputPinMappedPinId" />
 									<f:selectItem itemLabel="Select Extension" itemValue="" noSelectionOption="true"/>
-			                    	<f:selectItems value="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
+			                    	<f:selectItems value="#{boardTemplateBuilderView.getExtensionTemplatesByInputType('DIGITAL_INPUT')}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
+
 								</p:selectOneMenu>
 			      			</p:column>
 					       
