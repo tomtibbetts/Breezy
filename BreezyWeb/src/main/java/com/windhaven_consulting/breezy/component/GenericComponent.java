@@ -10,7 +10,6 @@ import java.util.UUID;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 
 public abstract class GenericComponent<T extends BreezyPin> implements Comparable<GenericComponent<BreezyPin>>, Serializable {
-//public abstract class GenericComponent<T extends BreezyPin & Comparable<T>> implements Comparable<GenericComponent<T>>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 

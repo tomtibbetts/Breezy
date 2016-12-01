@@ -1,10 +1,11 @@
 package com.windhaven_consulting.breezy.macrocontroller;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledMethod;
 import com.windhaven_consulting.breezy.component.annotation.ControlledParameter;
 import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 
 /**
@@ -15,7 +16,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
  *
  */
 @ControlledComponent("System")
-public class MacroControllerComponentImpl extends Component implements MacroControllerComponent {
+public class MacroControllerComponentImpl extends GenericComponent<BreezyPin> implements MacroControllerComponent {
 	
 	private static final long serialVersionUID = 1L;
 

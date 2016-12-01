@@ -21,13 +21,13 @@ public abstract class AbstractSemaphore extends AbstractMultiDigitalOutComponent
 	public void turnOn(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.DIGITAL_OUTPUT_PIN, required = true) UUID digitalOutputPinId) {
 		allOff();
 		
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.setHigh();
 	}
 
 	@ControlledMethod("Turn Off")
 	public void turnOff(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.DIGITAL_OUTPUT_PIN, required = true) UUID digitalOutputPinId) {
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.setLow();
 	}
 	
@@ -36,7 +36,7 @@ public abstract class AbstractSemaphore extends AbstractMultiDigitalOutComponent
 			@ControlledParameter(name = "On Time (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long onTime ) {
 		allOff();
 		
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.blink(onTime);
 	}
 	
@@ -48,7 +48,7 @@ public abstract class AbstractSemaphore extends AbstractMultiDigitalOutComponent
 		allOff();
 		
 		blockToCompletion = (blockToCompletion == null ? false : blockToCompletion);
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.blink(onTime, duration, PinState.HIGH, blockToCompletion);
 	}
 
@@ -59,7 +59,7 @@ public abstract class AbstractSemaphore extends AbstractMultiDigitalOutComponent
 		allOff();
 
 		blockToCompletion = (blockToCompletion == null ? false : blockToCompletion);
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.pulse(duration, PinState.HIGH, blockToCompletion);
 	}
 

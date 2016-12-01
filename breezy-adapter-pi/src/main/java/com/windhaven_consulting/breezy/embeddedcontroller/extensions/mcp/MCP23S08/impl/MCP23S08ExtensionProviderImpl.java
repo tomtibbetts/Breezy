@@ -78,7 +78,7 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider<DigitalO
 	}
 
 	@Override
-	public DigitalOutputPin provisionDigitalOutputPin(String name, String pinName, UUID pinId) {
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		if(isWindowsEnvironment()) {
 			return new MockDigitalOutputPinProxyImpl(name, pinId);
 		}
@@ -92,12 +92,6 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider<DigitalO
 			
 			return new Pi4JDigitalOutputPinProxyImpl(name, pinId, gpioPin);
 		}
-	}
-
-	@Override
-	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

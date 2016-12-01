@@ -60,7 +60,7 @@ public class SystemExtensionProviderImpl implements ExtensionProvider<DigitalOut
 	}
 
 	@Override
-	public DigitalOutputPin provisionDigitalOutputPin(String name, String pinName, UUID pinId) {
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		if(isWindowsEnvironment()) {
 			return new MockDigitalOutputPinProxyImpl(name, pinId);
 		}
@@ -74,12 +74,6 @@ public class SystemExtensionProviderImpl implements ExtensionProvider<DigitalOut
 
 			return new Pi4JDigitalOutputPinProxyImpl(name, pinId, gpioPin);
 		}
-	}
-
-	@Override
-	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

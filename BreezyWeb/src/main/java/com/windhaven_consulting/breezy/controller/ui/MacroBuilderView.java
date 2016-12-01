@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplate;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibraryManager;
@@ -33,8 +33,8 @@ import com.windhaven_consulting.breezy.controller.ui.converter.DigitalInputPinCo
 import com.windhaven_consulting.breezy.controller.ui.converter.DigitalOutputPinConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.MountedBoardConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.PinStateConverter;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 import com.windhaven_consulting.breezy.manager.MacroManager;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
@@ -65,15 +65,15 @@ public class MacroBuilderView implements Serializable {
 	
 //	private Map<String, String> componentIdToNameMap = new HashMap<String, String>();
 	
-	private Map<String, Component> componentIdToComponentMap = new HashMap<String, Component>();
+	private Map<String, GenericComponent<BreezyPin>> componentIdToComponentMap = new HashMap<String, GenericComponent<BreezyPin>>();
 
-	private List<Component> components = new ArrayList<Component>();
+	private List<GenericComponent<BreezyPin>> components = new ArrayList<GenericComponent<BreezyPin>>();
 	
 	private List<String> functions = new ArrayList<String>();
 	
 	private List<DigitalInputPin> inputPins = new ArrayList<DigitalInputPin>();
 
-	private List<DigitalOutputPin> digitalOutputPins = new ArrayList<DigitalOutputPin>();
+	private List<BreezyPin> outputPins = new ArrayList<BreezyPin>();
 
 	private Map<String, Map<String, List<ParameterTemplate>>> componentToMethods = new HashMap<String, Map<String, List<ParameterTemplate>>>();
 	
@@ -159,11 +159,11 @@ public class MacroBuilderView implements Serializable {
 		if(StringUtils.isNotEmpty(key)) {
 			functions = new ArrayList<String>(componentToMethods.get(key).keySet());
 			Collections.sort(functions);
-        	digitalOutputPins = componentIdToComponentMap.get(key).getOutputPins();
+        	outputPins = componentIdToComponentMap.get(key).getOutputPins();
 		}
 		else {
 			functions.clear();
-			digitalOutputPins.clear();
+			outputPins.clear();
 		}
 	}
 	
@@ -210,7 +210,7 @@ public class MacroBuilderView implements Serializable {
 		String name = StringUtils.EMPTY;
 		
 		if(StringUtils.isNotEmpty(id)) {
-			Component component = componentIdToComponentMap.get(id);
+			GenericComponent<BreezyPin> component = componentIdToComponentMap.get(id);
 			
 			if(component != null) {
 				name = componentIdToComponentMap.get(id).getName();
@@ -224,7 +224,7 @@ public class MacroBuilderView implements Serializable {
     	return macro;
     }
 	
-	public List<Component> getComponents() {
+	public List<GenericComponent<BreezyPin>> getComponents() {
 		return components;
 	}
 	
@@ -236,8 +236,8 @@ public class MacroBuilderView implements Serializable {
 		return inputPins;
 	}
 
-	public List<DigitalOutputPin> getDigitalOutputPins() {
-		return digitalOutputPins;
+	public List<BreezyPin> getOutputPins() {
+		return outputPins;
 	}
 	
 	public List<PinState> getPinStates() {
@@ -265,12 +265,12 @@ public class MacroBuilderView implements Serializable {
 				if(componentMethodsMap != null) {
 					functions = new ArrayList<String>(componentToMethods.get(workingMacroStep.getComponentId()).keySet());
 					Collections.sort(functions);
-					digitalOutputPins = componentIdToComponentMap.get(workingMacroStep.getComponentId()).getOutputPins();
+					outputPins = componentIdToComponentMap.get(workingMacroStep.getComponentId()).getOutputPins();
 				}
 				else {
 					functions = Collections.emptyList();
 					workingMacroStep.getMethodParameters().clear();
-					digitalOutputPins.clear();
+					outputPins.clear();
 				}
 			}
 			
@@ -389,14 +389,14 @@ public class MacroBuilderView implements Serializable {
 		logicStates.add(Boolean.TRUE.toString().toUpperCase());
 		
 		List<DigitalInputPin> digitalInputPins = new ArrayList<DigitalInputPin>();
-		List<DigitalOutputPin> digitalOutputPins = new ArrayList<DigitalOutputPin>();
+		List<BreezyPin> digitalOutputPins = new ArrayList<BreezyPin>();
 		mountedBoards = mountedBoardManager.getAllMountedBoards();
 		
 		for(MountedBoard mountedBoard : mountedBoards) {
 			digitalInputPins.addAll(mountedBoard.getInputPins());
 			mountedBoardIdToNameMap.put(mountedBoard.getId(), mountedBoard.getName());
 			
-			for(Component component : mountedBoard.getComponents()) {
+			for(GenericComponent<BreezyPin> component : mountedBoard.getComponents()) {
 //				componentIdToNameMap.put(component.getId(), component.getName());
 				componentIdToComponentMap.put(component.getId(), component);
 				

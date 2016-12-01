@@ -11,24 +11,24 @@ import javax.faces.convert.Converter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 
 public class DigitalOutputPinConverter implements Converter {
 	
-	private Map<UUID, DigitalOutputPin> digitalOutputPinIdToDigitalOutputPinMap = new HashMap<UUID, DigitalOutputPin>();
+	private Map<UUID, BreezyPin> outputPinIdToDigitalOutputPinMap = new HashMap<UUID, BreezyPin>();
 
-	public DigitalOutputPinConverter(List<DigitalOutputPin> digitalOutputPins) {
-		for(DigitalOutputPin digitalOutputPin : digitalOutputPins) {
-			digitalOutputPinIdToDigitalOutputPinMap.put(digitalOutputPin.getId(), digitalOutputPin);
+	public DigitalOutputPinConverter(List<BreezyPin> outputPins) {
+		for(BreezyPin digitalOutputPin : outputPins) {
+			outputPinIdToDigitalOutputPinMap.put(digitalOutputPin.getId(), digitalOutputPin);
 		}
 	}
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String id) {
-		DigitalOutputPin result = null;
+		BreezyPin result = null;
 		
 		if(StringUtils.isNotEmpty(id)) {
-			result = digitalOutputPinIdToDigitalOutputPinMap.get(UUID.fromString(id));
+			result = outputPinIdToDigitalOutputPinMap.get(UUID.fromString(id));
 		}
 		
 		return result;
@@ -40,7 +40,7 @@ public class DigitalOutputPinConverter implements Converter {
 		
 		if(value != null && !value.equals("")) {
 			UUID uuid = UUID.fromString((String) value);
-			DigitalOutputPin digitalOutputPin = digitalOutputPinIdToDigitalOutputPinMap.get(uuid);
+			BreezyPin digitalOutputPin = outputPinIdToDigitalOutputPinMap.get(uuid);
 			
 			if(digitalOutputPin != null) {
 				digitalOutputPinName = digitalOutputPin.getName();

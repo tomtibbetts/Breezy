@@ -1,15 +1,16 @@
 package com.windhaven_consulting.breezy.manager;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplate;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 
 public class MountedComponent {
 
 	private ComponentTemplate componentTemplate;
 	
-	private Component component;
+	private GenericComponent<BreezyPin> component;
 
-	public MountedComponent(ComponentTemplate componentTemplate, Component component) {
+	public MountedComponent(ComponentTemplate componentTemplate, GenericComponent<BreezyPin> component) {
 		this.componentTemplate = componentTemplate;
 		this.component = component;
 	}
@@ -18,7 +19,7 @@ public class MountedComponent {
 		return componentTemplate;
 	}
 
-	public Component getComponent() {
+	public GenericComponent<BreezyPin> getComponent() {
 		return component;
 	}
 	

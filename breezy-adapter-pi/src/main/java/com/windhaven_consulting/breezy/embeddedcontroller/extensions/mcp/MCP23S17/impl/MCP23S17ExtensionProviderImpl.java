@@ -78,7 +78,7 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider<DigitalO
 	}
 
 	@Override
-	public DigitalOutputPin provisionDigitalOutputPin(String name, String pinName, UUID pinId) {
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		if(isWindowsEnvironment()) {
 			return new MockDigitalOutputPinProxyImpl(name, pinId);
 		}
@@ -94,12 +94,6 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider<DigitalO
 		}
 	}
 
-	@Override
-	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	@Override
 	public void unprovisionPin(BreezyPin breezyPin) {
 		if(!windowsEnvironment) {

@@ -14,12 +14,11 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplate;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibraryManager;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderAbstractFactory;
 import com.windhaven_consulting.breezy.exceptions.BreezyApplicationException;
@@ -53,9 +52,9 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	@Deprecated
 	public Collection<MountedComponent> getAllMountedComponents() {
 		List<MountedComponent> mountedComponents = new ArrayList<MountedComponent>();
-		Collection<Component> components = mountedBoards.get(0).getComponents();
+		Collection<GenericComponent<BreezyPin>> components = mountedBoards.get(0).getComponents();
 		
-		for(Component component : components) {
+		for(GenericComponent<BreezyPin> component : components) {
 			ComponentTemplate componentDescriptor = componentLibraryManager.getComponentTemplateFor(component);
 			MountedComponent mountedComponent = new MountedComponent(componentDescriptor, component);
 			
@@ -158,19 +157,18 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		LOG.debug("********* Initializing components for breezy board: " + breezyBoard.getName());
 		for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
 			try {
-				Component component = componentLibraryManager.getNewComponentByType(componentConfiguration.getComponentType());
+				GenericComponent<BreezyPin> component = componentLibraryManager.getNewComponentByType(componentConfiguration.getComponentType());
 				component.setName(componentConfiguration.getName());
 				component.setId(componentConfiguration.getId().toString());
 				
-				// TODO: put in a check for digital/analog/PWM
 				for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
 					ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
 					
-					DigitalOutputPin digitalOutputPin = extensionProvider.provisionDigitalOutputPin(
+					BreezyPin outputPin = extensionProvider.provisionOutputPin(
 							outputPinConfiguration.getName(), 
 							outputPinConfiguration.getExtensionMappedPin(),
 							outputPinConfiguration.getId());
-					component.addOutputPin(digitalOutputPin);
+					component.addOutputPin(outputPin);
 				}
 				
 				mountedBoard.addComponent(component);

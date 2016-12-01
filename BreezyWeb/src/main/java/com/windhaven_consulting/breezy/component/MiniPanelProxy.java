@@ -3,11 +3,11 @@ package com.windhaven_consulting.breezy.component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.windhaven_consulting.breezy.component.annotation.ControlledComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledMethod;
+import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 
 //@ControlledComponent(value="Mini Panel", numberOfOutputs=7)
-public class MiniPanelProxy extends Component {
+public class MiniPanelProxy extends  GenericComponent<DigitalOutputPin> {
 	static final Logger LOG = LoggerFactory.getLogger(MiniPanelProxy.class);
 
 	private static final long serialVersionUID = 1L;

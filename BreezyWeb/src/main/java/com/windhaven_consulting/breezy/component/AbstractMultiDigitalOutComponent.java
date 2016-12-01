@@ -8,7 +8,7 @@ import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 
-public abstract class AbstractMultiDigitalOutComponent extends Component {
+public abstract class AbstractMultiDigitalOutComponent extends GenericComponent<DigitalOutputPin> {
 
 	/**
 	 * 
@@ -17,20 +17,20 @@ public abstract class AbstractMultiDigitalOutComponent extends Component {
 
 	@ControlledMethod("Turn On")
 	public void turnOn(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.DIGITAL_OUTPUT_PIN, required = true) UUID digitalOutputPinId) {
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.setHigh();
 	}
 
 	@ControlledMethod("Turn Off")
 	public void turnOff(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.DIGITAL_OUTPUT_PIN, required = true) UUID digitalOutputPinId) {
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.setLow();
 	}
 	
 	@ControlledMethod("Blink Forever")
 	public void blink(@ControlledParameter(name = "Pin Name", parameterFieldType = ParameterFieldType.DIGITAL_OUTPUT_PIN, required = true) UUID digitalOutputPinId,
 			@ControlledParameter(name = "On Time (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long onTime ) {
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.blink(onTime);
 	}
 	
@@ -40,7 +40,7 @@ public abstract class AbstractMultiDigitalOutComponent extends Component {
 			@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
 			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
 		blockToCompletion = (blockToCompletion == null ? false : blockToCompletion);
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.blink(onTime, duration, PinState.HIGH, blockToCompletion);
 	}
 
@@ -49,7 +49,7 @@ public abstract class AbstractMultiDigitalOutComponent extends Component {
 			@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
 			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
 		blockToCompletion = (blockToCompletion == null ? false : blockToCompletion);
-		DigitalOutputPin digitalOutputPin = getDigitalOutputPin(digitalOutputPinId);
+		DigitalOutputPin digitalOutputPin = getOutputPin(digitalOutputPinId);
 		digitalOutputPin.pulse(duration, PinState.HIGH, blockToCompletion);
 	}
 

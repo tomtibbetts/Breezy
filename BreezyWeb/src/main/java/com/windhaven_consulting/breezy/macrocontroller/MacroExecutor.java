@@ -10,11 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplate;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibraryManager;
 import com.windhaven_consulting.breezy.component.library.MethodTemplate;
 import com.windhaven_consulting.breezy.component.library.ParameterTemplate;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 import com.windhaven_consulting.breezy.exceptions.BreezyApplicationException;
@@ -195,7 +196,7 @@ public class MacroExecutor implements MacroControllerComponent {
 					throw new BreezyApplicationException(getExceptionMessage("no mounted board found for: " + macroStep.getMountedBoardId() + "."));
 				}
 				
-				Component component = mountedBoard.getComponent(macroStep.getComponentId());
+				GenericComponent<BreezyPin>	component = mountedBoard.getComponent(macroStep.getComponentId());
 				
 				if(component == null) {
 					LOG.debug("No component found for " + macroStep.getComponentId());
