@@ -110,7 +110,7 @@ public class MCP23017ExtensionProviderImpl implements ExtensionProvider<DigitalO
 			int address = Integer.decode(properties.get(I2CBusProperty.ADDRESS.name()));
 			
 			try {
-				mcp23017GpioProvider = new MCP23017GpioProvider(BreezyToPi4JI2CBus.getBus(breezyI2CBus).intValue(), address);
+				mcp23017GpioProvider = new MCP23017GpioProvider(BreezyToPi4JI2CBus.getBusAsInteger(breezyI2CBus).intValue(), address);
 			} catch (IOException e) {
 				throw new EmbeddedControllerException("Cannot create MCP23017GpioProvider, IO Exception thrown", e);
 			}

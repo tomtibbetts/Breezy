@@ -309,7 +309,6 @@ public class MacroBuilderView implements Serializable {
 	}
 	
 	public void insertEditRowBefore(int index) {
-		System.out.println("insert before macro step");
 		MacroStep newLine = new MacroStep();
 
 		selectedMacroStepIndex = index;
@@ -320,7 +319,6 @@ public class MacroBuilderView implements Serializable {
 	}
 	
 	public void insertEditRowAfter(int index) {
-		System.out.println("insert after macro step");
 		MacroStep newLine = new MacroStep();
 		
 		int nextIndex = index + 1;
