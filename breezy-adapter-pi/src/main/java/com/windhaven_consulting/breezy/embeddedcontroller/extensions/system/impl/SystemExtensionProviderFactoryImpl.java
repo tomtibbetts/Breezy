@@ -8,21 +8,19 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.BaseExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.system.SystemPin;
 
 @Named("systemExtensionProviderFactory")
 @ApplicationScoped
-public class SystemExtensionProviderFactoryImpl extends BaseExtensionProviderFactory implements ExtensionProviderFactory {
+public class SystemExtensionProviderFactoryImpl extends BaseExtensionProviderFactory<DigitalOutputPin> {
 	
 	@Override
-	public ExtensionProvider get(Map<String, String> properties) {
-		ExtensionProvider extensionProvider = new SystemExtensionProviderImpl(getGpioController(), getInputListener(), properties, isWindowsEnvironment());
-		
-		return extensionProvider;
+	public ExtensionProvider<DigitalOutputPin> getExtensionProvider(Map<String, String> properties) {
+		return new SystemExtensionProviderImpl(getGpioController(), getInputListener(), properties, isWindowsEnvironment());
 	}
 
 	@Override

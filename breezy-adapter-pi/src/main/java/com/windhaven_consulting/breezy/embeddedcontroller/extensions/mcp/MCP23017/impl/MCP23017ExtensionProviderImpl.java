@@ -32,7 +32,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalInputP
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutputPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
 
-public class MCP23017ExtensionProviderImpl implements ExtensionProvider {
+public class MCP23017ExtensionProviderImpl implements ExtensionProvider<DigitalOutputPin> {
 	static final Logger LOG = LoggerFactory.getLogger(MCP23017ExtensionProviderImpl.class);
 
 	private boolean windowsEnvironment;
@@ -88,6 +88,12 @@ public class MCP23017ExtensionProviderImpl implements ExtensionProvider {
 			
 			return new Pi4JDigitalOutputPinProxyImpl(name, pinId, gpioPin);
 		}
+	}
+
+	@Override
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

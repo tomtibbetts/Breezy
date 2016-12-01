@@ -17,6 +17,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPinProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
@@ -28,7 +29,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockDigitalOutput
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutputPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
 
-public class PCA9685ExtensionProviderImpl implements ExtensionProvider {
+public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutputPin> {
 	static final Logger LOG = LoggerFactory.getLogger(PCA9685ExtensionProviderImpl.class);
 
 	private boolean windowsEnvironment;
@@ -64,6 +65,12 @@ public class PCA9685ExtensionProviderImpl implements ExtensionProvider {
 			
 			return new Pi4JDigitalOutputPinProxyImpl(name, pinId, gpioPin);
 		}
+	}
+
+	@Override
+	public PWMOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

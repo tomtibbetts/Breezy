@@ -17,6 +17,7 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPin;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPinProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
@@ -25,7 +26,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.StateChangeEvent;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JControllerProxyImpl;
 
-public abstract class BaseExtensionProviderFactory implements ExtensionProviderFactory {
+public abstract class BaseExtensionProviderFactory<T extends BreezyPin> implements ExtensionProviderFactory<T> {
 	static final Logger LOG = LoggerFactory.getLogger(BaseExtensionProviderFactory.class);
 
 	private Map<PropertyValueEnum, List<PropertyValueEnum>> propertyValueByPropertyEnumMap = new HashMap<PropertyValueEnum, List<PropertyValueEnum>>();

@@ -6,9 +6,9 @@ import java.util.Map;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 
-public interface ExtensionProviderFactory {
+public interface ExtensionProviderFactory<T extends BreezyPin> {
 
-	ExtensionProvider get(Map<String, String> properties);
+	ExtensionProvider<T> getExtensionProvider(Map<String, String> properties);
 	
 	List<String> getPropertyFieldNames();
 

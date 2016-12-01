@@ -93,10 +93,10 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	public void unmount(BreezyBoard breezyBoard) {
 //		LOG.debug("unmount for " + breezyBoard.getName());
 		
-		Map<UUID, ExtensionProvider> extensionProviderMap = new HashMap<UUID, ExtensionProvider>();
+		Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
 
 		for(Extension extension : breezyBoard.getExtensions()) {
-			ExtensionProvider extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
 			
 			extensionProviderMap.put(extension.getId(), extensionProvider);
 		}
@@ -104,7 +104,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		MountedBoard mountedBoard =  mountedBoardMap.get(breezyBoard.getId().toString());
 		
 		for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {
-			ExtensionProvider extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
 
 			BreezyPin breezyPin = mountedBoard.getInputPinById(inputPinConfiguration.getId());
 			extensionProvider.unprovisionPin(breezyPin);
@@ -112,7 +112,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		
 		for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
 			for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
-				ExtensionProvider extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
+				ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
 				
 				BreezyPin breezyPin = mountedBoard.getOutputPinById(outputPinConfiguration.getId());
 				extensionProvider.unprovisionPin(breezyPin);
@@ -127,11 +127,11 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	private MountedBoard getMountedBoard(BreezyBoard breezyBoard) {
 		LOG.debug("getMountedBoard for " + breezyBoard.getName());
 		
-		Map<UUID, ExtensionProvider> extensionProviderMap = new HashMap<UUID, ExtensionProvider>();
+		Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
 
 		for(Extension extension : breezyBoard.getExtensions()) {
 			LOG.debug("Using extension properties: " + extension.getProperties().toString());
-			ExtensionProvider extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
 			
 			extensionProviderMap.put(extension.getId(), extensionProvider);
 		}
@@ -143,7 +143,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		
 		LOG.debug("********* Initializing input pins for breezy board: " + breezyBoard.getName());
 		for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {
-			ExtensionProvider extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
 			
 			DigitalInputPin digitalInputPin = extensionProvider.provisionDigitalInputPin(
 					inputPinConfiguration.getName(),
@@ -164,7 +164,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 				
 				// TODO: put in a check for digital/analog/PWM
 				for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
-					ExtensionProvider extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
+					ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
 					
 					DigitalOutputPin digitalOutputPin = extensionProvider.provisionDigitalOutputPin(
 							outputPinConfiguration.getName(), 

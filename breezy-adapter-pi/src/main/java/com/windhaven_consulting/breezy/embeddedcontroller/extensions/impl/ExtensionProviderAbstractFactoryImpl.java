@@ -20,25 +20,25 @@ public class ExtensionProviderAbstractFactoryImpl implements ExtensionProviderAb
 
 	@Inject
 	@Named("systemExtensionProviderFactory")
-	private ExtensionProviderFactory systemExtensionProviderFactory;
+	private ExtensionProviderFactory<BreezyPin> systemExtensionProviderFactory;
 	
 	@Inject
 	@Named("mcp23S08ExtensionProviderFactory")
-	private ExtensionProviderFactory mcp23S08ExtensionProviderFactory;
+	private ExtensionProviderFactory<BreezyPin> mcp23S08ExtensionProviderFactory;
 	
 	@Inject
 	@Named("mcp23017ExtensionProviderFactory")
-	private ExtensionProviderFactory mcp23017ExtensionProviderFactory;
+	private ExtensionProviderFactory<BreezyPin> mcp23017ExtensionProviderFactory;
 	
 	@Inject
 	@Named("mcp23S17ExtensionProviderFactory")
-	private ExtensionProviderFactory mcp23S17ExtensionProviderFactory;
+	private ExtensionProviderFactory<BreezyPin> mcp23S17ExtensionProviderFactory;
 	
 	@Inject
 	@Named("pca9685ExtensionProviderFactory")
-	private ExtensionProviderFactory pca9685ExtensionProviderFactory;
+	private ExtensionProviderFactory<BreezyPin> pca9685ExtensionProviderFactory;
 	
-	private Map<ExtensionType, ExtensionProviderFactory> extensionTypeToProviderFactoryMap = new HashMap<ExtensionType, ExtensionProviderFactory>();;
+	private Map<ExtensionType, ExtensionProviderFactory<BreezyPin>> extensionTypeToProviderFactoryMap = new HashMap<ExtensionType, ExtensionProviderFactory<BreezyPin>>();;
 	
 	@PostConstruct
 	public void postConstruct() {
@@ -53,45 +53,45 @@ public class ExtensionProviderAbstractFactoryImpl implements ExtensionProviderAb
 	/**
 	 * returns a new instance of an ExtensionProvider (prototype pattern)
 	 */
-	public ExtensionProvider getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties) {
-		ExtensionProviderFactory extensionProviderFactory = getExtensionProviderFactory(extensionType);
-		ExtensionProvider extensionProvider = extensionProviderFactory.get(properties);
+	public ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties) {
+		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = getExtensionProviderFactory(extensionType);
+		ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getExtensionProvider(properties);
 		
 		return extensionProvider;
 	}
 
 	@Override
 	public List<String> getPropertyFieldNames(ExtensionType extensionType) {
-		ExtensionProviderFactory extensionProviderFactory = getExtensionProviderFactory(extensionType);
+		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = getExtensionProviderFactory(extensionType);
 		return extensionProviderFactory.getPropertyFieldNames();
 	}
 
 	@Override
 	public List<BreezyPin> getAvailablePins(ExtensionType extensionType) {
-		ExtensionProviderFactory extensionProviderFactory = getExtensionProviderFactory(extensionType);
+		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = getExtensionProviderFactory(extensionType);
 		return extensionProviderFactory.getAvailablePins();
 	}
 
 	@Override
 	public List<PropertyValueEnum> getProperties(ExtensionType extensionType) {
-		ExtensionProviderFactory extensionProviderFactory = getExtensionProviderFactory(extensionType);
+		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = getExtensionProviderFactory(extensionType);
 		return extensionProviderFactory.getProperties();
 	}
 
 	@Override
 	public List<PropertyValueEnum> getPropertyValues(ExtensionType extensionType, PropertyValueEnum property) {
-		ExtensionProviderFactory extensionProviderFactory = getExtensionProviderFactory(extensionType);
+		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = getExtensionProviderFactory(extensionType);
 		return extensionProviderFactory.getPropertyValues(property);
 	}
 	
 	@Override
 	public List<PropertyValueEnum> getPropertyValues(ExtensionType extensionType, String property) {
-		ExtensionProviderFactory extensionProviderFactory = getExtensionProviderFactory(extensionType);
+		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = getExtensionProviderFactory(extensionType);
 		return extensionProviderFactory.getPropertyValues(property);
 	}
 
-	private ExtensionProviderFactory getExtensionProviderFactory(ExtensionType extensionType) {
-		ExtensionProviderFactory extensionProviderFactory = extensionTypeToProviderFactoryMap.get(extensionType);
+	private ExtensionProviderFactory<BreezyPin> getExtensionProviderFactory(ExtensionType extensionType) {
+		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = extensionTypeToProviderFactoryMap.get(extensionType);
 
 		if(extensionProviderFactory == null) {
 			throw new EmbeddedControllerException("No Extension Provider Factory found for '" + extensionType.name() + "'.");

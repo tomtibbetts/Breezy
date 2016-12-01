@@ -32,7 +32,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutput
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
 import com.windhaven_consulting.breezy.pi4j.custom.extension.mcp.MCP23S08GpioProvider;
 
-public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
+public class MCP23S08ExtensionProviderImpl implements ExtensionProvider<DigitalOutputPin> {
 	static final Logger LOG = LoggerFactory.getLogger(MCP23S08ExtensionProviderImpl.class);
 
 	private boolean windowsEnvironment;
@@ -95,6 +95,12 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	@Override
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public void unprovisionPin(BreezyPin breezyPin) {
 		if(!windowsEnvironment) {
 			Pi4JPinProxyImpl pi4jPinProxyImpl = (Pi4JPinProxyImpl) breezyPin;
@@ -139,5 +145,4 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 	private boolean isWindowsEnvironment() {
 		return windowsEnvironment;
 	}
-
 }

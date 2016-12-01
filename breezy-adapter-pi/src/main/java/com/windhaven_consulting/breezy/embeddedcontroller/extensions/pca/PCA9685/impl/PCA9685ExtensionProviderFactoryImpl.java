@@ -9,8 +9,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.I2CBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.I2CBusExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.pca.PCA9685.PCA9685Address;
@@ -18,17 +18,16 @@ import com.windhaven_consulting.breezy.embeddedcontroller.extensions.pca.PCA9685
 
 @Named("pca9685ExtensionProviderFactory")
 @ApplicationScoped
-public class PCA9685ExtensionProviderFactoryImpl extends I2CBusExtensionProviderFactory implements ExtensionProviderFactory {
+public class PCA9685ExtensionProviderFactoryImpl extends I2CBusExtensionProviderFactory<PWMOutputPin> {
 	
 	@PostConstruct
 	public void postConstruct() {
 		super.postConstruct();
-		
 		addProperties(I2CBusProperty.ADDRESS, Arrays.asList(PCA9685Address.values()));
 	}
 
 	@Override
-	public ExtensionProvider get(Map<String, String> properties) {
+	public ExtensionProvider<PWMOutputPin> getExtensionProvider(Map<String, String> properties) {
 		return new PCA9685ExtensionProviderImpl(getGpioController(), getInputListener(), properties, isWindowsEnvironment());
 	}
 
