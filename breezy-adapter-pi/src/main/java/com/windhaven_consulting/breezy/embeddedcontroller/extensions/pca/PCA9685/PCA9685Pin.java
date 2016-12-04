@@ -16,7 +16,7 @@ public class PCA9685Pin implements BreezyPin {
 
 	private UUID id;
 	
-	public static final BreezyPin PWM_00 = createPwmPin("PWM_01");
+	public static final BreezyPin PWM_00 = createPwmPin("PWM_00");
     public static final BreezyPin PWM_01 = createPwmPin("PWM_01");
     public static final BreezyPin PWM_02 = createPwmPin("PWM_02");
     public static final BreezyPin PWM_03 = createPwmPin("PWM_03");

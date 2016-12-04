@@ -63,8 +63,6 @@ public class MacroBuilderView implements Serializable {
 	
 	private Map<String, String> mountedBoardIdToNameMap = new HashMap<String, String>();
 	
-//	private Map<String, String> componentIdToNameMap = new HashMap<String, String>();
-	
 	private Map<String, GenericComponent<BreezyPin>> componentIdToComponentMap = new HashMap<String, GenericComponent<BreezyPin>>();
 
 	private List<GenericComponent<BreezyPin>> components = new ArrayList<GenericComponent<BreezyPin>>();
@@ -336,7 +334,6 @@ public class MacroBuilderView implements Serializable {
 	}
 	
 	public void deleteRow(int index) {
-		System.out.println("delete macro step");
 		macro.getSteps().remove(index);
 	}
 
@@ -378,7 +375,6 @@ public class MacroBuilderView implements Serializable {
 	
 	private void initialize() {
 		mountedBoardIdToNameMap.clear();
-//		componentIdToNameMap.clear();
 		componentIdToComponentMap.clear();
 		componentToMethods.clear();
 		logicStates.clear();
@@ -395,7 +391,6 @@ public class MacroBuilderView implements Serializable {
 			mountedBoardIdToNameMap.put(mountedBoard.getId(), mountedBoard.getName());
 			
 			for(GenericComponent<BreezyPin> component : mountedBoard.getComponents()) {
-//				componentIdToNameMap.put(component.getId(), component.getName());
 				componentIdToComponentMap.put(component.getId(), component);
 				
 				if(!componentToMethods.containsKey(component.getId())) {

@@ -80,7 +80,7 @@ public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutput
 	}
 	
 	private void initialize() {
-		LOG.debug("Initializing PCA9685ExtensionProviderImpl");
+//		LOG.debug("Initializing PCA9685ExtensionProviderImpl");
 		
 		validateProperties();
 		
@@ -93,15 +93,12 @@ public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutput
 				int address = Integer.decode(properties.get(I2CBusProperty.ADDRESS.name()));
 				
 				pca9685GpioProvider = new PCA9685GpioProvider(i2cBus, address, DEFAULT_FREQUENCY, DEFAULT_FREQUENCY_CORRECTION_FACTOR);
-				
-				// reset all outputs.
-				pca9685GpioProvider.reset();
 			} catch (IOException e) {
 				throw new EmbeddedControllerException("Cannot create MCP23017GpioProvider, IO Exception thrown", e);
 			}
 		}
 
-		LOG.debug("End Initializing PCA9685ExtensionProviderImpl");
+//		LOG.debug("End Initializing PCA9685ExtensionProviderImpl");
 	}
 
 	private void validateProperties() {
