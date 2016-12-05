@@ -189,6 +189,7 @@ public class MacroExecutor implements MacroControllerComponent {
 //			LOG.debug("************************* " + this.getClass().getName() + "::run: starting execution for macro, '" + macro.getName() + "' ******************************");
 
 			for(currentStep = 0; currentStep < macro.getSteps().size() && isRunning; currentStep++) {
+				LOG.debug("Executing line: " + (currentStep + 1));
 				MacroStep macroStep = macro.getSteps().get(currentStep);
 				MountedBoard mountedBoard = mountedBoardManager.getById(macroStep.getMountedBoardId());
 				
@@ -204,15 +205,19 @@ public class MacroExecutor implements MacroControllerComponent {
 				}
 
 				ComponentTemplate componentTemplate = componentTemplateLibraryManager.getComponentTemplateFor(component);
+				
+				LOG.debug("Looking for methodTemplate for function: " + macroStep.getFunction());
 				MethodTemplate methodTemplate = componentTemplate.getMethodTemplate(macroStep.getFunction());
 				
 				int numberOfParameters = methodTemplate.getParameters().size();
+				LOG.debug("Number of parameters: " + numberOfParameters);
 				
 				Class<?>[] parameterTypes = new Class<?>[numberOfParameters];
 				Object[] args = new Object[numberOfParameters];
 				
 				int i = 0;
 				for(ParameterTemplate parameterTemplate : methodTemplate.getParameters()) {
+					LOG.debug("Field Value = : " + macroStep.getMethodParameters().get(i).getFieldValue() + ", argument type = " + parameterTemplate.getArgumentType().getName());
 					args[i] = getArgumentForParameter(macroStep.getMethodParameters().get(i).getFieldValue(), parameterTemplate.getArgumentType());
 					parameterTypes[i] = parameterTemplate.getArgumentType();
 					i++;
@@ -228,16 +233,22 @@ public class MacroExecutor implements MacroControllerComponent {
 						invokingObject = component;
 					}
 					
+					LOG.debug("Method is: " + methodTemplate.getMethod() );
+					
 					Method method = invokingObject.getClass().getMethod(methodTemplate.getMethod(), parameterTypes);
 					method.invoke(invokingObject, args);
 					
 				} catch (NoSuchMethodException | SecurityException e) {
+					LOG.debug("No such method for function: " + macroStep.getFunction() );
 					throw new BreezyApplicationException(getExceptionMessage("unable to process current instruction."), e);
 				} catch (IllegalAccessException e) {
+					LOG.debug("Illegal access for function: " + macroStep.getFunction() );
 					throw new BreezyApplicationException(getExceptionMessage("unable to process current instruction."), e);
 				} catch (IllegalArgumentException e) {
+					LOG.debug("Illegal argument for function: " + macroStep.getFunction() );
 					throw new BreezyApplicationException(getExceptionMessage("unable to process current instruction."), e);
 				} catch (InvocationTargetException e) {
+					LOG.debug("InvocationTargetException for function: " + macroStep.getFunction() );
 					throw new BreezyApplicationException(getExceptionMessage("unable to process current instruction."), e);
 				}
 				
