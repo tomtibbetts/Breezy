@@ -8,6 +8,8 @@ public interface PWMOutputPin extends BreezyPin {
 	
 	void setAlwaysOff();
 	
+	void setBrightness(int brightness);
+	
 	void setPwm(int duration);
 	
 	void setPwm(int onPosition, int offPosition);
@@ -27,20 +29,25 @@ public interface PWMOutputPin extends BreezyPin {
     Future<?> blink(long delay, long duration, PWMPinState pwmPinState);
 
     void blink(long delay, long duration, PWMPinState pwmPinState, boolean blockToCompletion);
-
     
     Future<?> pulse(long duration);
+
     Future<?> pulse(long duration, boolean blocking);
+    
     Future<?> pulse(long duration, PWMPinState pulseState);
+    
     Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking);
+	
+    Future<?> pulsate(long attack, long sustain, long release);
+    
+    void setState(PWMPinState pwmPinstate);
     
 //    Future<?> pulse(long duration, Callable<Void> callback);
 //    Future<?> pulse(long duration, boolean blocking, Callable<Void> callback);
 //    Future<?> pulse(long duration, PinState pulseState, Callable<Void> callback);
 //    Future<?> pulse(long duration, PinState pulseState, boolean blocking, Callable<Void> callback);
 
-    void setState(PWMPinState pwmPinstate);
-    
+
 //    void setState(boolean state);
 	
 }

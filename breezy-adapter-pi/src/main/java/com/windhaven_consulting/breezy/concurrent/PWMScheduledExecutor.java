@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.windhaven_consulting.breezy.concurrent.impl.DefaultExecutorServiceFactoryImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkStopTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkTaskImpl;
+import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateAttackTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulseTaskImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMPinState;
@@ -73,7 +74,6 @@ public class PWMScheduledExecutor {
       return null;
 	}
 
-
     public synchronized static Future<?> pulse(PWMOutputPin pin, long duration, PWMPinState pulseState) {
         // create future return object
         ScheduledFuture<?> scheduledFuture = null; 
@@ -106,6 +106,40 @@ public class PWMScheduledExecutor {
 
         // return future task
         return scheduledFuture;
+    }
+
+    public synchronized static Future<?> pulsate(PWMOutputPin pwmOutputPin, long attack, long sustain, long release) {
+        // create future return object
+        ScheduledFuture<?> scheduledFuturePulsateTask = null; 
+                
+        // perform the initial startup and cleanup for this pin 
+        initialize(pwmOutputPin);
+
+        // we only pulse for requests with a valid duration in milliseconds
+        if (attack > 0) {
+            // set the active state
+            pwmOutputPin.setState(PWMPinState.LOW);
+            
+            // create future job to return the pin to the low state
+            scheduledFuturePulsateTask = scheduledExecutorService
+                .scheduleAtFixedRate(new PWMOutputPinPulsateAttackTaskImpl(pwmOutputPin, attack, null), 0, 1, TimeUnit.MILLISECONDS);
+
+            // get pending tasks for the current pin
+            ArrayList<ScheduledFuture<?>> tasks;
+            if (!pinTaskQueue.containsKey(pwmOutputPin)) {
+                pinTaskQueue.put(pwmOutputPin, new ArrayList<ScheduledFuture<?>>());
+            }
+            tasks = pinTaskQueue.get(pwmOutputPin);
+            
+            // add the new scheduled task to the tasks collection
+            tasks.add(scheduledFuturePulsateTask);
+            
+            // create future task to clean up completed tasks
+            createCleanupTask(attack + 500);
+        }
+
+        // return future task
+        return scheduledFuturePulsateTask;
     }
 
 	private synchronized static ScheduledFuture<?>  createCleanupTask(long delay) {
@@ -183,7 +217,5 @@ public class PWMScheduledExecutor {
         // return the provider instance
         return executorServiceFactory;
     }
-	
-	
 	
 }

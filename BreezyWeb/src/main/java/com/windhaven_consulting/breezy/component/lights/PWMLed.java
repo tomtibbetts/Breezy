@@ -69,22 +69,29 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 		getOutputPin().pulse(duration, pwmPinState, blockToCompletion);
 	}
 	
-	// should this be by percent?
-	@ControlledMethod("Set By Duration")
-	public void setByDuration(@ControlledParameter(name = "Duration", parameterFieldType = ParameterFieldType.NUMBER, required = true) int duration) {
-		PWMOutputPin pwmOutputPin = getOutputPin();
-		pwmOutputPin.setPwm(duration);
-	}
+	@ControlledMethod("Pulsate")
+	public void pulsate(@ControlledParameter(name = "Attack (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long attack,
+			@ControlledParameter(name = "Sustain (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long sustain,
+			@ControlledParameter(name = "Release (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long release) {
 
-	// should this be by percent or steps?
-	@ControlledMethod("Set By Position")
-	public void setByPosition(@ControlledParameter(name = "On Position", parameterFieldType = ParameterFieldType.NUMBER, required = true) int onPosition,
-			@ControlledParameter(name = "Off Position", parameterFieldType = ParameterFieldType.NUMBER, required = true) int offPosition) {
-		PWMOutputPin pwmOutputPin = getOutputPin();
-		pwmOutputPin.setPwm(onPosition, offPosition);
+		getOutputPin().pulsate(attack, sustain, release);
 	}
-
 	
+	// use percentage and change to setBrightness
+	@ControlledMethod("Set Brightness")  // pulses the LED in microseconds each cycle effectively setting brightness
+	public void setBrightness(@ControlledParameter(name = "Brightness (percentage 0 - 100%)", parameterFieldType = ParameterFieldType.NUMBER, required = true) int duration) {
+		PWMOutputPin pwmOutputPin = getOutputPin();
+		pwmOutputPin.setBrightness(duration);
+	}
+
+//	// should this be by percent or steps?  Even include?
+//	@ControlledMethod("Set By Position")  // pulses LED from on position to off position effectively setting brightness
+//	public void setByPosition(@ControlledParameter(name = "On Position", parameterFieldType = ParameterFieldType.NUMBER, required = true) int onPosition,
+//			@ControlledParameter(name = "Off Position", parameterFieldType = ParameterFieldType.NUMBER, required = true) int offPosition) {
+//		PWMOutputPin pwmOutputPin = getOutputPin();
+//		pwmOutputPin.setPwm(onPosition, offPosition);
+//	}
+
 	@ControlledMethod("Synchronous Pulse")
 	public void pulse (@ControlledParameter(name = "Number of Steps", parameterFieldType = ParameterFieldType.NUMBER, required = true) int numberOfSteps,
 			@ControlledParameter(name = "Step Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) int stepDuration,

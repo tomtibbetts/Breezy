@@ -28,8 +28,8 @@ public class MockPWMOutputPinProxyImpl extends MockPinProxyImpl implements PWMOu
 	}
 
 	@Override
-	public void setPwm(int duration) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setPwm: duration = " + duration);
+	public void setBrightness(int duration) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setBrightness: duration = " + duration);
 	}
 
 	@Override
@@ -89,26 +89,38 @@ public class MockPWMOutputPinProxyImpl extends MockPinProxyImpl implements PWMOu
 
 	@Override
 	public Future<?> pulse(long duration) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulse: duration = " + duration);
 		return null;
 	}
 
 	@Override
 	public Future<?> pulse(long duration, boolean blocking) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration + ", blocking = " + blocking);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulse: duration = " + duration + ", blocking = " + blocking);
 		return null;
 	}
 
 	@Override
 	public Future<?> pulse(long duration, PWMPinState pulseState) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration + ", pwmPinState = " + pulseState);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulse: duration = " + duration + ", pwmPinState = " + pulseState);
 		return null;
 	}
 
 	@Override
 	public Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration + ", pulseState = " + pulseState + ", blocking = " + blocking);
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulse: duration = " + duration + ", pulseState = " + pulseState + ", blocking = " + blocking);
 		return null;
+	}
+
+	@Override
+	public Future<?> pulsate(long attack, long sustain, long release) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", sustain = " + sustain + ", release = " + release);
+		
+		return null;
+	}
+
+	@Override
+	public void setPwm(int duration) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setPwm: duration = " + duration);
 	}
 
 }

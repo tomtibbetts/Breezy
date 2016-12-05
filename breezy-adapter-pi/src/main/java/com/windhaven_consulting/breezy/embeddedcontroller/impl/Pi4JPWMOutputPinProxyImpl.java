@@ -41,6 +41,23 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
 	}
 
 	@Override
+	public void setBrightness(int brightness) {
+		if(brightness < 0 || brightness > 100) {
+			throw new IllegalArgumentException("Range of brightness must be >= 0 and <= 100");
+		}
+		
+		pwmPinState = PWMPinState.INDETERMINATE;
+		
+		LOG.debug("periodDurationMicros = " + pca9685GpioProvider.getPeriodDurationMicros());
+		
+		int duration = ((pca9685GpioProvider.getPeriodDurationMicros() - 1) / 100) * brightness;
+
+		LOG.debug("duration = " + duration);
+		
+		pca9685GpioProvider.setPwm(pin, duration);
+	}
+
+	@Override
 	public void setPwm(int duration) {
 		pwmPinState = PWMPinState.INDETERMINATE;
 		pca9685GpioProvider.setPwm(pin, duration);
@@ -184,6 +201,13 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
             // thread pool using a scheduled executor 
             return PWMScheduledExecutor.pulse(this, duration, pulseState);
         }
+	}
+
+	@Override
+	public Future<?> pulsate(long attack, long sustain, long release) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", sustain = " + sustain + ", release = " + release);
+
+		return PWMScheduledExecutor.pulsate(this, attack, sustain, release);
 	}
 
 }

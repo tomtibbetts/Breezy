@@ -22,7 +22,7 @@ public class PWMOutputPinBlinkStopTaskImpl implements Runnable {
     }
 
     public void run() {
-    	LOG.debug("Killing blink. StopState is: " + stopState);
+//    	LOG.debug("Killing blink. StopState is: " + stopState);
         // cancel the blinking task
         blinkTask.cancel(true);
         
