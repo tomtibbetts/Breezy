@@ -59,6 +59,16 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 		getOutputPin().blink(onTime, duration, pwmPinState, blockToCompletion);
 	}
 	
+	@ControlledMethod("Pulse")
+	public void pulse(@ControlledParameter(name = "Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long duration,
+			@ControlledParameter(name = "Start State", parameterFieldType = ParameterFieldType.PIN_STATE) PinState startState,
+			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
+		PWMPinState pwmPinState = (startState == null ? PWMPinState.HIGH : PWMPinState.LOW);
+		blockToCompletion = (blockToCompletion == null ? false : blockToCompletion);
+
+		getOutputPin().pulse(duration, pwmPinState, blockToCompletion);
+	}
+	
 	// should this be by percent?
 	@ControlledMethod("Set By Duration")
 	public void setByDuration(@ControlledParameter(name = "Duration", parameterFieldType = ParameterFieldType.NUMBER, required = true) int duration) {

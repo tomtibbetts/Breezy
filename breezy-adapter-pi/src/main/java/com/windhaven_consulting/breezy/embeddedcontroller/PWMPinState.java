@@ -39,7 +39,7 @@ public enum PWMPinState {
     public static PWMPinState getInverseState(PWMPinState pwmPinstate) {
     	PWMPinState result = INDETERMINATE;
     	
-    	if(pwmPinstate != INDETERMINATE) {
+    	if(pwmPinstate != null && pwmPinstate != INDETERMINATE) {
             result = (pwmPinstate == HIGH ? LOW : HIGH);
     	}
     	

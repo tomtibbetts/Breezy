@@ -87,4 +87,28 @@ public class MockPWMOutputPinProxyImpl extends MockPinProxyImpl implements PWMOu
 		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: delay = " + delay + ", duration = " + duration + ", pwmPinState = " + pwmPinState + ", blockToCompletion = " + blockToCompletion);
 	}
 
+	@Override
+	public Future<?> pulse(long duration) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration);
+		return null;
+	}
+
+	@Override
+	public Future<?> pulse(long duration, boolean blocking) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration + ", blocking = " + blocking);
+		return null;
+	}
+
+	@Override
+	public Future<?> pulse(long duration, PWMPinState pulseState) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration + ", pwmPinState = " + pulseState);
+		return null;
+	}
+
+	@Override
+	public Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: duration = " + duration + ", pulseState = " + pulseState + ", blocking = " + blocking);
+		return null;
+	}
+
 }

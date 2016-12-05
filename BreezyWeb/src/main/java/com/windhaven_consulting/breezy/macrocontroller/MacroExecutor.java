@@ -17,6 +17,7 @@ import com.windhaven_consulting.breezy.component.library.MethodTemplate;
 import com.windhaven_consulting.breezy.component.library.ParameterTemplate;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.PWMPinState;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 import com.windhaven_consulting.breezy.exceptions.BreezyApplicationException;
 import com.windhaven_consulting.breezy.manager.MacroExecutorManager;
@@ -168,6 +169,7 @@ public class MacroExecutor implements MacroControllerComponent {
 		valueConverterMap.put(long.class, new LongConverterImpl());
 		valueConverterMap.put(int.class, new IntConverterImpl());
 		valueConverterMap.put(PinState.class, new PinStateConverterImpl());
+		valueConverterMap.put(PWMPinState.class, new PWMPinStateConverterImpl());
 		valueConverterMap.put(Boolean.class, new BooleanConverterImpl());
 		valueConverterMap.put(UUID.class, new UUIDConverterImpl());
 	}
@@ -189,7 +191,7 @@ public class MacroExecutor implements MacroControllerComponent {
 //			LOG.debug("************************* " + this.getClass().getName() + "::run: starting execution for macro, '" + macro.getName() + "' ******************************");
 
 			for(currentStep = 0; currentStep < macro.getSteps().size() && isRunning; currentStep++) {
-				LOG.debug("Executing line: " + (currentStep + 1));
+//				LOG.debug("Executing line: " + (currentStep + 1));
 				MacroStep macroStep = macro.getSteps().get(currentStep);
 				MountedBoard mountedBoard = mountedBoardManager.getById(macroStep.getMountedBoardId());
 				
@@ -206,18 +208,18 @@ public class MacroExecutor implements MacroControllerComponent {
 
 				ComponentTemplate componentTemplate = componentTemplateLibraryManager.getComponentTemplateFor(component);
 				
-				LOG.debug("Looking for methodTemplate for function: " + macroStep.getFunction());
+//				LOG.debug("Looking for methodTemplate for function: " + macroStep.getFunction());
 				MethodTemplate methodTemplate = componentTemplate.getMethodTemplate(macroStep.getFunction());
 				
 				int numberOfParameters = methodTemplate.getParameters().size();
-				LOG.debug("Number of parameters: " + numberOfParameters);
+//				LOG.debug("Number of parameters: " + numberOfParameters);
 				
 				Class<?>[] parameterTypes = new Class<?>[numberOfParameters];
 				Object[] args = new Object[numberOfParameters];
 				
 				int i = 0;
 				for(ParameterTemplate parameterTemplate : methodTemplate.getParameters()) {
-					LOG.debug("Field Value = : " + macroStep.getMethodParameters().get(i).getFieldValue() + ", argument type = " + parameterTemplate.getArgumentType().getName());
+//					LOG.debug("Field Value = : " + macroStep.getMethodParameters().get(i).getFieldValue() + ", argument type = " + parameterTemplate.getArgumentType().getName());
 					args[i] = getArgumentForParameter(macroStep.getMethodParameters().get(i).getFieldValue(), parameterTemplate.getArgumentType());
 					parameterTypes[i] = parameterTemplate.getArgumentType();
 					i++;
@@ -233,7 +235,7 @@ public class MacroExecutor implements MacroControllerComponent {
 						invokingObject = component;
 					}
 					
-					LOG.debug("Method is: " + methodTemplate.getMethod() );
+//					LOG.debug("Method is: " + methodTemplate.getMethod() );
 					
 					Method method = invokingObject.getClass().getMethod(methodTemplate.getMethod(), parameterTypes);
 					method.invoke(invokingObject, args);

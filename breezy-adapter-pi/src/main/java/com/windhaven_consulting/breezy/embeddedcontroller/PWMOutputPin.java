@@ -29,13 +29,14 @@ public interface PWMOutputPin extends BreezyPin {
     void blink(long delay, long duration, PWMPinState pwmPinState, boolean blockToCompletion);
 
     
-//    Future<?> pulse(long duration);
+    Future<?> pulse(long duration);
+    Future<?> pulse(long duration, boolean blocking);
+    Future<?> pulse(long duration, PWMPinState pulseState);
+    Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking);
+    
 //    Future<?> pulse(long duration, Callable<Void> callback);
-//    Future<?> pulse(long duration, boolean blocking);
 //    Future<?> pulse(long duration, boolean blocking, Callable<Void> callback);
-//    Future<?> pulse(long duration, PinState pulseState);
 //    Future<?> pulse(long duration, PinState pulseState, Callable<Void> callback);
-//    Future<?> pulse(long duration, PinState pulseState, boolean blocking);
 //    Future<?> pulse(long duration, PinState pulseState, boolean blocking, Callable<Void> callback);
 
     void setState(PWMPinState pwmPinstate);

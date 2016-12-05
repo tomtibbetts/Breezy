@@ -64,21 +64,18 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
 
 	@Override
 	public void toggle() {
-		LOG.debug("toggle, current state is: " + pwmPinState);
 		PWMPinState inverseState = PWMPinState.getInverseState(this.pwmPinState);
-		
-		LOG.debug("toggle, inverted state is: " + inverseState);
 
 		switch(inverseState) {
-			case HIGH :
+			case HIGH:
 				setAlwaysOn();
 				break;
-			case LOW :
+			case LOW:
 				setAlwaysOff();
 				break;
-			case INDETERMINATE :
+			case INDETERMINATE:
 				break;
-			default :
+			default:
 				break;
 		}
 	}
@@ -124,7 +121,69 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
 
 	@Override
 	public void setState(PWMPinState pwmPinstate) {
-		this.pwmPinState = pwmPinstate;
+		switch(pwmPinstate) {
+			case HIGH : 
+				setAlwaysOn();
+				break;
+			case LOW:
+				setAlwaysOff();
+				break;
+			case INDETERMINATE:
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public Future<?> pulse(long duration) {
+		return pulse(duration, PWMPinState.HIGH, false);
+	}
+
+	@Override
+	public Future<?> pulse(long duration, boolean blocking) {
+		return pulse(duration, PWMPinState.HIGH, blocking);
+	}
+
+	@Override
+	public Future<?> pulse(long duration, PWMPinState pulseState) {
+		return pulse(duration, pulseState, false);
+	}
+
+	@Override
+	public Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking) {
+        
+        // validate duration argument
+        if(duration <= 0)
+            throw new IllegalArgumentException("Pulse duration must be greater than 0 milliseconds.");
+        
+        // if this is a blocking pulse, then execute the pulse 
+        // and sleep the caller's thread to block the operation 
+        // until the pulse is complete
+        if(blocking) {
+            // start the pulse state
+            setState(pulseState);
+            
+            // block the current thread for the pulse duration 
+            try {
+                Thread.sleep(duration);
+            }
+            catch (InterruptedException e) {
+                throw new RuntimeException("Pulse blocking thread interrupted.", e);
+            }
+
+            // end the pulse state
+            setState(PWMPinState.getInverseState(pulseState));
+            
+            // we are done; no future is returned for blocking pulses
+            return null;
+        }
+        else {            
+            // if this is not a blocking call, then setup the pulse 
+            // instruction to be completed in a background worker
+            // thread pool using a scheduled executor 
+            return PWMScheduledExecutor.pulse(this, duration, pulseState);
+        }
 	}
 
 }
