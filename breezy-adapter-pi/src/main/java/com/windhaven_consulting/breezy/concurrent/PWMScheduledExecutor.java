@@ -15,7 +15,8 @@ import org.slf4j.LoggerFactory;
 import com.windhaven_consulting.breezy.concurrent.impl.DefaultExecutorServiceFactoryImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkStopTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkTaskImpl;
-import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateAttackTaskImpl;
+import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateStopTaskImpl;
+import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulseTaskImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMPinState;
@@ -28,8 +29,6 @@ public class PWMScheduledExecutor {
 	private static ExecutorServiceFactory executorServiceFactory;
 
 	public synchronized static Future<?> blink(PWMOutputPin pwmOutputPin, long delay, long duration, PWMPinState pwmPinState) {
-		LOG.debug("name: " + pwmOutputPin.getName() + ", id: " + pwmOutputPin.getId().toString() + ", blink: delay = " + delay + ", duration = " + duration + ", pwmPinState = " + pwmPinState);
-
 		initialize(pwmOutputPin);
 		
       // we only blink for requests with a valid delay in milliseconds
@@ -70,7 +69,6 @@ public class PWMScheduledExecutor {
       }
       
       // no future task when a delay time has not been specified
-      LOG.debug("leaving blink with no task");
       return null;
 	}
 
@@ -122,7 +120,7 @@ public class PWMScheduledExecutor {
             
             // create future job to return the pin to the low state
             scheduledFuturePulsateTask = scheduledExecutorService
-                .scheduleAtFixedRate(new PWMOutputPinPulsateAttackTaskImpl(pwmOutputPin, attack, null), 0, 1, TimeUnit.MILLISECONDS);
+                .scheduleAtFixedRate(new PWMOutputPinPulsateTaskImpl(pwmOutputPin, attack, sustain, release), 0, 1, TimeUnit.MILLISECONDS);
 
             // get pending tasks for the current pin
             ArrayList<ScheduledFuture<?>> tasks;
@@ -134,8 +132,17 @@ public class PWMScheduledExecutor {
             // add the new scheduled task to the tasks collection
             tasks.add(scheduledFuturePulsateTask);
             
+            long totalDuration = attack + sustain + release + 1;
+            
+//            // create future job to stop blinking
+//            ScheduledFuture<?> scheduledFuturePulsateStopTask = scheduledExecutorService
+//                .schedule(new PWMOutputPinPulsateStopTaskImpl(scheduledFuturePulsateTask), totalDuration, TimeUnit.MILLISECONDS);
+//
+//            // add the new scheduled stop task to the tasks collection
+//            tasks.add(scheduledFuturePulsateStopTask);
+//
             // create future task to clean up completed tasks
-            createCleanupTask(attack + 500);
+            createCleanupTask(totalDuration + 500);
         }
 
         // return future task
@@ -143,8 +150,6 @@ public class PWMScheduledExecutor {
     }
 
 	private synchronized static ScheduledFuture<?>  createCleanupTask(long delay) {
-		LOG.debug("entering createCleanupTask, delay = " + delay );
-		
 		// create future task to clean up completed tasks
         @SuppressWarnings({"rawtypes", "unchecked"})
         ScheduledFuture<?> cleanupFutureTask = scheduledExecutorService.schedule(new Callable() {
@@ -172,13 +177,10 @@ public class PWMScheduledExecutor {
             }
         }, delay, TimeUnit.MILLISECONDS);
         
-        LOG.debug("leaving cleanupFutureTask");
         return cleanupFutureTask;
 	}
 
 	private synchronized static void initialize(PWMOutputPin pwmOutputPin) {
-		LOG.debug("entering initialize");
-		
 		if (scheduledExecutorService == null) {
 	        scheduledExecutorService = getExecutorServiceFactory().getScheduledExecutorService();
 	    }
@@ -200,20 +202,14 @@ public class PWMScheduledExecutor {
 	            pinTaskQueue.remove(pwmOutputPin);
 	        }
 	    }
-
-	    LOG.debug("leaving initialize");
 	}
 	
     private static ExecutorServiceFactory getExecutorServiceFactory() {
-		LOG.debug("entering getExecutorServiceFactory");
-
         // if an executor service provider factory has not been created, then create a new default instance
         if (executorServiceFactory == null) {
             executorServiceFactory = new DefaultExecutorServiceFactoryImpl();
         }
 
-        LOG.debug("leaving getExecutorServiceFactory");
-        
         // return the provider instance
         return executorServiceFactory;
     }

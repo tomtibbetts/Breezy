@@ -75,8 +75,6 @@ public class DefaultExecutorServiceFactoryImpl implements ExecutorServiceFactory
                 Thread thread = defaultThreadFactory.newThread(runnable);
                 if (nameFormat != null) {
                     thread.setName(String.format(nameFormat, count.getAndIncrement()));
-
-                    LOG.debug("ThreadFactory - create new factory: " + String.format(nameFormat, count.get()));
                 }
                 return thread;
             }

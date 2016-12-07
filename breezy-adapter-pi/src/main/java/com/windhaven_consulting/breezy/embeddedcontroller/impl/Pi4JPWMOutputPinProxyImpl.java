@@ -47,13 +47,8 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
 		}
 		
 		pwmPinState = PWMPinState.INDETERMINATE;
-		
-		LOG.debug("periodDurationMicros = " + pca9685GpioProvider.getPeriodDurationMicros());
-		
-		int duration = ((pca9685GpioProvider.getPeriodDurationMicros() - 1) / 100) * brightness;
 
-		LOG.debug("duration = " + duration);
-		
+		int duration = ((pca9685GpioProvider.getPeriodDurationMicros() - 1) / 100) * brightness;
 		pca9685GpioProvider.setPwm(pin, duration);
 	}
 
@@ -115,16 +110,12 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
 
 	@Override
 	public Future<?> blink(long delay, long duration, PWMPinState blinkState) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: delay = " + delay + ", duration = " + duration + ", pwmPinState = " + pwmPinState);
-
 		// NOTE: a value of 0 milliseconds for delay will stop the blinking
         return PWMScheduledExecutor.blink(this, delay, duration, blinkState);
 	}
 
 	@Override
 	public void blink(long delay, long duration, PWMPinState pwmPinState, boolean blockToCompletion) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", blink: delay = " + delay + ", duration = " + duration + ", pwmPinState = " + pwmPinState + ", blockToCompletion = " + blockToCompletion);
-
 		blink(delay, duration, pwmPinState);
 		
 		if(blockToCompletion) {
@@ -169,7 +160,6 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
 
 	@Override
 	public Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking) {
-        
         // validate duration argument
         if(duration <= 0)
             throw new IllegalArgumentException("Pulse duration must be greater than 0 milliseconds.");
@@ -205,8 +195,6 @@ public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMO
 
 	@Override
 	public Future<?> pulsate(long attack, long sustain, long release) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", sustain = " + sustain + ", release = " + release);
-
 		return PWMScheduledExecutor.pulsate(this, attack, sustain, release);
 	}
 
