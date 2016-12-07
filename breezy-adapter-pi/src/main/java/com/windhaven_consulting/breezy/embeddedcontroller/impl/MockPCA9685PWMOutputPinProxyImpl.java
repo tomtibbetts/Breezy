@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMPinState;
 
-public class MockPWMOutputPinProxyImpl extends MockPinProxyImpl implements PWMOutputPin {
+public class MockPCA9685PWMOutputPinProxyImpl extends MockPinProxyImpl implements PWMOutputPin {
 
-	static final Logger LOG = LoggerFactory.getLogger(MockPWMOutputPinProxyImpl.class);
+	static final Logger LOG = LoggerFactory.getLogger(MockPCA9685PWMOutputPinProxyImpl.class);
 
-	public MockPWMOutputPinProxyImpl(String name, UUID id) {
+	public MockPCA9685PWMOutputPinProxyImpl(String name, UUID id) {
 		super(name, id);
 	}
 

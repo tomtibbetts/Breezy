@@ -26,8 +26,8 @@ import com.windhaven_consulting.breezy.embeddedcontroller.extensions.I2CBusPrope
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.pca.PCA9685.BreezyToPCA9685Pin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.pca.PCA9685.PCA9685Pin;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JI2CBus;
-import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockPWMOutputPinProxyImpl;
-import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPWMOutputPinProxyImpl;
+import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockPCA9685PWMOutputPinProxyImpl;
+import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPCA9685PWMOutputPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
 
 public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutputPin> {
@@ -57,7 +57,7 @@ public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutput
 	@Override
 	public PWMOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		if(isWindowsEnvironment()) {
-			return new MockPWMOutputPinProxyImpl(name, pinId);
+			return new MockPCA9685PWMOutputPinProxyImpl(name, pinId);
 		}
 		else {
 			BreezyPin breezyPin = PCA9685Pin.getByName(pinName);
@@ -67,7 +67,7 @@ public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutput
 			gpioPin.setProperty(BreezyPinProperty.NAME.name(), name);
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 			
-			return new Pi4JPWMOutputPinProxyImpl(name, pinId, gpioPin, pi4JPin, pca9685GpioProvider);
+			return new Pi4JPCA9685PWMOutputPinProxyImpl(name, pinId, gpioPin, pi4JPin, pca9685GpioProvider);
 		}
 	}
 

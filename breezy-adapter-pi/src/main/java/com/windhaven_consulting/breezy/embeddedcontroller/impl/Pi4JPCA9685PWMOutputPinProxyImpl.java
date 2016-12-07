@@ -14,14 +14,14 @@ import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMPinState;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 
-public class Pi4JPWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMOutputPin {
-	static final Logger LOG = LoggerFactory.getLogger(Pi4JPWMOutputPinProxyImpl.class);
+public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMOutputPin {
+	static final Logger LOG = LoggerFactory.getLogger(Pi4JPCA9685PWMOutputPinProxyImpl.class);
 
 	private Pin pin;
 	private PCA9685GpioProvider pca9685GpioProvider;
 	private PWMPinState pwmPinState = PWMPinState.INDETERMINATE;
 	
-	public Pi4JPWMOutputPinProxyImpl(String name, UUID id, GpioPin gpioPin, Pin pin, PCA9685GpioProvider pca9685GpioProvider) {
+	public Pi4JPCA9685PWMOutputPinProxyImpl(String name, UUID id, GpioPin gpioPin, Pin pin, PCA9685GpioProvider pca9685GpioProvider) {
 		super(name, id, gpioPin);
 
 		this.pin = pin;
