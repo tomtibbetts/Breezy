@@ -38,7 +38,7 @@ public interface PWMOutputPin extends BreezyPin {
     
     Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking);
 	
-    Future<?> pulsate(long attack, long sustain, long release);
+    Future<?> pulsate(long attack, long sustain, long release, long interval, int brightness);
     
     void setState(PWMPinState pwmPinstate);
     

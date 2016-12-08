@@ -112,15 +112,15 @@ public class MockPCA9685PWMOutputPinProxyImpl extends MockPinProxyImpl implement
 	}
 
 	@Override
-	public Future<?> pulsate(long attack, long sustain, long release) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", sustain = " + sustain + ", release = " + release);
+	public Future<?> pulsate(long attack, long sustain, long release, long interval, int maxBrightness) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", sustain = " + sustain + ", release = " + release + ", interval = " + interval + ", maxBrightness = " + maxBrightness);
 		
 		return null;
 	}
 
 	@Override
-	public void setPwm(int duration) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setPwm: duration = " + duration);
+	public void setPwm(int brightness) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setPwm: brightness = " + brightness);
 	}
 
 }

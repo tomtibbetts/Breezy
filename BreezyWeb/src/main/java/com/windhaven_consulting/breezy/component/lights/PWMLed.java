@@ -26,8 +26,6 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final int MAX_NUMBER_OF_STEPS = 4096;
-
 	@ControlledMethod("Turn On")
 	public void turnOn() {
 		PWMOutputPin pwmOutputPin = getOutputPin();
@@ -72,48 +70,28 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 	@ControlledMethod("Pulsate")
 	public void pulsate(@ControlledParameter(name = "Attack (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long attack,
 			@ControlledParameter(name = "Sustain (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long sustain,
-			@ControlledParameter(name = "Release (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long release) {
+			@ControlledParameter(name = "Release (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long release,
+			@ControlledParameter(name = "Interval (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER) Long interval,
+			@ControlledParameter(name = "Max Brightness (0% - 100%)", parameterFieldType = ParameterFieldType.NUMBER) Integer maxBrightness) {
 
-		getOutputPin().pulsate(attack, sustain, release);
+		interval = (interval == null ? 0 : interval);
+		maxBrightness = (maxBrightness == null ? 100 : maxBrightness);
+		
+		getOutputPin().pulsate(attack, sustain, release, interval, maxBrightness);
 	}
 	
 	// use percentage and change to setBrightness
 	@ControlledMethod("Set Brightness")  // pulses the LED in microseconds each cycle effectively setting brightness
-	public void setBrightness(@ControlledParameter(name = "Brightness (percentage 0 - 100%)", parameterFieldType = ParameterFieldType.NUMBER, required = true) int duration) {
+	public void setBrightness(@ControlledParameter(name = "Brightness (0% - 100%)", parameterFieldType = ParameterFieldType.NUMBER, required = true) Integer brightness) {
+		brightness = (brightness == null ? 100 : brightness);
+
 		PWMOutputPin pwmOutputPin = getOutputPin();
-		pwmOutputPin.setBrightness(duration);
-	}
-
-//	// should this be by percent or steps?  Even include?
-//	@ControlledMethod("Set By Position")  // pulses LED from on position to off position effectively setting brightness
-//	public void setByPosition(@ControlledParameter(name = "On Position", parameterFieldType = ParameterFieldType.NUMBER, required = true) int onPosition,
-//			@ControlledParameter(name = "Off Position", parameterFieldType = ParameterFieldType.NUMBER, required = true) int offPosition) {
-//		PWMOutputPin pwmOutputPin = getOutputPin();
-//		pwmOutputPin.setPwm(onPosition, offPosition);
-//	}
-
-	@ControlledMethod("Synchronous Pulse")
-	public void pulse (@ControlledParameter(name = "Number of Steps", parameterFieldType = ParameterFieldType.NUMBER, required = true) int numberOfSteps,
-			@ControlledParameter(name = "Step Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) int stepDuration,
-			@ControlledParameter(name = "Transition Duration (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) int transitionDuration) {
-		PWMOutputPin pwmOutputPin = getOutputPin();
-		int tick = MAX_NUMBER_OF_STEPS / numberOfSteps;
-
-		try {
-			Thread.sleep(transitionDuration);
-			for(int i = 1; i <= numberOfSteps; i++) {
-				pwmOutputPin.setPwm(1, tick * i);
-				Thread.sleep(stepDuration);
-			}
-
-			Thread.sleep(transitionDuration);
-			
-			for(int i = numberOfSteps; i > 0; i--) {
-				pwmOutputPin.setPwm(1, tick * i);
-				Thread.sleep(stepDuration);
-			}
-		} catch (InterruptedException e) {
-			LOG.error(e.getMessage());
+		
+		if(brightness == 0) {
+			pwmOutputPin.setAlwaysOff();
+		}
+		else {
+			pwmOutputPin.setBrightness(brightness);
 		}
 	}
 

@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.windhaven_consulting.breezy.concurrent.impl.DefaultExecutorServiceFactoryImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkStopTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkTaskImpl;
-import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateStopTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulseTaskImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
@@ -106,7 +105,7 @@ public class PWMScheduledExecutor {
         return scheduledFuture;
     }
 
-    public synchronized static Future<?> pulsate(PWMOutputPin pwmOutputPin, long attack, long sustain, long release) {
+    public synchronized static Future<?> pulsate(PWMOutputPin pwmOutputPin, long attack, long sustain, long release, long interval, int maxBrightness) {
         // create future return object
         ScheduledFuture<?> scheduledFuturePulsateTask = null; 
                 
@@ -120,7 +119,7 @@ public class PWMScheduledExecutor {
             
             // create future job to return the pin to the low state
             scheduledFuturePulsateTask = scheduledExecutorService
-                .scheduleAtFixedRate(new PWMOutputPinPulsateTaskImpl(pwmOutputPin, attack, sustain, release), 0, 1, TimeUnit.MILLISECONDS);
+                .scheduleAtFixedRate(new PWMOutputPinPulsateTaskImpl(pwmOutputPin, attack, sustain, release, interval, maxBrightness), 0, 1, TimeUnit.MILLISECONDS);
 
             // get pending tasks for the current pin
             ArrayList<ScheduledFuture<?>> tasks;

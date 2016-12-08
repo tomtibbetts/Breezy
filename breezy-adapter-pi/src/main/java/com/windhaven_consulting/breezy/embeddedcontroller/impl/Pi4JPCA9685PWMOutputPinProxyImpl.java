@@ -193,9 +193,12 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
         }
 	}
 
+	// TODO: add another pulsate method for a one off pulsate or for a duration
+	// Add interval which is the time between pulsations
+	// add max brightness to cap to a particular brightness
 	@Override
-	public Future<?> pulsate(long attack, long sustain, long release) {
-		return PWMScheduledExecutor.pulsate(this, attack, sustain, release);
+	public Future<?> pulsate(long attack, long sustain, long release, long interval, int maxBrightness) {
+		return PWMScheduledExecutor.pulsate(this, attack, sustain, release, interval, maxBrightness);
 	}
 
 }

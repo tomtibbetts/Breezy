@@ -166,8 +166,10 @@ public class MacroExecutor implements MacroControllerComponent {
 		}
 		
 		valueConverterMap.put(String.class, new StringConverterImpl());
-		valueConverterMap.put(long.class, new LongConverterImpl());
-		valueConverterMap.put(int.class, new IntConverterImpl());
+		valueConverterMap.put(long.class, new NativeLongConverterImpl());
+		valueConverterMap.put(Long.class, new NativeLongConverterImpl());
+		valueConverterMap.put(int.class, new NativeIntConverterImpl());
+		valueConverterMap.put(Integer.class, new NativeIntConverterImpl());
 		valueConverterMap.put(PinState.class, new PinStateConverterImpl());
 		valueConverterMap.put(PWMPinState.class, new PWMPinStateConverterImpl());
 		valueConverterMap.put(Boolean.class, new BooleanConverterImpl());
