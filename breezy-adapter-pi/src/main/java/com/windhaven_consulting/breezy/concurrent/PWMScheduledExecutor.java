@@ -166,9 +166,6 @@ public class PWMScheduledExecutor {
 
         // we only pulse for requests with a valid duration in milliseconds
         if (attack > 0) {
-            // set the active state
-            pwmOutputPin.setState(PWMPinState.LOW);
-            
             // create future job to return the pin to the low state
             scheduledFuturePulsateTask = scheduledExecutorService.scheduleAtFixedRate(new PWMOutputPinDimTaskImpl(pwmOutputPin, attack, brightness), 0, 1, TimeUnit.MILLISECONDS);
 
@@ -183,11 +180,11 @@ public class PWMScheduledExecutor {
             tasks.add(scheduledFuturePulsateTask);
     
 			// create future job to stop dimming
-			ScheduledFuture<?> scheduledPulsateStopTask = scheduledExecutorService
+			ScheduledFuture<?> scheduledDimmerStopTask = scheduledExecutorService
 				.schedule(new PWMOutputPinStopTaskImpl(scheduledFuturePulsateTask), attack, TimeUnit.MILLISECONDS);
 			
 			// add the new scheduled stop task to the tasks collection
-			tasks.add(scheduledPulsateStopTask);
+			tasks.add(scheduledDimmerStopTask);
 
             createCleanupTask(attack + 500);
         }

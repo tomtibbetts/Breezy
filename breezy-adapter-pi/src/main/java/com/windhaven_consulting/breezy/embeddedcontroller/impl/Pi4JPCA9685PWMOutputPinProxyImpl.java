@@ -3,6 +3,7 @@ package com.windhaven_consulting.breezy.embeddedcontroller.impl;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,24 +35,28 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 
 	@Override
 	public void setAlwaysOn() {
+		LOG.debug("set to always on");
 		pwmPinState = PWMPinState.HIGH;
+		currentBrightness = 100;
 		pca9685GpioProvider.setAlwaysOn(pin);
 	}
 
 	@Override
 	public void setAlwaysOff() {
+		LOG.debug("set to always off");
 		pwmPinState = PWMPinState.LOW;
+		currentBrightness = 0;
 		pca9685GpioProvider.setAlwaysOff(pin);
 	}
 
 	@Override
 	public void setBrightness(int brightness) {
+		LOG.debug("brightness was: " + currentBrightness + " and is now " + brightness);
 		if(brightness < 0 || brightness > 100) {
 			throw new IllegalArgumentException("Range of brightness must be >= 0 and <= 100");
 		}
 		
 		currentBrightness = brightness;
-		
 		pwmPinState = PWMPinState.INDETERMINATE;
 
 		int duration = ((pca9685GpioProvider.getPeriodDurationMicros() - 1) / 100) * brightness;
@@ -82,6 +87,7 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 
 	@Override
 	public void low() {
+		LOG.debug("low() called");
 		setAlwaysOff();
 	}
 
@@ -94,6 +100,7 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 				setAlwaysOn();
 				break;
 			case LOW:
+				LOG.debug("toggle called");
 				setAlwaysOff();
 				break;
 			case INDETERMINATE:
@@ -145,6 +152,7 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 				setAlwaysOn();
 				break;
 			case LOW:
+				LOG.debug("setState called");
 				setAlwaysOff();
 				break;
 			case INDETERMINATE:

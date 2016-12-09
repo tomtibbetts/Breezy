@@ -35,6 +35,7 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 	@ControlledMethod("Turn Off")
 	public void turnOff() {
 		PWMOutputPin pwmOutputPin = getOutputPin();
+		LOG.debug("method called is turn off");
 		pwmOutputPin.setAlwaysOff();
 	}
 	
@@ -88,6 +89,7 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 		PWMOutputPin pwmOutputPin = getOutputPin();
 		
 		if(brightness == 0) {
+			LOG.debug("setBrightness: brightness is zero");
 			pwmOutputPin.setAlwaysOff();
 		}
 		else if(brightness == 100) {
@@ -101,7 +103,7 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 	/**
 	 * Stops all blinking and pulsating
 	 */
-//	@ControlledMethod("Stop")
+	@ControlledMethod("Stop")
 	public void stop() {
 		getOutputPin().stop();
 	}
@@ -112,6 +114,7 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 	 * If the current brightness is more than the new value, ramp down.
 	 * Otherwise, leave it unchanged
 	 * 
+	 * TODO: add block to completion
 	 */
 	@ControlledMethod("Dim to")
 	public void dimTo(@ControlledParameter(name = "Attack (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long attack,
