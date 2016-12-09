@@ -8,17 +8,17 @@ import org.slf4j.LoggerFactory;
 public class PWMOutputPinStopTaskImpl implements Runnable {
 	static final Logger LOG = LoggerFactory.getLogger(PWMOutputPinStopTaskImpl.class);
 
-    private final ScheduledFuture<?> pulsateTask;
+    private final ScheduledFuture<?> task;
     
-    public PWMOutputPinStopTaskImpl(ScheduledFuture<?> pulsateTask) {
-        this.pulsateTask = pulsateTask;
+    public PWMOutputPinStopTaskImpl(ScheduledFuture<?> task) {
+        this.task = task;
     }
 
     public void run() {
-    	LOG.debug("Killing pulsate.");
+    	LOG.debug("Killing Dimmer/Pulsate Task.");
     	
         // cancel the blinking task
-    	pulsateTask.cancel(true);
+    	task.cancel(true);
     }
 
 }

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.windhaven_consulting.breezy.concurrent.impl.DefaultExecutorServiceFactoryImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkStopTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkTaskImpl;
-import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinDimTaskImpl;
+import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinDimmerTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulseTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinStopTaskImpl;
@@ -64,7 +64,6 @@ public class PWMScheduledExecutor {
               createCleanupTask(duration + 500);                
           }      
 
-          LOG.debug("leaving blink with task");
           // return future task
           return scheduledFutureBlinkTask;
       }
@@ -167,7 +166,7 @@ public class PWMScheduledExecutor {
         // we only pulse for requests with a valid duration in milliseconds
         if (attack > 0) {
             // create future job to return the pin to the low state
-            scheduledFuturePulsateTask = scheduledExecutorService.scheduleAtFixedRate(new PWMOutputPinDimTaskImpl(pwmOutputPin, attack, brightness), 0, 1, TimeUnit.MILLISECONDS);
+            scheduledFuturePulsateTask = scheduledExecutorService.scheduleAtFixedRate(new PWMOutputPinDimmerTaskImpl(pwmOutputPin, attack, brightness), 0, 1, TimeUnit.MILLISECONDS);
 
             // get pending tasks for the current pin
             ArrayList<ScheduledFuture<?>> tasks;

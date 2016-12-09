@@ -3,7 +3,6 @@ package com.windhaven_consulting.breezy.embeddedcontroller.impl;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +34,6 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 
 	@Override
 	public void setAlwaysOn() {
-		LOG.debug("set to always on");
 		pwmPinState = PWMPinState.HIGH;
 		currentBrightness = 100;
 		pca9685GpioProvider.setAlwaysOn(pin);
@@ -43,7 +41,6 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 
 	@Override
 	public void setAlwaysOff() {
-		LOG.debug("set to always off");
 		pwmPinState = PWMPinState.LOW;
 		currentBrightness = 0;
 		pca9685GpioProvider.setAlwaysOff(pin);
@@ -51,7 +48,6 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 
 	@Override
 	public void setBrightness(int brightness) {
-		LOG.debug("brightness was: " + currentBrightness + " and is now " + brightness);
 		if(brightness < 0 || brightness > 100) {
 			throw new IllegalArgumentException("Range of brightness must be >= 0 and <= 100");
 		}
@@ -60,7 +56,13 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 		pwmPinState = PWMPinState.INDETERMINATE;
 
 		int duration = ((pca9685GpioProvider.getPeriodDurationMicros() - 1) / 100) * brightness;
-		pca9685GpioProvider.setPwm(pin, duration);
+		
+		if(duration > 0) {
+			pca9685GpioProvider.setPwm(pin, duration);
+		}
+		else {
+			setAlwaysOff();
+		}
 	}
 
 	@Override
@@ -87,7 +89,6 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 
 	@Override
 	public void low() {
-		LOG.debug("low() called");
 		setAlwaysOff();
 	}
 
@@ -100,7 +101,6 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 				setAlwaysOn();
 				break;
 			case LOW:
-				LOG.debug("toggle called");
 				setAlwaysOff();
 				break;
 			case INDETERMINATE:
@@ -152,7 +152,6 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 				setAlwaysOn();
 				break;
 			case LOW:
-				LOG.debug("setState called");
 				setAlwaysOff();
 				break;
 			case INDETERMINATE:
@@ -178,7 +177,7 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 	}
 
 	@Override
-	public Future<?> pulse(long duration, PWMPinState pulseState, boolean blocking) {
+	public Future<?> pulse(long duration, PWMPinState pulseState, boolean blockToCompletion) {
         // validate duration argument
         if(duration <= 0)
             throw new IllegalArgumentException("Pulse duration must be greater than 0 milliseconds.");
@@ -186,7 +185,7 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
         // if this is a blocking pulse, then execute the pulse 
         // and sleep the caller's thread to block the operation 
         // until the pulse is complete
-        if(blocking) {
+        if(blockToCompletion) {
             // start the pulse state
             setState(pulseState);
             
@@ -226,8 +225,17 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 	}
 
 	@Override
-	public void dimTo(long attack, int brightness) {
+	public void dimTo(long attack, int brightness, boolean blockToCompletion) {
 		PWMScheduledExecutor.dimTo(this, attack, brightness);
+		
+		if(blockToCompletion) {
+			try {
+				Thread.sleep(attack);
+			}
+			catch(InterruptedException e) {
+                throw new RuntimeException("Dim to blocking thread interrupted.", e);
+			}
+		}
 	}
 
 }

@@ -35,7 +35,6 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 	@ControlledMethod("Turn Off")
 	public void turnOff() {
 		PWMOutputPin pwmOutputPin = getOutputPin();
-		LOG.debug("method called is turn off");
 		pwmOutputPin.setAlwaysOff();
 	}
 	
@@ -89,7 +88,6 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 		PWMOutputPin pwmOutputPin = getOutputPin();
 		
 		if(brightness == 0) {
-			LOG.debug("setBrightness: brightness is zero");
 			pwmOutputPin.setAlwaysOff();
 		}
 		else if(brightness == 100) {
@@ -118,9 +116,11 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 	 */
 	@ControlledMethod("Dim to")
 	public void dimTo(@ControlledParameter(name = "Attack (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long attack,
-			@ControlledParameter(name = "Brightness (0% - 100%)", parameterFieldType = ParameterFieldType.NUMBER, required = true) Integer brightness) {
-		
-		getOutputPin().dimTo(attack, brightness);
+			@ControlledParameter(name = "Brightness (0% - 100%)", parameterFieldType = ParameterFieldType.NUMBER, required = true) Integer brightness,
+			@ControlledParameter(name = "Wait Until Done", parameterFieldType = ParameterFieldType.LOGIC_STATE) Boolean blockToCompletion) {
+
+		blockToCompletion = (blockToCompletion == null ? false : blockToCompletion);
+		getOutputPin().dimTo(attack, brightness, blockToCompletion);
 	}
 	
 	@Override

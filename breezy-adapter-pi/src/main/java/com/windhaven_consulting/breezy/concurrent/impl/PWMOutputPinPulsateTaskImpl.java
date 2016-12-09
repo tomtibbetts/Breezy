@@ -1,15 +1,8 @@
 package com.windhaven_consulting.breezy.concurrent.impl;
 
-import org.apache.commons.logging.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPCA9685PWMOutputPinProxyImpl;
 
 public class PWMOutputPinPulsateTaskImpl implements Runnable {
-	static final Logger LOG = LoggerFactory.getLogger(PWMOutputPinPulsateTaskImpl.class);
-
 	private PWMOutputPin pwmOutputPin;
 	
 	private long attack;
@@ -46,8 +39,8 @@ public class PWMOutputPinPulsateTaskImpl implements Runnable {
 		this.interval = interval;
 		this.maxBrightness = maxBrightness;
 		
-		attackIncrement = 100.0 / (double) attack;
-		releaseIncrement = 100.0 / (double) release;
+		attackIncrement = ((double) maxBrightness) / ((double) attack);
+		releaseIncrement = ((double) maxBrightness) / (double) release;
 		pulsateTaskState = PWMPulsateTaskState.ATTACK;
 	}
 
@@ -104,7 +97,6 @@ public class PWMOutputPinPulsateTaskImpl implements Runnable {
 		}
 		
 		if(releaseCount-- <= 0) {
-			LOG.debug("release count went to zero");
 			pwmOutputPin.setAlwaysOff();
 			
 			if(interval > 0) {

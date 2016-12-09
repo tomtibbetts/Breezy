@@ -129,8 +129,8 @@ public class MockPCA9685PWMOutputPinProxyImpl extends MockPinProxyImpl implement
 	}
 
 	@Override
-	public void dimTo(long attack, int brightness) {
-		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", brightness = " + brightness);
+	public void dimTo(long attack, int brightness, boolean blockToCompletion) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", brightness = " + brightness + ", blockToCompletion = " + blockToCompletion);
 	}
 
 	@Override

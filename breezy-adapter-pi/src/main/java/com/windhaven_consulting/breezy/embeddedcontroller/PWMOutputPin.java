@@ -34,7 +34,7 @@ public interface PWMOutputPin extends BreezyPin {
     
     Future<?> pulse(long duration);
 
-    Future<?> pulse(long duration, boolean blocking);
+    Future<?> pulse(long duration, boolean blockToCompletion);
     
     Future<?> pulse(long duration, PWMPinState pulseState);
     
@@ -46,7 +46,7 @@ public interface PWMOutputPin extends BreezyPin {
 
 	void stop();
 
-	void dimTo(long attack, int brightness);
+	void dimTo(long attack, int brightness, boolean blockToCompletion);
     
 //    Future<?> pulse(long duration, Callable<Void> callback);
 //    Future<?> pulse(long duration, boolean blocking, Callable<Void> callback);
