@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
 import com.windhaven_consulting.breezy.concurrent.impl.DefaultExecutorServiceFactoryImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkStopTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinBlinkTaskImpl;
+import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinDimTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulsateTaskImpl;
 import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinPulseTaskImpl;
+import com.windhaven_consulting.breezy.concurrent.impl.PWMOutputPinStopTaskImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMPinState;
 
@@ -148,6 +150,52 @@ public class PWMScheduledExecutor {
         return scheduledFuturePulsateTask;
     }
 
+	public static void stop(PWMOutputPin pwmOutputPin) {
+		// TODO: look at compareto method of pin to see if doing correctly
+		cancelAllTasks(pwmOutputPin);
+		
+		createCleanupTask(500);
+	}
+
+	public static ScheduledFuture<?> dimTo(PWMOutputPin pwmOutputPin, long attack, int brightness) {
+        // create future return object
+        ScheduledFuture<?> scheduledFuturePulsateTask = null; 
+                
+        // perform the initial startup and cleanup for this pin 
+        initialize(pwmOutputPin);
+
+        // we only pulse for requests with a valid duration in milliseconds
+        if (attack > 0) {
+            // set the active state
+            pwmOutputPin.setState(PWMPinState.LOW);
+            
+            // create future job to return the pin to the low state
+            scheduledFuturePulsateTask = scheduledExecutorService.scheduleAtFixedRate(new PWMOutputPinDimTaskImpl(pwmOutputPin, attack, brightness), 0, 1, TimeUnit.MILLISECONDS);
+
+            // get pending tasks for the current pin
+            ArrayList<ScheduledFuture<?>> tasks;
+            if (!pinTaskQueue.containsKey(pwmOutputPin)) {
+                pinTaskQueue.put(pwmOutputPin, new ArrayList<ScheduledFuture<?>>());
+            }
+            tasks = pinTaskQueue.get(pwmOutputPin);
+            
+            // add the new scheduled task to the tasks collection
+            tasks.add(scheduledFuturePulsateTask);
+    
+			// create future job to stop dimming
+			ScheduledFuture<?> scheduledPulsateStopTask = scheduledExecutorService
+				.schedule(new PWMOutputPinStopTaskImpl(scheduledFuturePulsateTask), attack, TimeUnit.MILLISECONDS);
+			
+			// add the new scheduled stop task to the tasks collection
+			tasks.add(scheduledPulsateStopTask);
+
+            createCleanupTask(attack + 500);
+        }
+
+        // return future task
+        return scheduledFuturePulsateTask;
+	}
+
 	private synchronized static ScheduledFuture<?>  createCleanupTask(long delay) {
 		// create future task to clean up completed tasks
         @SuppressWarnings({"rawtypes", "unchecked"})
@@ -184,6 +232,10 @@ public class PWMScheduledExecutor {
 	        scheduledExecutorService = getExecutorServiceFactory().getScheduledExecutorService();
 	    }
 	
+		cancelAllTasks(pwmOutputPin);
+	}
+	
+    private static void cancelAllTasks(PWMOutputPin pwmOutputPin) {
 	    // determine if any existing future tasks are already scheduled for this pin
 	    if (pinTaskQueue.containsKey(pwmOutputPin)) {
 	        // if a task is found, then cancel all pending tasks immediately and remove them
@@ -202,8 +254,8 @@ public class PWMScheduledExecutor {
 	        }
 	    }
 	}
-	
-    private static ExecutorServiceFactory getExecutorServiceFactory() {
+
+	private static ExecutorServiceFactory getExecutorServiceFactory() {
         // if an executor service provider factory has not been created, then create a new default instance
         if (executorServiceFactory == null) {
             executorServiceFactory = new DefaultExecutorServiceFactoryImpl();

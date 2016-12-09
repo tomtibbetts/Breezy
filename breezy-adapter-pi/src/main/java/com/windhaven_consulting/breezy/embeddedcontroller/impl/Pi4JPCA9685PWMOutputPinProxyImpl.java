@@ -18,8 +18,12 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 	static final Logger LOG = LoggerFactory.getLogger(Pi4JPCA9685PWMOutputPinProxyImpl.class);
 
 	private Pin pin;
+	
 	private PCA9685GpioProvider pca9685GpioProvider;
+	
 	private PWMPinState pwmPinState = PWMPinState.INDETERMINATE;
+
+	private int currentBrightness;
 	
 	public Pi4JPCA9685PWMOutputPinProxyImpl(String name, UUID id, GpioPin gpioPin, Pin pin, PCA9685GpioProvider pca9685GpioProvider) {
 		super(name, id, gpioPin);
@@ -46,12 +50,19 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 			throw new IllegalArgumentException("Range of brightness must be >= 0 and <= 100");
 		}
 		
+		currentBrightness = brightness;
+		
 		pwmPinState = PWMPinState.INDETERMINATE;
 
 		int duration = ((pca9685GpioProvider.getPeriodDurationMicros() - 1) / 100) * brightness;
 		pca9685GpioProvider.setPwm(pin, duration);
 	}
 
+	@Override
+	public int getBrightness() {
+		return currentBrightness;
+	}
+	
 	@Override
 	public void setPwm(int duration) {
 		pwmPinState = PWMPinState.INDETERMINATE;
@@ -199,6 +210,16 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 	@Override
 	public Future<?> pulsate(long attack, long sustain, long release, long interval, int maxBrightness) {
 		return PWMScheduledExecutor.pulsate(this, attack, sustain, release, interval, maxBrightness);
+	}
+
+	@Override
+	public void stop() {
+		PWMScheduledExecutor.stop(this);
+	}
+
+	@Override
+	public void dimTo(long attack, int brightness) {
+		PWMScheduledExecutor.dimTo(this, attack, brightness);
 	}
 
 }

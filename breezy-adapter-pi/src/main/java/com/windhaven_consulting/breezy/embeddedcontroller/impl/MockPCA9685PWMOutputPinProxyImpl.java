@@ -123,4 +123,20 @@ public class MockPCA9685PWMOutputPinProxyImpl extends MockPinProxyImpl implement
 		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", setPwm: brightness = " + brightness);
 	}
 
+	@Override
+	public void stop() {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", stop");
+	}
+
+	@Override
+	public void dimTo(long attack, int brightness) {
+		LOG.debug("name: " + getName() + ", id: " + getId().toString() + ", pulsate: attack = " + attack + ", brightness = " + brightness);
+	}
+
+	@Override
+	public int getBrightness() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

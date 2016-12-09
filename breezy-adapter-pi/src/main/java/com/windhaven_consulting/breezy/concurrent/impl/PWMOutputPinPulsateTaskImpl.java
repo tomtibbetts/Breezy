@@ -1,13 +1,8 @@
 package com.windhaven_consulting.breezy.concurrent.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 
 public class PWMOutputPinPulsateTaskImpl implements Runnable {
-	static final Logger LOG = LoggerFactory.getLogger(PWMOutputPinPulsateTaskImpl.class);
-
 	private PWMOutputPin pwmOutputPin;
 	
 	private long attack;
@@ -47,7 +42,6 @@ public class PWMOutputPinPulsateTaskImpl implements Runnable {
 		attackIncrement = 100.0 / (double) attack;
 		releaseIncrement = 100.0 / (double) release;
 		pulsateTaskState = PWMPulsateTaskState.ATTACK;
-		LOG.debug("Creating Task");
 	}
 
 	@Override
@@ -65,7 +59,7 @@ public class PWMOutputPinPulsateTaskImpl implements Runnable {
 			case INTERVAL:
 				doInterval();
 			case DONE:
-				LOG.debug("Task complete, need to kill");
+				break;
 			default:
 				break;
 		}
@@ -80,7 +74,6 @@ public class PWMOutputPinPulsateTaskImpl implements Runnable {
 		}
 		
 		if(attackCount++ >= attack) {
-//			pwmOutputPin.setAlwaysOn();
 			sustainCount = sustain;
 			pulsateTaskState = PWMPulsateTaskState.SUSTAIN;
 		}

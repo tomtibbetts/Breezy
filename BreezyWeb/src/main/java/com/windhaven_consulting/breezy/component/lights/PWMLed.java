@@ -90,11 +90,36 @@ public class PWMLed extends GenericComponent<PWMOutputPin> {
 		if(brightness == 0) {
 			pwmOutputPin.setAlwaysOff();
 		}
+		else if(brightness == 100) {
+			pwmOutputPin.setAlwaysOn();
+		}
 		else {
 			pwmOutputPin.setBrightness(brightness);
 		}
 	}
 
+	/**
+	 * Stops all blinking and pulsating
+	 */
+//	@ControlledMethod("Stop")
+	public void stop() {
+		getOutputPin().stop();
+	}
+	
+	/**
+	 * ramp brightness up to/down to a specific level over the specified attack time
+	 * If the current brightness is less than the new value, ramp up.
+	 * If the current brightness is more than the new value, ramp down.
+	 * Otherwise, leave it unchanged
+	 * 
+	 */
+	@ControlledMethod("Dim to")
+	public void dimTo(@ControlledParameter(name = "Attack (milleseconds)", parameterFieldType = ParameterFieldType.NUMBER, required = true) long attack,
+			@ControlledParameter(name = "Brightness (0% - 100%)", parameterFieldType = ParameterFieldType.NUMBER, required = true) Integer brightness) {
+		
+		getOutputPin().dimTo(attack, brightness);
+	}
+	
 	@Override
 	public void test() {
 		try {

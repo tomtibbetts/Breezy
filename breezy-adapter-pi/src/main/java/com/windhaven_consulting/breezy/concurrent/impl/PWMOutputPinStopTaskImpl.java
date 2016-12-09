@@ -5,12 +5,12 @@ import java.util.concurrent.ScheduledFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PWMOutputPinPulsateStopTaskImpl implements Runnable {
-	static final Logger LOG = LoggerFactory.getLogger(PWMOutputPinPulsateStopTaskImpl.class);
+public class PWMOutputPinStopTaskImpl implements Runnable {
+	static final Logger LOG = LoggerFactory.getLogger(PWMOutputPinStopTaskImpl.class);
 
     private final ScheduledFuture<?> pulsateTask;
     
-    public PWMOutputPinPulsateStopTaskImpl(ScheduledFuture<?> pulsateTask) {
+    public PWMOutputPinStopTaskImpl(ScheduledFuture<?> pulsateTask) {
         this.pulsateTask = pulsateTask;
     }
 
