@@ -25,19 +25,19 @@ public class SimpleServoMotor extends GenericComponent<PWMOutputPin> {
 	private static final int NEUTRAL_SERVO_DURATION = 1500;
 	private static final int MAXIMUM_SERVO_DURATION = 2100;
 
-	@ControlledMethod("Move to Minimum Position")
-	public void moveToMinimum() {
+	@ControlledMethod("Minimum")
+	public void minimum() {
 		PWMOutputPin pwmOutputPin = getOutputPin();
 		pwmOutputPin.setPwm(MINIMUM_SERVO_DURATION);
 	}
 
-	@ControlledMethod("Move to Maximum Position")
+	@ControlledMethod("Maximum")
 	public void moveToMaximum() {
 		PWMOutputPin pwmOutputPin = getOutputPin();
 		pwmOutputPin.setPwm(MAXIMUM_SERVO_DURATION);
 	}
 	
-	@ControlledMethod("Move to Neutral Position")
+	@ControlledMethod("Neutral")
 	public void moveToNeutral() {
 		PWMOutputPin pwmOutputPin = getOutputPin();
 		pwmOutputPin.setPwm(NEUTRAL_SERVO_DURATION);
@@ -52,7 +52,7 @@ public class SimpleServoMotor extends GenericComponent<PWMOutputPin> {
 			moveToMaximum();
 			Thread.sleep(1000);
 
-			moveToMinimum();
+			minimum();
 		} catch (InterruptedException e) {
 			LOG.error(e.getMessage());
 		}
