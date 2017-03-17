@@ -1,10 +1,6 @@
 package com.windhaven_consulting.breezy.concurrent.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPCA9685PWMOutputPinProxyImpl;
 
 public class PWMOutputPinDimmerTaskImpl implements Runnable {
 	private PWMOutputPin pwmOutputPin;
