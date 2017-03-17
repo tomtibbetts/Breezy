@@ -10,6 +10,8 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.windhaven_consulting.breezy.embeddedcontroller.OutputType;
+
 public class ComponentTemplate implements Serializable {
 	/**
 	 * 
@@ -26,12 +28,15 @@ public class ComponentTemplate implements Serializable {
 	
 	private List<String> pinNames;
 
-	public ComponentTemplate(String clazzName, String componentName, int numberOfOutputs, String[] pinNames) {
+	private OutputType outputType;
+	
+	public ComponentTemplate(String clazzName, String componentName, int numberOfOutputs, String[] pinNames, OutputType outputType) {
 		this.clazzName = clazzName;
 		this.componentName = componentName;
 		this.numberOfOutputs = numberOfOutputs;
 		this.pinNames = new ArrayList<String>(pinNames.length);
 		Collections.addAll(this.pinNames, pinNames);
+		this.outputType = outputType;
 	}
 	
 	public void add(MethodTemplate methodTemplate) {
@@ -72,5 +77,9 @@ public class ComponentTemplate implements Serializable {
 		}
 		
 		return result;
+	}
+	
+	public OutputType getOutputType() {
+		return outputType;
 	}
 }

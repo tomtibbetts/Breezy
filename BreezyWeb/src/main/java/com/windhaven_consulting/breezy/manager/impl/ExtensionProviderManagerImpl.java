@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderAbstractFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
 import com.windhaven_consulting.breezy.manager.ExtensionProviderManager;
 
@@ -15,7 +15,7 @@ import com.windhaven_consulting.breezy.manager.ExtensionProviderManager;
 public class ExtensionProviderManagerImpl implements ExtensionProviderManager {
 
 	@Inject
-	private ExtensionProviderFactory extensionProviderFactory;
+	private ExtensionProviderAbstractFactory extensionProviderFactory;
 	
 	@Override
 	public List<String> getPropertyFieldNames(ExtensionType extensionType) {

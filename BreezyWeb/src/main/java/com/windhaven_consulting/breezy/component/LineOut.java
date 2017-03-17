@@ -8,10 +8,11 @@ import com.windhaven_consulting.breezy.component.annotation.ControlledMethod;
 import com.windhaven_consulting.breezy.component.annotation.ControlledParameter;
 import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
 import com.windhaven_consulting.breezy.component.motors.StallMotor;
+import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 
 @ControlledComponent("Line Out")
-public class LineOut extends Component {
+public class LineOut extends  GenericComponent<DigitalOutputPin> {
 	private static final Logger LOG = LoggerFactory.getLogger(StallMotor.class);
 
 	private static final long serialVersionUID = 1L;

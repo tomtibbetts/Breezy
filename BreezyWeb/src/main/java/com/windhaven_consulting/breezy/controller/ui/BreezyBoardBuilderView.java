@@ -18,9 +18,10 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionPropertyKeyConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionPropertyValueConverter;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
@@ -200,7 +201,7 @@ public class BreezyBoardBuilderView implements Serializable {
 		ComponentConfiguration componentConfiguration = breezyBoard.getComponentConfigurations().get(index);
 		
 		MountedBoard mountedBoard = mountedBoardManager.getById(breezyBoardId);
-		Component component = mountedBoard.getComponent(componentConfiguration.getId().toString());
+		GenericComponent<BreezyPin> component = mountedBoard.getComponent(componentConfiguration.getId().toString());
 		
 		component.test();
 	}
@@ -311,7 +312,7 @@ public class BreezyBoardBuilderView implements Serializable {
 	}
 
 	public ExtensionPropertyKeyConverter getExtensionPropertyKeyConverter(ExtensionType extensionType) {
-		return extensionPropertyKeyConverterByExtensionTypeMap .get(extensionType);
+		return extensionPropertyKeyConverterByExtensionTypeMap.get(extensionType);
 	}
 	
 	public ExtensionPropertyValueConverter getExtensionPropertyValueConverter(ExtensionType extensionType, String property) {

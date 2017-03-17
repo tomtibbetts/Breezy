@@ -132,7 +132,7 @@
 					      		</p:dataTable>
 				            </h:panelGrid>
 				        </p:tab>
-				        <p:tab title="Inputs" id="tabInputsId">
+				        <p:tab title="Digital Inputs" id="tabInputsId">
 				            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%;" id="tabInputPanelGridId">
    								<p:commandButton id="insertFirstInputId"
 									value="Define First Input" 
@@ -334,7 +334,7 @@
 											value="#{outputConfigurationTemplate.extensionTemplate}">
 											<p:ajax event="change" update="outputConfigurationTemplateMappedPinId" />
 											<f:selectItem itemLabel="Select Extension" itemValue="" noSelectionOption="true" />
-					                    	<f:selectItems value="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
+					                    	<f:selectItems value="#{boardTemplateBuilderView.getExtensionTemplatesByComponentType(boardTemplateBuilderView.workingComponentConfigurationTemplate.componentType)}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
 										</p:selectOneMenu>
 					      			</p:column>
 					      			<p:column headerText="Mapped Pin">
@@ -376,7 +376,8 @@
 								<p:selectOneMenu id="inputPinExtensionId" converter="#{boardTemplateBuilderView.extensionTemplateConverter}" value="#{boardTemplateBuilderView.workingInputConfigurationTemplate.extensionTemplate}">
 									<p:ajax event="change" update="inputPinMappedPinId" />
 									<f:selectItem itemLabel="Select Extension" itemValue="" noSelectionOption="true"/>
-			                    	<f:selectItems value="#{boardTemplateBuilderView.breezyBoardTemplate.extensionTemplates}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
+			                    	<f:selectItems value="#{boardTemplateBuilderView.getExtensionTemplatesByInputType('DIGITAL_INPUT')}" var="extensionTemplate" itemLabel="#{extensionTemplate.name}" itemValue="#{extensionTemplate}"/>
+
 								</p:selectOneMenu>
 			      			</p:column>
 					       

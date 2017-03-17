@@ -23,7 +23,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutput
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.SystemPinToPi4JPin;
 
-public class SystemExtensionProviderImpl implements ExtensionProvider {
+public class SystemExtensionProviderImpl implements ExtensionProvider<DigitalOutputPin> {
 
 	private boolean windowsEnvironment;
 	private GpioController gpioController;
@@ -60,7 +60,7 @@ public class SystemExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	@Override
-	public DigitalOutputPin provisionDigitalOutputPin(String name, String pinName, UUID pinId) {
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		if(isWindowsEnvironment()) {
 			return new MockDigitalOutputPinProxyImpl(name, pinId);
 		}
@@ -72,8 +72,6 @@ public class SystemExtensionProviderImpl implements ExtensionProvider {
 			gpioPin.setProperty(BreezyPinProperty.NAME.name(), name);
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 
-//			gpioPin.addListener(gpioPinListenerDigital);
-			
 			return new Pi4JDigitalOutputPinProxyImpl(name, pinId, gpioPin);
 		}
 	}

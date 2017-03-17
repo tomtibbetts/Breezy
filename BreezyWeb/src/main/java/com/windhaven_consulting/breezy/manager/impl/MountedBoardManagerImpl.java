@@ -14,14 +14,13 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplate;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibraryManager;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderAbstractFactory;
 import com.windhaven_consulting.breezy.exceptions.BreezyApplicationException;
 import com.windhaven_consulting.breezy.macrocontroller.MacroExecutor;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
@@ -48,14 +47,14 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	private ComponentTemplateLibraryManager componentLibraryManager;
 	
 	@Inject
-	private ExtensionProviderFactory extensionProviderFactory;
+	private ExtensionProviderAbstractFactory extensionProviderFactory;
 	
 	@Deprecated
 	public Collection<MountedComponent> getAllMountedComponents() {
 		List<MountedComponent> mountedComponents = new ArrayList<MountedComponent>();
-		Collection<Component> components = mountedBoards.get(0).getComponents();
+		Collection<GenericComponent<BreezyPin>> components = mountedBoards.get(0).getComponents();
 		
-		for(Component component : components) {
+		for(GenericComponent<BreezyPin> component : components) {
 			ComponentTemplate componentDescriptor = componentLibraryManager.getComponentTemplateFor(component);
 			MountedComponent mountedComponent = new MountedComponent(componentDescriptor, component);
 			
@@ -93,10 +92,10 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	public void unmount(BreezyBoard breezyBoard) {
 //		LOG.debug("unmount for " + breezyBoard.getName());
 		
-		Map<UUID, ExtensionProvider> extensionProviderMap = new HashMap<UUID, ExtensionProvider>();
+		Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
 
 		for(Extension extension : breezyBoard.getExtensions()) {
-			ExtensionProvider extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
 			
 			extensionProviderMap.put(extension.getId(), extensionProvider);
 		}
@@ -104,7 +103,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		MountedBoard mountedBoard =  mountedBoardMap.get(breezyBoard.getId().toString());
 		
 		for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {
-			ExtensionProvider extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
 
 			BreezyPin breezyPin = mountedBoard.getInputPinById(inputPinConfiguration.getId());
 			extensionProvider.unprovisionPin(breezyPin);
@@ -112,7 +111,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		
 		for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
 			for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
-				ExtensionProvider extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
+				ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
 				
 				BreezyPin breezyPin = mountedBoard.getOutputPinById(outputPinConfiguration.getId());
 				extensionProvider.unprovisionPin(breezyPin);
@@ -127,10 +126,11 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	private MountedBoard getMountedBoard(BreezyBoard breezyBoard) {
 		LOG.debug("getMountedBoard for " + breezyBoard.getName());
 		
-		Map<UUID, ExtensionProvider> extensionProviderMap = new HashMap<UUID, ExtensionProvider>();
+		Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
 
 		for(Extension extension : breezyBoard.getExtensions()) {
-			ExtensionProvider extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
+			LOG.debug("Using extension properties: " + extension.getProperties().toString());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
 			
 			extensionProviderMap.put(extension.getId(), extensionProvider);
 		}
@@ -142,7 +142,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		
 		LOG.debug("********* Initializing input pins for breezy board: " + breezyBoard.getName());
 		for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {
-			ExtensionProvider extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
 			
 			DigitalInputPin digitalInputPin = extensionProvider.provisionDigitalInputPin(
 					inputPinConfiguration.getName(),
@@ -157,18 +157,18 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		LOG.debug("********* Initializing components for breezy board: " + breezyBoard.getName());
 		for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
 			try {
-				Component component = componentLibraryManager.getNewComponentByType(componentConfiguration.getComponentType());
+				GenericComponent<BreezyPin> component = componentLibraryManager.getNewComponentByType(componentConfiguration.getComponentType());
 				component.setName(componentConfiguration.getName());
 				component.setId(componentConfiguration.getId().toString());
 				
 				for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
-					ExtensionProvider extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
+					ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
 					
-					DigitalOutputPin digitalOutputPin = extensionProvider.provisionDigitalOutputPin(
+					BreezyPin outputPin = extensionProvider.provisionOutputPin(
 							outputPinConfiguration.getName(), 
 							outputPinConfiguration.getExtensionMappedPin(),
 							outputPinConfiguration.getId());
-					component.addOutputPin(digitalOutputPin);
+					component.addOutputPin(outputPin);
 				}
 				
 				mountedBoard.addComponent(component);

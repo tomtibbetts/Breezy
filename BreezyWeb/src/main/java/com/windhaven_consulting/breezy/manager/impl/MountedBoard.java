@@ -9,10 +9,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 
 public class MountedBoard implements Serializable {
 
@@ -20,13 +19,13 @@ public class MountedBoard implements Serializable {
 	
 	private String id;
 
-	private Map<String, Component> componentMap = new TreeMap<String, Component>();
+	private Map<String, GenericComponent<BreezyPin>> componentMap = new TreeMap<String, GenericComponent<BreezyPin>>();
 	
 	private Map<String, DigitalInputPin> pinNameToInputPinMap = new TreeMap<String, DigitalInputPin>();
 	
 	private Map<UUID, DigitalInputPin> pinIdToInputPinMap = new HashMap<UUID, DigitalInputPin>();
 	
-	private Map<UUID, DigitalOutputPin> pinIdToOutputPinMap = new HashMap<UUID, DigitalOutputPin>();
+	private Map<UUID, BreezyPin> pinIdToOutputPinMap = new HashMap<UUID, BreezyPin>();
 	
 	private String description;
 	
@@ -38,7 +37,7 @@ public class MountedBoard implements Serializable {
 
 	private List<DigitalInputPin> digitalInputPins = new ArrayList<DigitalInputPin>();
 
-	private List<DigitalOutputPin> digitalOutputPins = new ArrayList<DigitalOutputPin>();
+	private List<BreezyPin> outputPins = new ArrayList<BreezyPin>();
 
 	public void addInputPin(DigitalInputPin digitalInputPin) {
 		pinNameToInputPinMap.put(digitalInputPin.getName(), digitalInputPin);
@@ -46,22 +45,22 @@ public class MountedBoard implements Serializable {
 		digitalInputPins.add(digitalInputPin);
 	}
 	
-	public void addComponent(Component component) {
+	public void addComponent(GenericComponent<BreezyPin> component) {
 		componentMap.put(component.getId(), component);
 		
-		for(DigitalOutputPin digitalOutputPin : component.getOutputPins()) {
-			pinIdToOutputPinMap.put(digitalOutputPin.getId(), digitalOutputPin);
-			digitalOutputPins.add(digitalOutputPin);
+		for(BreezyPin outputPin : component.getOutputPins()) {
+			pinIdToOutputPinMap.put(outputPin.getId(), outputPin);
+			outputPins.add(outputPin);
 		}
 	}
 	
-	public List<Component> getComponents() {
-		List<Component> components = new ArrayList<Component>(componentMap.values());
+	public List<GenericComponent<BreezyPin>> getComponents() {
+		List<GenericComponent<BreezyPin>> components = new ArrayList<GenericComponent<BreezyPin>>(componentMap.values());
 		Collections.sort(components);
 		return components;
 	}
 	
-	public Component getComponent(String id) {
+	public GenericComponent<BreezyPin> getComponent(String id) {
 		return componentMap.get(id);
 	}
 	
@@ -121,8 +120,8 @@ public class MountedBoard implements Serializable {
 		this.id = id;
 	}
 
-	public List<DigitalOutputPin> getOutputPins() {
-		return digitalOutputPins;
+	public List<BreezyPin> getOutputPins() {
+		return outputPins;
 	}
 
 	public String toString() {

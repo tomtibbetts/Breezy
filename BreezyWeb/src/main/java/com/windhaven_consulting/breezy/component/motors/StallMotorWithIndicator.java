@@ -3,17 +3,18 @@ package com.windhaven_consulting.breezy.component.motors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledMethod;
 import com.windhaven_consulting.breezy.component.annotation.ControlledParameter;
 import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
+import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 
 @ControlledComponent(value="Stall Motor With Indicator",
 	numberOfOutputs=2,
 	pinNames={"Motor Out", "Indicator Out"})
-public class StallMotorWithIndicator extends Component {
+public class StallMotorWithIndicator extends  GenericComponent<DigitalOutputPin> {
 	static final Logger LOG = LoggerFactory.getLogger(StallMotorWithIndicator.class);
 
 	private static final long serialVersionUID = 1L;

@@ -16,7 +16,7 @@ public class BreezyToPi4JI2CBus {
 		breezyToPi4JI2CBusMap.put(BreezyI2CBus.BUS_1, I2CBus.BUS_1);
 	}
 	
-	public static Integer getBus(BreezyI2CBus breezyI2CBus) {
+	public static Integer getBusAsInteger(BreezyI2CBus breezyI2CBus) {
 		Integer result = breezyToPi4JI2CBusMap.get(breezyI2CBus);
 		
 		if(result == null) {

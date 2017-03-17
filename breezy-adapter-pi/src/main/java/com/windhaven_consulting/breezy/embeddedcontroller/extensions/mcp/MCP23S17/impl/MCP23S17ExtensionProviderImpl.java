@@ -21,10 +21,9 @@ import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23017.MCP23017Property;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.SPIBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17.BreezyToMCP23S17Pin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17.MCP23S17Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S17.MCP23S17Property;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JPinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JSPIChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockDigitalInputPinProxyImpl;
@@ -33,7 +32,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalInputP
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutputPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
 
-public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
+public class MCP23S17ExtensionProviderImpl implements ExtensionProvider<DigitalOutputPin> {
 	static final Logger LOG = LoggerFactory.getLogger(MCP23S17ExtensionProviderImpl.class);
 
 	private boolean windowsEnvironment;
@@ -79,7 +78,7 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	@Override
-	public DigitalOutputPin provisionDigitalOutputPin(String name, String pinName, UUID pinId) {
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		if(isWindowsEnvironment()) {
 			return new MockDigitalOutputPinProxyImpl(name, pinId);
 		}
@@ -109,10 +108,10 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 		validateProperties();
 		
 		if(!isWindowsEnvironment()) {
-			String spiChannel = properties.get(MCP23S17Property.CHANNEL.name());
+			String spiChannel = properties.get(SPIBusProperty.CHANNEL.name());
 //			LOG.debug("Channel: " + spiChannel);
 			BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
-			byte address = Byte.decode(properties.get(MCP23S17Property.ADDRESS.name()));
+			byte address = Byte.decode(properties.get(SPIBusProperty.ADDRESS.name()));
 //			LOG.debug("address: " + address);
 			
 			try {
@@ -128,11 +127,11 @@ public class MCP23S17ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void validateProperties() {
-		if(!properties.containsKey(MCP23S17Property.CHANNEL.name())) {
+		if(!properties.containsKey(SPIBusProperty.CHANNEL.name())) {
 			throw new EmbeddedControllerException("MCP23S17 extension channel number was not provided");
 		}
 		
-		if(!properties.containsKey(MCP23017Property.ADDRESS.name())) {
+		if(!properties.containsKey(SPIBusProperty.ADDRESS.name())) {
 			throw new EmbeddedControllerException("MCP23S17 extension address was not provided");
 		}
 	}

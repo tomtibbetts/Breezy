@@ -20,9 +20,9 @@ import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
+import com.windhaven_consulting.breezy.embeddedcontroller.extensions.SPIBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.BreezyToMCP23S08Pin;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.MCP23S08Pin;
-import com.windhaven_consulting.breezy.embeddedcontroller.extensions.mcp.MCP23S08.MCP23S08Property;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JPinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.BreezyToPi4JSPIChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.MockDigitalInputPinProxyImpl;
@@ -32,7 +32,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutput
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JPinProxyImpl;
 import com.windhaven_consulting.breezy.pi4j.custom.extension.mcp.MCP23S08GpioProvider;
 
-public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
+public class MCP23S08ExtensionProviderImpl implements ExtensionProvider<DigitalOutputPin> {
 	static final Logger LOG = LoggerFactory.getLogger(MCP23S08ExtensionProviderImpl.class);
 
 	private boolean windowsEnvironment;
@@ -68,7 +68,7 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 			gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 			
 			if(isEventTrigger) {
-//				LOG.debug("Adding event trigger. Listener is not null = " + (gpioPinListenerDigital != null));
+//				LOG.debug("Adding event trigger. Listener is null = " + (gpioPinListenerDigital == null));
 				gpioPin.addListener(gpioPinListenerDigital);
 			}
 			
@@ -78,7 +78,7 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	@Override
-	public DigitalOutputPin provisionDigitalOutputPin(String name, String pinName, UUID pinId) {
+	public DigitalOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		if(isWindowsEnvironment()) {
 			return new MockDigitalOutputPinProxyImpl(name, pinId);
 		}
@@ -103,15 +103,15 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 	}
 
 	private void initialize() {
-//		LOG.debug("Initializing MCP23S17ExtensionProviderImpl");
+//		LOG.debug("Initializing MCP23S08ExtensionProviderImpl");
 		
 		validateProperties();
 		
 		if(!isWindowsEnvironment()) {
-			String spiChannel = properties.get(MCP23S08Property.CHANNEL.name());
+			String spiChannel = properties.get(SPIBusProperty.CHANNEL.name());
 //			LOG.debug("Channel: " + spiChannel);
 			BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
-			byte address = Byte.decode(properties.get(MCP23S08Property.ADDRESS.name()));
+			byte address = Byte.decode(properties.get(SPIBusProperty.ADDRESS.name()));
 //			LOG.debug("address: " + address);
 			
 			try {
@@ -123,15 +123,15 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 			}
 		}
 
-//		LOG.debug("End Initializing MCP23S17ExtensionProviderImpl");
+//		LOG.debug("End Initializing MCP23S08ExtensionProviderImpl");
 	}
 
 	private void validateProperties() {
-		if(!properties.containsKey(MCP23S08Property.CHANNEL.name())) {
+		if(!properties.containsKey(SPIBusProperty.CHANNEL.name())) {
 			throw new EmbeddedControllerException("MCP23S08 extension channel number was not provided");
 		}
 		
-		if(!properties.containsKey(MCP23S08Property.ADDRESS.name())) {
+		if(!properties.containsKey(SPIBusProperty.ADDRESS.name())) {
 			throw new EmbeddedControllerException("MCP23S08 extension address was not provided");
 		}
 	}
@@ -139,5 +139,4 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider {
 	private boolean isWindowsEnvironment() {
 		return windowsEnvironment;
 	}
-
 }

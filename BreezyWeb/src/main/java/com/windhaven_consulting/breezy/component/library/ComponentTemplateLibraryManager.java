@@ -5,8 +5,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -17,10 +19,12 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
-import com.windhaven_consulting.breezy.component.Component;
+import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledComponent;
 import com.windhaven_consulting.breezy.component.annotation.ControlledParameter;
 import com.windhaven_consulting.breezy.component.annotation.ParameterFieldType;
+import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.OutputType;
 import com.windhaven_consulting.breezy.exceptions.BreezyApplicationException;
 
 @ApplicationScoped
@@ -56,7 +60,19 @@ public class ComponentTemplateLibraryManager implements Serializable {
 		return componentDescriptorByTypeMap.values();
 	}
 	
-	public Component getNewComponentByType(String type) {
+	public Collection<ComponentTemplate> getComponentTemplates(List<OutputType> outputTypes) {
+		List<ComponentTemplate> componentTemplates = new ArrayList<ComponentTemplate>();
+		
+		for(ComponentTemplate componentTemplate : componentDescriptorByTypeMap.values()) {
+			if(outputTypes.contains(componentTemplate.getOutputType())) {
+				componentTemplates.add(componentTemplate);
+			}
+		}
+		
+		return componentTemplates;
+	}
+
+	public GenericComponent<BreezyPin> getNewComponentByType(String type) {
 		ComponentTemplate componentDescriptor = componentDescriptorByTypeMap.get(type);
 		
 		if(componentDescriptor == null) {
@@ -64,11 +80,11 @@ public class ComponentTemplateLibraryManager implements Serializable {
 		}
 		
 		Class<?> clazz;
-		Component component = null;
+		GenericComponent<BreezyPin> component = null;
 		
 		try {
 			clazz = Class.forName(componentDescriptor.getClazzName());
-			component = (Component) clazz.newInstance();
+			component = (GenericComponent<BreezyPin>) clazz.newInstance();
 		} catch (ClassNotFoundException e) {
 			throw new BreezyApplicationException("Cannot create component of type: " + type + ". Component type not found.");
 		} catch (InstantiationException e) {
@@ -80,7 +96,7 @@ public class ComponentTemplateLibraryManager implements Serializable {
 		return component;
 	}
 
-	public ComponentTemplate getComponentTemplateFor(Component component) {
+	public ComponentTemplate getComponentTemplateFor(GenericComponent<BreezyPin> component) {
 		return componentDescriptorByClassMap.get(component.getClass().getName());
 	}
 	
@@ -94,8 +110,9 @@ public class ComponentTemplateLibraryManager implements Serializable {
     	int numberOfOutputs = controlledComponent.numberOfOutputs();
     	String name = controlledComponent.value();
     	String[] pinNames = controlledComponent.pinNames();
+    	OutputType outputType = controlledComponent.outputType();
     	
-    	ComponentTemplate componentTemplate = new ComponentTemplate(beanClass.getName(), name, numberOfOutputs, pinNames);
+    	ComponentTemplate componentTemplate = new ComponentTemplate(beanClass.getName(), name, numberOfOutputs, pinNames, outputType);
     	
     	while(beanClass != null) {
         	for(Method classMethod : beanClass.getDeclaredMethods()) {

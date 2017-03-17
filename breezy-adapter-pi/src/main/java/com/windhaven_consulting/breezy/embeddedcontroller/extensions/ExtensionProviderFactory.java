@@ -6,17 +6,17 @@ import java.util.Map;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 
-public interface ExtensionProviderFactory {
+public interface ExtensionProviderFactory<T extends BreezyPin> {
+
+	ExtensionProvider<T> getExtensionProvider(Map<String, String> properties);
 	
-	ExtensionProvider getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties);
-	
-	List<String> getPropertyFieldNames(ExtensionType extensionType);
+	List<String> getPropertyFieldNames();
 
-	List<BreezyPin> getAvailablePins(ExtensionType extensionType);
+	List<BreezyPin> getAvailablePins();
 
-	List<PropertyValueEnum> getProperties(ExtensionType extensionType);
+	List<PropertyValueEnum> getProperties();
 
-	List<PropertyValueEnum> getPropertyValues(ExtensionType extensionType, PropertyValueEnum property);
+	List<PropertyValueEnum> getPropertyValues(PropertyValueEnum property);
 
-	List<PropertyValueEnum> getPropertyValues(ExtensionType extensionType, String property);
+	List<PropertyValueEnum> getPropertyValues(String property);
 }

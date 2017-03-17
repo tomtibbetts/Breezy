@@ -2,6 +2,7 @@ package com.windhaven_consulting.breezy.controller.ui;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,6 +26,8 @@ import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibrar
 import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionTemplateConverter;
 import com.windhaven_consulting.breezy.controller.ui.utils.BoardTemplateUtility;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.InputType;
+import com.windhaven_consulting.breezy.embeddedcontroller.OutputType;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
 import com.windhaven_consulting.breezy.manager.BreezyBoardTemplateManager;
@@ -165,6 +168,7 @@ public class BoardTemplateBuilderView implements Serializable {
 		if(extensionTemplate != null) {
 			nameToExtensionTemplateMap.remove(extensionTemplate);
 			
+			// TODO: do the same for components as for inputs?
 			for(InputConfigurationTemplate inputConfigurationTemplate : breezyBoardTemplate.getInputConfigurationTemplates()) {
 				if(inputConfigurationTemplate.getExtensionTemplate() != null && inputConfigurationTemplate.getExtensionTemplate().equals(extensionTemplate)) {
 					inputConfigurationTemplate.setExtensionTemplate(null);
@@ -248,9 +252,6 @@ public class BoardTemplateBuilderView implements Serializable {
 	}
 	
 	public void onComponentConfigurationComponentTypeChange(final AjaxBehaviorEvent event) {
-		String componentType = (String) ((UIOutput) event.getSource()).getValue();
-
-		ComponentTemplate componentTemplate = componentTemplateLibraryManager.getComponentTemplateFor(componentType);
 		String currentMappedPin = StringUtils.EMPTY;
 		ExtensionTemplate currentExtensionTemplate = null;
 		
@@ -262,13 +263,18 @@ public class BoardTemplateBuilderView implements Serializable {
 		
 		workingComponentConfigurationTemplate.getOutputConfigurationTemplates().clear();
 		
-		for(int i = 0; i < componentTemplate.getNumberOfOutputs(); i++) {
-			OutputConfigurationTemplate outputConfigurationTemplate = new OutputConfigurationTemplate();
-			outputConfigurationTemplate.setName(componentTemplate.getPinNameAt(i));
-			outputConfigurationTemplate.setMappedPin(currentMappedPin);
-			outputConfigurationTemplate.setExtensionTemplate(currentExtensionTemplate);
-			
-			workingComponentConfigurationTemplate.getOutputConfigurationTemplates().add(outputConfigurationTemplate);
+		String componentType = (String) ((UIOutput) event.getSource()).getValue();
+		ComponentTemplate componentTemplate = componentTemplateLibraryManager.getComponentTemplateFor(componentType);
+		
+		if(componentTemplate != null) {
+			for(int i = 0; i < componentTemplate.getNumberOfOutputs(); i++) {
+				OutputConfigurationTemplate outputConfigurationTemplate = new OutputConfigurationTemplate();
+				outputConfigurationTemplate.setName(componentTemplate.getPinNameAt(i));
+				outputConfigurationTemplate.setMappedPin(currentMappedPin);
+				outputConfigurationTemplate.setExtensionTemplate(currentExtensionTemplate);
+				
+				workingComponentConfigurationTemplate.getOutputConfigurationTemplates().add(outputConfigurationTemplate);
+			}
 		}
 	}
 
@@ -371,7 +377,38 @@ public class BoardTemplateBuilderView implements Serializable {
 		return extensionTemplateConverter;
 	}
 	
-	public List<BreezyPin> getAvailablePins() {
+	public List<ExtensionTemplate> getExtensionTemplatesByComponentType(String componentType) {
+		List<ExtensionTemplate> extensionTemplates = new ArrayList<ExtensionTemplate>();
+		
+		ComponentTemplate componentTemplate = componentTemplateLibraryManager.getComponentTemplateFor(componentType);
+		
+		if(componentTemplate != null) {
+			for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
+				if(componentTemplate.getOutputType() == extensionTemplate.getExtensionType().getOutputType()) {
+					extensionTemplates.add(extensionTemplate);
+				}
+			}
+		}
+		
+		return extensionTemplates;
+	}
+	
+	public List<ExtensionTemplate> getExtensionTemplatesByInputType(String inputTypeString) {
+		List<ExtensionTemplate> extensionTemplates = new ArrayList<ExtensionTemplate>();
+		InputType inputType = InputType.valueOf(inputTypeString);
+		
+		if(inputType != null) {
+			for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
+				if(inputType == extensionTemplate.getExtensionType().getInputType()) {
+					extensionTemplates.add(extensionTemplate);
+				}
+			}
+		}
+		
+		return extensionTemplates;
+	}
+	
+	public List<? extends BreezyPin> getAvailablePins() {
 		return availableBreezyPins;
 	}
 	
@@ -386,7 +423,16 @@ public class BoardTemplateBuilderView implements Serializable {
 	}
 	
 	public Collection<ComponentTemplate> getComponentTypes() {
-		return componentTemplateLibraryManager.getComponentTemplates();
+		Collection<ComponentTemplate> componentTemplates;
+		
+		List<OutputType> outputTypes = new ArrayList<OutputType>();
+		for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
+			outputTypes.add(extensionTemplate.getExtensionType().getOutputType());
+		}
+		
+		componentTemplates = componentTemplateLibraryManager.getComponentTemplates(outputTypes);
+		
+		return componentTemplates;
 	}
 	
 	public ComponentConfigurationTemplate getWorkingComponentConfigurationTemplate() {
