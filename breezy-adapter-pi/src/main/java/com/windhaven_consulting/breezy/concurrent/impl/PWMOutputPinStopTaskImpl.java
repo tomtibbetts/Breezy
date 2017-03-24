@@ -15,8 +15,6 @@ public class PWMOutputPinStopTaskImpl implements Runnable {
     }
 
     public void run() {
-    	LOG.debug("Killing Dimmer/Pulsate Task.");
-    	
         // cancel the blinking task
     	task.cancel(true);
     }
