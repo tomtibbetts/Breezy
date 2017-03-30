@@ -121,10 +121,6 @@ public class BreezyBoardBuilderView implements Serializable {
 	}
 	
 	public void deleteBoard() throws IOException {
-		if(breezyBoard.isMounted()) {
-			mountedBoardManager.unmount(breezyBoard);
-		}
-
 		breezyBoardManager.deleteBoard(breezyBoard);
 		
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -134,16 +130,13 @@ public class BreezyBoardBuilderView implements Serializable {
 	public void mountBoard() {
 		if(!breezyBoard.isMounted()) {
 			breezyBoard.setMounted(true);
-			breezyBoardManager.saveBoard(breezyBoard);
-			mountedBoardManager.mount(breezyBoard);
+			breezyBoardManager.mountBoardAndSave(breezyBoard);
 		}
 	}
 	
 	public void unmountBoard() {
 		if(breezyBoard.isMounted()) {
-			mountedBoardManager.unmount(breezyBoard);
-			breezyBoard.setMounted(false);
-			breezyBoardManager.saveBoard(breezyBoard);
+			breezyBoardManager.unmountBoard(breezyBoard);
 		}
 	}
 	

@@ -8,7 +8,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 
 public interface ExtensionProviderAbstractFactory {
 	
-	ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties);
+	ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties, boolean isMounted);
 	
 	List<String> getPropertyFieldNames(ExtensionType extensionType);
 

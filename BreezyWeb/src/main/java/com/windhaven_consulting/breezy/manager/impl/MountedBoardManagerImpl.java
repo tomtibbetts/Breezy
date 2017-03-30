@@ -80,57 +80,69 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	}
 
 	@Override
-	public void mount(BreezyBoard breezyBoard) {
-		MountedBoard mountedBoard = getMountedBoard(breezyBoard);
+	public void provisionBoard(BreezyBoard breezyBoard) {
+		MountedBoard mountedBoard = getProvisionedBoard(breezyBoard);
 
-		mountedBoards.add(mountedBoard);
-		mountedBoardMap.put(mountedBoard.getId(), mountedBoard);
-		mountedBoardByNameMap.put(mountedBoard.getName(), mountedBoard);
+		if(!mountedBoardMap.containsKey(mountedBoard.getId())) {
+			mountedBoards.add(mountedBoard);
+			mountedBoardMap.put(mountedBoard.getId(), mountedBoard);
+			mountedBoardByNameMap.put(mountedBoard.getName(), mountedBoard);
+		}
 	}
 
 	@Override
-	public void unmount(BreezyBoard breezyBoard) {
-//		LOG.debug("unmount for " + breezyBoard.getName());
+	public void unprovisionBoard(BreezyBoard breezyBoard) {
+		LOG.debug("unmount for " + breezyBoard.getName());
 		
-		Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
+		if(mountedBoardMap.containsKey(breezyBoard.getId().toString())) {
+			Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
 
-		for(Extension extension : breezyBoard.getExtensions()) {
-			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
-			
-			extensionProviderMap.put(extension.getId(), extensionProvider);
-		}
-		
-		MountedBoard mountedBoard =  mountedBoardMap.get(breezyBoard.getId().toString());
-		
-		for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {
-			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
-
-			BreezyPin breezyPin = mountedBoard.getInputPinById(inputPinConfiguration.getId());
-			extensionProvider.unprovisionPin(breezyPin);
-		}
-		
-		for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
-			for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
-				ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
+			for(Extension extension : breezyBoard.getExtensions()) {
+				ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties(), breezyBoard.isMounted());
 				
-				BreezyPin breezyPin = mountedBoard.getOutputPinById(outputPinConfiguration.getId());
+				extensionProviderMap.put(extension.getId(), extensionProvider);
+			}
+			
+			MountedBoard mountedBoard =  mountedBoardMap.get(breezyBoard.getId().toString());
+			
+			for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {
+				ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(inputPinConfiguration.getExtension().getId());
+
+				BreezyPin breezyPin = mountedBoard.getInputPinById(inputPinConfiguration.getId());
 				extensionProvider.unprovisionPin(breezyPin);
 			}
+			
+			for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
+				for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
+					ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
+					
+					BreezyPin breezyPin = mountedBoard.getOutputPinById(outputPinConfiguration.getId());
+					extensionProvider.unprovisionPin(breezyPin);
+				}
+			}
+			
+			mountedBoards.remove(mountedBoard);
+			mountedBoardMap.remove(mountedBoard.getId());
+			mountedBoardByNameMap.remove(mountedBoard.getName());
 		}
-		
-		mountedBoards.remove(mountedBoard);
-		mountedBoardMap.remove(mountedBoard.getId());
-		mountedBoardByNameMap.remove(mountedBoard.getName());
 	}
 	
-	private MountedBoard getMountedBoard(BreezyBoard breezyBoard) {
-		LOG.debug("getMountedBoard for " + breezyBoard.getName());
+	/**
+	 * Provision a board, i.e. provision all inputs and outputs according to Extenstion providers.
+	 * Works for live and mocked providers
+	 * 
+	 * @param breezyBoard
+	 * @return
+	 */
+	private MountedBoard getProvisionedBoard(BreezyBoard breezyBoard) {
+		LOG.debug("getProvisionedBoard for " + breezyBoard.getName());
 		
 		Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
 
+		// load up the I/O extensions used by this board
 		for(Extension extension : breezyBoard.getExtensions()) {
 			LOG.debug("Using extension properties: " + extension.getProperties().toString());
-			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties(), breezyBoard.isMounted());
 			
 			extensionProviderMap.put(extension.getId(), extensionProvider);
 		}
@@ -139,6 +151,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		mountedBoard.setId(breezyBoard.getId().toString());
 		mountedBoard.setName(breezyBoard.getName());
 		mountedBoard.setDescription(breezyBoard.getDescription());
+		mountedBoard.setMounted(breezyBoard.isMounted());
 		
 		LOG.debug("********* Initializing input pins for breezy board: " + breezyBoard.getName());
 		for(InputPinConfiguration inputPinConfiguration : breezyBoard.getInputPinConfigurations()) {

@@ -10,16 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import com.windhaven_consulting.breezy.manager.BreezyBoardManager;
 import com.windhaven_consulting.breezy.manager.MacroManager;
-import com.windhaven_consulting.breezy.manager.MountedBoardManager;
 import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
 import com.windhaven_consulting.breezy.persistence.domain.Macro;
 
 @WebListener
 public class ApplicationStartup implements ServletContextListener {
 	static final Logger LOG = LoggerFactory.getLogger(ApplicationStartup.class);
-	
-	@Inject
-	private MountedBoardManager mountedBoardManager;
 	
 	@Inject
 	private MacroManager macroManager;
@@ -56,12 +52,10 @@ public class ApplicationStartup implements ServletContextListener {
 		LOG.debug("Mounting all boards");
 		
 		BreezyBoard systemBoard = SystemBoardFactory.getSystemBoard();
-		mountedBoardManager.mount(systemBoard);
+		breezyBoardManager.mountBoard(systemBoard);
 		
 		for(BreezyBoard breezyBoard : breezyBoardManager.getAllBreezyBoards()) {
-			if(breezyBoard.isMounted()) {
-				mountedBoardManager.mount(breezyBoard);
-			}
+			breezyBoardManager.mountBoard(breezyBoard);
 		}
 	}
 

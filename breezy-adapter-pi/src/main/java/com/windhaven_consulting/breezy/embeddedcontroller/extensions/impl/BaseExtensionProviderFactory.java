@@ -95,7 +95,7 @@ public abstract class BaseExtensionProviderFactory<T extends BreezyPin> implemen
 		propertyValueByPropertyNameMap.put(propertyValueEnum.getName(), properties);
 		propertyValueEnums.add(propertyValueEnum);
 	}
-
+	
 	private void initializeInputListener() {
 		LOG.debug("Creating a digital pin listener\n");
 		gpioPinListenerDigital = new GpioPinListenerDigital() {
