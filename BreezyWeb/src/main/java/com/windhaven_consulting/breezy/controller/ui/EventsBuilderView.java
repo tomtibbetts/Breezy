@@ -48,6 +48,8 @@ public class EventsBuilderView {
 	
 	private List<MountedBoard> mountedBoards = new ArrayList<MountedBoard>();
 	
+	private Map<String, MountedBoard> mountedBoardIdToMountedBoardMap = new HashMap<String, MountedBoard>();
+	
 	private TriggerEvent workingTriggerEvent = new TriggerEvent();
 	
 	private Map<String, Macro> macroIdToMacroMap = new HashMap<String, Macro>();
@@ -154,6 +156,10 @@ public class EventsBuilderView {
 	public MountedBoardConverter getMountedBoardConverter() {
 		return mountedBoardConverter;
 	}
+
+	public MountedBoard getMountedBoard(String id) {
+		return mountedBoardIdToMountedBoardMap.get(id);
+	}
 	
 	public List<DigitalInputPin> getInputPins() {
 		return inputPins;
@@ -168,10 +174,13 @@ public class EventsBuilderView {
 	}
 	
 	private void initialize() {
+		mountedBoardIdToMountedBoardMap.clear();
 		mountedBoards = mountedBoardManager.getAllMountedBoards();
 		List<DigitalInputPin> inputPins = new ArrayList<DigitalInputPin>();
 		
 		for(MountedBoard mountedBoard : mountedBoards) {
+			mountedBoardIdToMountedBoardMap.put(mountedBoard.getId(), mountedBoard);
+			
 			inputPins.addAll(mountedBoard.getInputPins());
 			
 			for(DigitalInputPin digitalInputPin : mountedBoard.getInputPins()) {

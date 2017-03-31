@@ -129,7 +129,6 @@ public class BreezyBoardBuilderView implements Serializable {
 	
 	public void mountBoard() {
 		if(!breezyBoard.isMounted()) {
-			breezyBoard.setMounted(true);
 			breezyBoardManager.mountBoardAndSave(breezyBoard);
 		}
 	}

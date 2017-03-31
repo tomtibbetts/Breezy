@@ -61,7 +61,7 @@ public class MacroBuilderView implements Serializable {
 	
 	private List<MountedBoard> mountedBoards = null;
 	
-	private Map<String, String> mountedBoardIdToNameMap = new HashMap<String, String>();
+	private Map<String, MountedBoard> mountedBoardIdToMountedBoardMap = new HashMap<String, MountedBoard>();
 	
 	private Map<String, GenericComponent<BreezyPin>> componentIdToComponentMap = new HashMap<String, GenericComponent<BreezyPin>>();
 
@@ -200,8 +200,8 @@ public class MacroBuilderView implements Serializable {
 		return mountedBoards;
 	}
 
-	public String getMountedBoardName(String id) {
-		return mountedBoardIdToNameMap.get(id);
+	public MountedBoard getMountedBoard(String id) {
+		return mountedBoardIdToMountedBoardMap.get(id);
 	}
 	
 	public String getComponentName(String id) {
@@ -374,7 +374,7 @@ public class MacroBuilderView implements Serializable {
 	}
 	
 	private void initialize() {
-		mountedBoardIdToNameMap.clear();
+		mountedBoardIdToMountedBoardMap.clear();
 		componentIdToComponentMap.clear();
 		componentToMethods.clear();
 		logicStates.clear();
@@ -387,8 +387,8 @@ public class MacroBuilderView implements Serializable {
 		mountedBoards = mountedBoardManager.getAllMountedBoards();
 		
 		for(MountedBoard mountedBoard : mountedBoards) {
+			mountedBoardIdToMountedBoardMap.put(mountedBoard.getId(), mountedBoard);
 			digitalInputPins.addAll(mountedBoard.getInputPins());
-			mountedBoardIdToNameMap.put(mountedBoard.getId(), mountedBoard.getName());
 			
 			for(GenericComponent<BreezyPin> component : mountedBoard.getComponents()) {
 				componentIdToComponentMap.put(component.getId(), component);

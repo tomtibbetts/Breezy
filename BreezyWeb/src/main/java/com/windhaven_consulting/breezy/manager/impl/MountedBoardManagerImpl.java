@@ -83,11 +83,16 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 	public void provisionBoard(BreezyBoard breezyBoard) {
 		MountedBoard mountedBoard = getProvisionedBoard(breezyBoard);
 
-		if(!mountedBoardMap.containsKey(mountedBoard.getId())) {
+		if(mountedBoardMap.containsKey(mountedBoard.getId())) {
+			mountedBoards.remove(mountedBoard);
+			mountedBoardMap.remove(mountedBoard.getId());
+			mountedBoardByNameMap.remove(mountedBoard.getName());
+		}
+//		else {
 			mountedBoards.add(mountedBoard);
 			mountedBoardMap.put(mountedBoard.getId(), mountedBoard);
 			mountedBoardByNameMap.put(mountedBoard.getName(), mountedBoard);
-		}
+//		}
 	}
 
 	@Override

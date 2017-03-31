@@ -51,7 +51,16 @@
 						</p:columnGroup>
 
 						<p:column>
-							<h:outputText value="#{triggerEvent.mountedBoardId}" converter="#{eventsBuilderView.mountedBoardConverter}"/>
+		      				<h:outputText 
+		      					style="color: red" 
+		      					value="#{triggerEvent.mountedBoardId}" 
+		      					converter="#{eventsBuilderView.mountedBoardConverter}"
+		      					rendered="#{not eventsBuilderView.getMountedBoard(triggerEvent.mountedBoardId).isMounted()}"/>
+
+		      				<h:outputText 
+		      					value="#{triggerEvent.mountedBoardId}" 
+		      					converter="#{eventsBuilderView.mountedBoardConverter}"
+		      					rendered="#{eventsBuilderView.getMountedBoard(triggerEvent.mountedBoardId).isMounted()}"/>
 						</p:column>
 						
 		      			<p:column style="width: 100px;">

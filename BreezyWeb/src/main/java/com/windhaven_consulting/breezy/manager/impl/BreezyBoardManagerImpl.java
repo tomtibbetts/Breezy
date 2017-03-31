@@ -51,6 +51,7 @@ public class BreezyBoardManagerImpl implements BreezyBoardManager {
 
 	@Override
 	public void mountBoardAndSave(BreezyBoard breezyBoard) {
+		breezyBoard.setMounted(true);
 		mountedBoardManager.provisionBoard(breezyBoard);
 		saveBoard(breezyBoard);
 	}

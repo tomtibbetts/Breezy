@@ -107,7 +107,14 @@
 					      			</p:column>
 					
 									<p:column headerText="Mounted Board" style="width: 200px;">
-					      				<h:outputText value="#{macroBuilderView.getMountedBoardName(macroStep.mountedBoardId)}"/>
+					      				<h:outputText 
+					      					style="color: red" 
+					      					value="#{macroBuilderView.getMountedBoard(macroStep.mountedBoardId).name}"
+					      					rendered="#{not macroBuilderView.getMountedBoard(macroStep.mountedBoardId).isMounted()}"/>
+
+					      				<h:outputText 
+					      					value="#{macroBuilderView.getMountedBoard(macroStep.mountedBoardId).name}"
+					      					rendered="#{macroBuilderView.getMountedBoard(macroStep.mountedBoardId).isMounted()}"/>
 									</p:column>
 									
 					      			<p:column headerText="Component" style="width: 125px;">
