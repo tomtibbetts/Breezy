@@ -179,6 +179,8 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 				component.setName(componentConfiguration.getName());
 				component.setId(componentConfiguration.getId().toString());
 				
+				LOG.debug("component: name = " + componentConfiguration.getName() + ", id = " + componentConfiguration.getId().toString());
+				
 				for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
 					ExtensionProvider<BreezyPin> extensionProvider = extensionProviderMap.get(outputPinConfiguration.getExtension().getId());
 					
@@ -191,10 +193,14 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 				
 				mountedBoard.addComponent(component);
 			} catch (Exception e) {
+				LOG.debug("Unable to register breezy board components for " + breezyBoard.getName() + ".");
+				LOG.debug("Stacktrace: " + e.getMessage());
 				throw new BreezyApplicationException("Unable to register breezy board components.", e);
 			}
 			
 		}
+
+		LOG.debug("End getProvisionedBoard for " + breezyBoard.getName());
 
 		return mountedBoard;
 	}

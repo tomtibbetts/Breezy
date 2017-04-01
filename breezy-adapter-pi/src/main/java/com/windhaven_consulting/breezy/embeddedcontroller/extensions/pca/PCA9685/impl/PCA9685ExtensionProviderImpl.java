@@ -25,10 +25,11 @@ public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutput
 	static final Logger LOG = LoggerFactory.getLogger(PCA9685ExtensionProviderImpl.class);
 	
 	private GpioController gpioController;
-	private PCA9685GpioProvider pca9685GpioProvider;
+	private PCA9685GpioProvider gpioProvider;
 
 	public PCA9685ExtensionProviderImpl(GpioController gpioController, GpioProvider gpioProvider, GpioPinListenerDigital gpioPinListenerDigital) {
 		this.gpioController = gpioController;
+		this.gpioProvider = (PCA9685GpioProvider) gpioProvider;
 	}
 
 	@Override
@@ -40,12 +41,12 @@ public class PCA9685ExtensionProviderImpl implements ExtensionProvider<PWMOutput
 	public PWMOutputPin provisionOutputPin(String name, String pinName, UUID pinId) {
 		BreezyPin breezyPin = PCA9685Pin.getByName(pinName);
 		com.pi4j.io.gpio.Pin pi4JPin = BreezyToPCA9685Pin.getPin(breezyPin);
-		GpioPinPwmOutput gpioPin = gpioController.provisionPwmOutputPin(pca9685GpioProvider, pi4JPin);
+		GpioPinPwmOutput gpioPin = gpioController.provisionPwmOutputPin(gpioProvider, pi4JPin);
 		
 		gpioPin.setProperty(BreezyPinProperty.NAME.name(), name);
 		gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 		
-		return new Pi4JPCA9685PWMOutputPinProxyImpl(name, pinId, gpioPin, pi4JPin, pca9685GpioProvider);
+		return new Pi4JPCA9685PWMOutputPinProxyImpl(name, pinId, gpioPin, pi4JPin, gpioProvider);
 	}
 
 	@Override

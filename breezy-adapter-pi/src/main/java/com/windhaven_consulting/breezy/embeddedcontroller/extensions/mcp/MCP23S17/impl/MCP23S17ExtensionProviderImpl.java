@@ -35,6 +35,7 @@ public class MCP23S17ExtensionProviderImpl extends BaseExtensionProvider impleme
 	public MCP23S17ExtensionProviderImpl(GpioController gpioController, GpioProvider gpioProvider, GpioPinListenerDigital gpioPinListenerDigital) {
 		this.gpioController = gpioController;
 		this.gpioProvider = gpioProvider;
+		this.gpioPinListenerDigital = gpioPinListenerDigital;
 	}
 
 	@Override
