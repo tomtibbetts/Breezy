@@ -55,7 +55,9 @@ public class ApplicationStartup implements ServletContextListener {
 		breezyBoardManager.mountBoard(systemBoard);
 		
 		for(BreezyBoard breezyBoard : breezyBoardManager.getAllBreezyBoards()) {
-			breezyBoardManager.mountBoard(breezyBoard);
+			if(breezyBoard.isMounted()) {
+				breezyBoardManager.mountBoard(breezyBoard);
+			}
 		}
 	}
 

@@ -62,37 +62,41 @@ public class BreezyBoardViewMapper implements ViewDiskObjectMapper<BreezyBoard, 
 
 	@Override
 	public BreezyBoard getAsViewObject(BreezyBoardDO breezyBoardDO) {
-		Map<UUID, Extension> extensionIdToExtensionMap = new HashMap<UUID, Extension>();  
+		BreezyBoard breezyBoard = null;
 		
-		BreezyBoard breezyBoard = new BreezyBoard();
-		breezyBoard.setName(breezyBoardDO.getName());
-		breezyBoard.setDescription(breezyBoardDO.getDescription());
-		breezyBoard.setId(breezyBoardDO.getId());
-		breezyBoard.setReleaseRevisionNumber(breezyBoardDO.getReleaseRevisionNumber());
-		breezyBoard.setMounted(breezyBoardDO.isMounted());
-		breezyBoard.setRestricted(breezyBoardDO.isRestricted());
-		
-		for(ExtensionDO extensionDO : breezyBoardDO.getExtensionDOs()) {
-			Extension extension = getExtension(extensionDO);
+		if(breezyBoardDO != null) {
+			Map<UUID, Extension> extensionIdToExtensionMap = new HashMap<UUID, Extension>();  
 			
-			breezyBoard.getExtensions().add(extension);
-			extensionIdToExtensionMap.put(extension.getId(), extension);
-		}
-		
-		for(InputPinConfigurationDO inputPinConfigurationDO : breezyBoardDO.getInputPinConfigurationDOs()) {
-			InputPinConfiguration inputPinConfiguration = getInputPinConfiguration(inputPinConfigurationDO);
+			breezyBoard = new BreezyBoard();
+			breezyBoard.setName(breezyBoardDO.getName());
+			breezyBoard.setDescription(breezyBoardDO.getDescription());
+			breezyBoard.setId(breezyBoardDO.getId());
+			breezyBoard.setReleaseRevisionNumber(breezyBoardDO.getReleaseRevisionNumber());
+			breezyBoard.setMounted(breezyBoardDO.isMounted());
+			breezyBoard.setRestricted(breezyBoardDO.isRestricted());
 			
-			if(extensionIdToExtensionMap.containsKey(inputPinConfigurationDO.getExtensionId())) {
-				inputPinConfiguration.setExtension(extensionIdToExtensionMap.get(inputPinConfigurationDO.getExtensionId()));
+			for(ExtensionDO extensionDO : breezyBoardDO.getExtensionDOs()) {
+				Extension extension = getExtension(extensionDO);
+				
+				breezyBoard.getExtensions().add(extension);
+				extensionIdToExtensionMap.put(extension.getId(), extension);
 			}
 			
-			breezyBoard.getInputPinConfigurations().add(inputPinConfiguration);
-		}
-		
-		for(ComponentConfigurationDO componentConfigurationDO : breezyBoardDO.getComponentConfigurationDOs()) {
-			ComponentConfiguration componentConfiguration = getComponentConfiguration(componentConfigurationDO, extensionIdToExtensionMap);
+			for(InputPinConfigurationDO inputPinConfigurationDO : breezyBoardDO.getInputPinConfigurationDOs()) {
+				InputPinConfiguration inputPinConfiguration = getInputPinConfiguration(inputPinConfigurationDO);
+				
+				if(extensionIdToExtensionMap.containsKey(inputPinConfigurationDO.getExtensionId())) {
+					inputPinConfiguration.setExtension(extensionIdToExtensionMap.get(inputPinConfigurationDO.getExtensionId()));
+				}
+				
+				breezyBoard.getInputPinConfigurations().add(inputPinConfiguration);
+			}
 			
-			breezyBoard.getComponentConfigurations().add(componentConfiguration);
+			for(ComponentConfigurationDO componentConfigurationDO : breezyBoardDO.getComponentConfigurationDOs()) {
+				ComponentConfiguration componentConfiguration = getComponentConfiguration(componentConfigurationDO, extensionIdToExtensionMap);
+				
+				breezyBoard.getComponentConfigurations().add(componentConfiguration);
+			}
 		}
 		
 		return breezyBoard;
