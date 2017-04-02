@@ -131,6 +131,21 @@ public class MacroBuilderView implements Serializable {
 		return macroManager.isRunning(macro);
 	}
 	
+	public boolean hasUnmountedBoards() {
+		boolean result = false;
+		
+		for(MacroStep macroStep : macro.getSteps()) {
+			BreezyBoard breezyBoard = breezyBoardIdToBreezyBoardMap.get(UUID.fromString(macroStep.getMountedBoardId()));
+			
+			if(!breezyBoard.isMounted()) {
+				result = true;
+				break;
+			}
+		}
+		
+		return result;
+	}
+	
 	public void deleteMacro() throws IOException {
 		macroManager.delete(macro);
 

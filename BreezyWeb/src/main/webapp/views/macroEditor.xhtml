@@ -38,9 +38,11 @@
 							<p:commandButton id="deleteMacroId" value="Delete" actionListener="#{macroBuilderView.deleteMacro}">
 				            	<p:confirm header="Confirmation" message="Are you sure you wish to permanently delete this macro?" icon="ui-icon-alert" />
 							</p:commandButton>
-							<p:spacer width="10"/>
-							<p:commandButton id="runMacroId" value="Test" actionListener="#{macroBuilderView.testMacro}" rendered="#{not macroBuilderView.running}" update="macroEditToolBarId"/>
-							<p:commandButton id="stopMacroId" value="Stop" actionListener="#{macroBuilderView.stopMacro}" rendered="#{macroBuilderView.running}" update="macroEditToolBarId"/>
+							<ui:fragment rendered="#{not macroBuilderView.hasUnmountedBoards()}">
+								<p:spacer width="10"/>
+								<p:commandButton id="runMacroId" value="Test" actionListener="#{macroBuilderView.testMacro}" rendered="#{not macroBuilderView.running}" update="macroEditToolBarId"/>
+								<p:commandButton id="stopMacroId" value="Stop" actionListener="#{macroBuilderView.stopMacro}" rendered="#{macroBuilderView.running}" update="macroEditToolBarId"/>
+							</ui:fragment>
 				        </f:facet>
 				    </p:toolbar>
 			
