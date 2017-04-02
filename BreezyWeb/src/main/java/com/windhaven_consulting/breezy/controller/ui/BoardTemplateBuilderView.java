@@ -111,7 +111,6 @@ public class BoardTemplateBuilderView implements Serializable {
 	public void saveBoardTemplateAs() {
 		BreezyBoardTemplate newBreezyBoardTemplate = BoardTemplateUtility.cloneNew(breezyBoardTemplate);
 		newBreezyBoardTemplate.setName(saveBoardTemplateAsName);
-//		breezyBoardTemplate = newBreezyBoardTemplate;
 		breezyBoardTemplateManager.saveBoardTemplate(newBreezyBoardTemplate);
 		
 		loadBoardTemplate(newBreezyBoardTemplate.getId().toString());

@@ -16,12 +16,8 @@ import com.pi4j.io.gpio.event.GpioPinListener;
 
 public class MockGpioPinDigitalOutput extends BaseMockGpioPin implements GpioPinDigitalOutput {
 
-	private PinState defaultState;
-
 	public MockGpioPinDigitalOutput(GpioProvider provider, Pin pin, PinState defaultState) {
 		super(provider, pin);
-		
-		this.defaultState = defaultState;
 	}
 
 	@Override

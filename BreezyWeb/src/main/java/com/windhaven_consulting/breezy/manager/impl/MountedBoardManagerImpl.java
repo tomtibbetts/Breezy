@@ -103,7 +103,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 			Map<UUID, ExtensionProvider<BreezyPin>> extensionProviderMap = new HashMap<UUID, ExtensionProvider<BreezyPin>>();
 
 			for(Extension extension : breezyBoard.getExtensions()) {
-				ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties(), breezyBoard.isMounted());
+				ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
 				
 				extensionProviderMap.put(extension.getId(), extensionProvider);
 			}
@@ -147,7 +147,7 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 		// load up the I/O extensions used by this board
 		for(Extension extension : breezyBoard.getExtensions()) {
 			LOG.debug("Using extension properties: " + extension.getProperties().toString());
-			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties(), breezyBoard.isMounted());
+			ExtensionProvider<BreezyPin> extensionProvider = extensionProviderFactory.getNewExtensionProvider(extension.getExtensionType(), extension.getProperties());
 			
 			extensionProviderMap.put(extension.getId(), extensionProvider);
 		}

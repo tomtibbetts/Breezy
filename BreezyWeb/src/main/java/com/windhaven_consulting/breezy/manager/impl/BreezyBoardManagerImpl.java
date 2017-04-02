@@ -85,11 +85,6 @@ public class BreezyBoardManagerImpl implements BreezyBoardManager {
 	public void unmountBoardAndSave(BreezyBoard breezyBoard) {
 		mountedBoardManager.unprovisionBoard(breezyBoard);
 		breezyBoard.setMounted(false);
-//		
-//		// we re-provision the board in an unmounted state so that its inputs and components still appear
-//		// in various UI screens using mock values
-//		mountedBoardManager.provisionBoard(breezyBoard);
-//		
 		saveBoard(breezyBoard);
 	}
 

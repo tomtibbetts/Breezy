@@ -94,12 +94,12 @@ public class ExtensionProviderAbstractFactoryImpl implements ExtensionProviderAb
 	/**
 	 * returns a new instance of an ExtensionProvider (prototype pattern)
 	 */
-	public ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties, boolean isMounted) {
+	public ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties) {
 		
 		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = null;
 		ExtensionProvider<BreezyPin> extensionProvider = null;
 		
-		if(!isWindowsEnvironment() && isMounted) {
+		if(!isWindowsEnvironment()) {
 			extensionProviderFactory = getExtensionProviderFactory(extensionType);
 			
 			extensionProviderFactory.validateProperties(properties);

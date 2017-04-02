@@ -2,9 +2,7 @@ package com.windhaven_consulting.breezy.embeddedcontroller.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinShutdown;
@@ -20,7 +18,6 @@ public class MockGpioPinDigitalInput extends BaseMockGpioPin implements GpioPinD
 
 	private PinPullResistance pinPullResistance;
 	private int debounce;
-	private PinState[] pinStates;
 	private List<GpioPinListener> listeners = new ArrayList<GpioPinListener>();
 
 	public MockGpioPinDigitalInput(GpioProvider provider, Pin pin, PinPullResistance pinPullResistance) {
@@ -267,7 +264,6 @@ public class MockGpioPinDigitalInput extends BaseMockGpioPin implements GpioPinD
 	@Override
 	public void setDebounce(int debounce, PinState... states) {
 		this.debounce = debounce;
-		this.pinStates = states;
 	}
 
 }

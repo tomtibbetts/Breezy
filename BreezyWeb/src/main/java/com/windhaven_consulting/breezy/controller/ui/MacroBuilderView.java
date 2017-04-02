@@ -419,7 +419,6 @@ public class MacroBuilderView implements Serializable {
 				
 				if(!componentToMethods.containsKey(componentConfiguration.getId())) {
 					Map<String, List<ParameterTemplate>> methods = new TreeMap<String, List<ParameterTemplate>>();
-//					ComponentTemplate componentTemplate = componentLibraryManager.getComponentTemplateFor(componentConfiguration);
 					ComponentTemplate componentTemplate = componentLibraryManager.getComponentTemplateFor(componentConfiguration.getComponentType());  // is it getName()?
 					
 					for(MethodTemplate methodTemplate : componentTemplate.getMethods()) {
@@ -467,22 +466,20 @@ public class MacroBuilderView implements Serializable {
         	UUID componentId = UUID.fromString(destinationMacroStep.getComponentId());
         	Map<String, List<ParameterTemplate>> parameterTemplateByFunction = componentToMethods.get(componentId);
         	
-//        	if(parameterTemplateByFunction != null) {
-        		List<ParameterTemplate> parameterTemplates = parameterTemplateByFunction.get(destinationMacroStep.getFunction());
-            	
-        		for(int i = 0; i < sourceMacroStep.getMethodParameters().size(); i++) {
-        			ParameterTemplate parameterTemplate = parameterTemplates.get(i);
-        			MethodParameter sourceMethodParameter = sourceMacroStep.getMethodParameters().get(i);
-        			
-            		MethodParameter destinationMethodParameter = new MethodParameter();
-            		destinationMethodParameter.setFieldName(sourceMethodParameter.getFieldName());
-            		destinationMethodParameter.setFieldValue(sourceMethodParameter.getFieldValue());
-            		
-            		decorateMethodParameter(destinationMethodParameter, parameterTemplate);
-            		
-            		destinationMacroStep.getMethodParameters().add(destinationMethodParameter);
-        		}
-//    		}
+    		List<ParameterTemplate> parameterTemplates = parameterTemplateByFunction.get(destinationMacroStep.getFunction());
+        	
+    		for(int i = 0; i < sourceMacroStep.getMethodParameters().size(); i++) {
+    			ParameterTemplate parameterTemplate = parameterTemplates.get(i);
+    			MethodParameter sourceMethodParameter = sourceMacroStep.getMethodParameters().get(i);
+    			
+        		MethodParameter destinationMethodParameter = new MethodParameter();
+        		destinationMethodParameter.setFieldName(sourceMethodParameter.getFieldName());
+        		destinationMethodParameter.setFieldValue(sourceMethodParameter.getFieldValue());
+        		
+        		decorateMethodParameter(destinationMethodParameter, parameterTemplate);
+        		
+        		destinationMacroStep.getMethodParameters().add(destinationMethodParameter);
+    		}
     	}
     	
 		return destinationMacroStep;

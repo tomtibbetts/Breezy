@@ -10,7 +10,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionPr
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalInputPinProxyImpl;
 import com.windhaven_consulting.breezy.embeddedcontroller.impl.Pi4JDigitalOutputPinProxyImpl;
 
-public class MockDigitalOutputExtensionProviderImpl implements ExtensionProvider<BreezyPin> {
+public class MockDigitalExtensionProviderImpl implements ExtensionProvider<BreezyPin> {
 
 	@Override
 	public DigitalInputPin provisionDigitalInputPin(String name, String pinName, UUID pinId, PinPullResistance pinPullResistance, Integer debounce, boolean isEventTrigger) {

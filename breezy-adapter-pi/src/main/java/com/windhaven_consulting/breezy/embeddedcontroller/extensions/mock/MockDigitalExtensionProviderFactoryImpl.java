@@ -28,7 +28,7 @@ public class MockDigitalExtensionProviderFactoryImpl extends BaseExtensionProvid
 
 	@Override
 	public ExtensionProvider<BreezyPin> getExtensionProvider(GpioController gpioController, GpioProvider gpioProvider, GpioPinListenerDigital gpioPinListenerDigital) {
-		return new MockDigitalOutputExtensionProviderImpl();
+		return new MockDigitalExtensionProviderImpl();
 	}
 
 	@Override
