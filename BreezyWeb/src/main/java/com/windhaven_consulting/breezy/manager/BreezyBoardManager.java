@@ -16,7 +16,7 @@ public interface BreezyBoardManager {
 	
 	void mountBoard(BreezyBoard breezyBoard);
 	
-	void unmountBoard(BreezyBoard breezyBoard);
+	void unmountBoardAndSave(BreezyBoard breezyBoard);
 
 	void mountBoardAndSave(BreezyBoard breezyBoard);
 }

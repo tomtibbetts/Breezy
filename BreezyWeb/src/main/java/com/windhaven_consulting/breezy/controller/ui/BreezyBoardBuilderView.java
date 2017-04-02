@@ -135,7 +135,7 @@ public class BreezyBoardBuilderView implements Serializable {
 	
 	public void unmountBoard() {
 		if(breezyBoard.isMounted()) {
-			breezyBoardManager.unmountBoard(breezyBoard);
+			breezyBoardManager.unmountBoardAndSave(breezyBoard);
 		}
 	}
 	

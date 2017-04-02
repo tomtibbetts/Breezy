@@ -122,6 +122,7 @@ public abstract class BaseDODataServiceImpl <T extends PersistentObject> impleme
 			throw new BreezyPersistenceException("Defined resource: " + resourcePath + " is not a directory.");
 		}
 		
+		// sorts by name
 		Collections.sort(persistentObjects);
 		
 		return persistentObjects;

@@ -109,12 +109,12 @@
 									<p:column headerText="Mounted Board" style="width: 200px;">
 					      				<h:outputText 
 					      					style="color: red" 
-					      					value="#{macroBuilderView.getMountedBoard(macroStep.mountedBoardId).name}"
-					      					rendered="#{not macroBuilderView.getMountedBoard(macroStep.mountedBoardId).isMounted()}"/>
+					      					value="#{macroBuilderView.getBreezyBoard(macroStep.mountedBoardId).name}"
+					      					rendered="#{not macroBuilderView.getBreezyBoard(macroStep.mountedBoardId).isMounted()}"/>
 
 					      				<h:outputText 
-					      					value="#{macroBuilderView.getMountedBoard(macroStep.mountedBoardId).name}"
-					      					rendered="#{macroBuilderView.getMountedBoard(macroStep.mountedBoardId).isMounted()}"/>
+					      					value="#{macroBuilderView.getBreezyBoard(macroStep.mountedBoardId).name}"
+					      					rendered="#{macroBuilderView.getBreezyBoard(macroStep.mountedBoardId).isMounted()}"/>
 									</p:column>
 									
 					      			<p:column headerText="Component" style="width: 125px;">
@@ -137,13 +137,13 @@
 					      						<h:outputText value="#{methodParameter.fieldName}: " style="font-weight: bold;"/>
 							      			</p:column>
 							      			<p:column>
-					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'MOUNTED_BOARD'}" converter="#{macroBuilderView.mountedBoardConverter}"/>
-					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_INPUT_PIN'}" converter="#{macroBuilderView.digitalInputPinConverter}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'MOUNTED_BOARD'}" converter="#{macroBuilderView.breezyBoardConverter}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_INPUT_PIN'}" converter="#{macroBuilderView.inputPinConfigurationConverter}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'STRING'}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'NUMBER'}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'PIN_STATE'}" converter="#{macroBuilderView.pinStateConverter}"/>
 					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'LOGIC_STATE'}"/>
-					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_OUTPUT_PIN'}" converter="#{macroBuilderView.digitalOutputPinConverter}"/>
+					      						<h:outputText value="#{methodParameter.fieldValue}" rendered="#{methodParameter.parameterFieldType eq 'DIGITAL_OUTPUT_PIN'}" converter="#{macroBuilderView.outputPinConfigurationConverter}"/>
 							      			</p:column>
 							      		</p:dataTable>
 					      			</p:column>
@@ -198,7 +198,7 @@
 								<p:selectOneMenu id="mountedBoardId" value="#{macroBuilderView.workingMacroStep.mountedBoardId}" required="false" label="Mounted Board" style="width:100%">
 									<p:ajax event="change" listener="#{macroBuilderView.onMountedBoardChange}" update="componentId, functionId" />
 									<f:selectItem itemLabel="Select Mounted Board" itemValue="" noSelectionOption="true" />
-			                    	<f:selectItems value="#{macroBuilderView.mountedBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
+			                    	<f:selectItems value="#{macroBuilderView.breezyBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
 								</p:selectOneMenu>
 			            	</p:column>
 		              		<p:column>
@@ -208,7 +208,7 @@
 								<p:selectOneMenu id="componentId" value="#{macroBuilderView.workingMacroStep.componentId}" required="false" label="Component" style="width:100%">
 									<p:ajax event="change" listener="#{macroBuilderView.onComponentChange}" update="functionId" />
 									<f:selectItem itemLabel="Select Component" itemValue="" noSelectionOption="true" />
-			                    	<f:selectItems value="#{macroBuilderView.components}" var="mountedComponent" itemLabel="#{mountedComponent.name}" itemValue="#{mountedComponent.id}"/>
+			                    	<f:selectItems value="#{macroBuilderView.componentConfigurations}" var="mountedComponent" itemLabel="#{mountedComponent.name}" itemValue="#{mountedComponent.id}"/>
 								</p:selectOneMenu>
 			            	</p:column>
 		              		<p:column>
@@ -246,7 +246,7 @@
 											label="#{methodParameter.fieldName}">											>
 											<p:ajax event="change" listener="#{macroBuilderView.onParameterMountedBoardChange}" update="parametersEditTableId" />
 											<f:selectItem itemLabel="Select Mounted Board" itemValue="" noSelectionOption="true" />
-					                    	<f:selectItems value="#{macroBuilderView.mountedBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
+					                    	<f:selectItems value="#{macroBuilderView.breezyBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
 										</p:selectOneMenu>
 	
 										<p:selectOneMenu id="digitalInputPinId" value="#{methodParameter.fieldValue}" style="width: 100%;"
@@ -254,7 +254,7 @@
 											required="false"
 											label="#{methodParameter.fieldName}">
 											<f:selectItem itemLabel="Select Input Pin" itemValue="" noSelectionOption="true" />
-					                    	<f:selectItems value="#{macroBuilderView.inputPins}" var="inputPin" itemLabel="#{inputPin.name}" itemValue="#{inputPin.id}"/>
+					                    	<f:selectItems value="#{macroBuilderView.inputPinConfigurations}" var="inputPin" itemLabel="#{inputPin.name}" itemValue="#{inputPin.id}"/>
 										</p:selectOneMenu>
 	
 			      						<p:inputText id="stringParameterValueEditId" value="#{methodParameter.fieldValue}" 
@@ -288,7 +288,7 @@
 											required="false"
 											label="#{methodParameter.fieldName}">
 											<f:selectItem itemLabel="Select Output Pin" itemValue="" noSelectionOption="true" />
-					                    	<f:selectItems value="#{macroBuilderView.outputPins}" var="digitalOutputPin" itemLabel="#{digitalOutputPin.name}" itemValue="#{digitalOutputPin.id}"/>
+					                    	<f:selectItems value="#{macroBuilderView.outputPinConfigurations}" var="digitalOutputPin" itemLabel="#{digitalOutputPin.name}" itemValue="#{digitalOutputPin.id}"/>
 										</p:selectOneMenu>
 	
 					      			</p:column>

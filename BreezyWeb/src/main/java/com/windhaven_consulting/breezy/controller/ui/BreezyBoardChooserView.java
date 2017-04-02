@@ -1,6 +1,7 @@
 package com.windhaven_consulting.breezy.controller.ui;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -18,7 +19,15 @@ public class BreezyBoardChooserView {
 	private BreezyBoardManager breezyBoardManager;
 	
 	public List<BreezyBoard> getBreezyBoards() {
-		return breezyBoardManager.getAllBreezyBoards();
+		List<BreezyBoard> breezyBoards = new ArrayList<BreezyBoard>();
+		
+		for(BreezyBoard breezyBoard : breezyBoardManager.getAllBreezyBoards()) {
+			if(!breezyBoard.isRestricted()) {
+				breezyBoards.add(breezyBoard);
+			}
+		}
+		
+		return breezyBoards;
 	}
 	
 }

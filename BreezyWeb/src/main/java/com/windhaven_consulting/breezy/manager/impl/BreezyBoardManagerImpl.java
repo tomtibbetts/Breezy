@@ -1,10 +1,15 @@
 package com.windhaven_consulting.breezy.manager.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.windhaven_consulting.breezy.SystemBoardFactory;
 import com.windhaven_consulting.breezy.manager.BreezyBoardManager;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
 import com.windhaven_consulting.breezy.manager.ViewDiskObjectMapper;
@@ -24,14 +29,29 @@ public class BreezyBoardManagerImpl implements BreezyBoardManager {
 	@Inject
 	private MountedBoardManager mountedBoardManager;
 	
+	private BreezyBoard systemBoard = SystemBoardFactory.getSystemBoard();
+	
 	@Override
 	public List<BreezyBoard> getAllBreezyBoards() {
-		return breezyBoardViewMapper.getAsViewObjects(breezyBoardDODataService.findAll());
+		List<BreezyBoard> breezyBoards = new ArrayList<BreezyBoard>();
+		breezyBoards.add(systemBoard);
+		breezyBoards.addAll(breezyBoardViewMapper.getAsViewObjects(breezyBoardDODataService.findAll()));
+		
+		return breezyBoards;
 	}
 
 	@Override
 	public BreezyBoard getBreezyBoardById(String id) {
-		return breezyBoardViewMapper.getAsViewObject(breezyBoardDODataService.findById(id));
+		BreezyBoard breezyBoard = null;
+		
+		if(StringUtils.isNotEmpty(id) && systemBoard.getId().equals(UUID.fromString(id))) {
+			breezyBoard = systemBoard;
+		}
+		else {
+			breezyBoard = breezyBoardViewMapper.getAsViewObject(breezyBoardDODataService.findById(id));
+		}
+		
+		return breezyBoard;
 	}
 
 	@Override
@@ -62,14 +82,14 @@ public class BreezyBoardManagerImpl implements BreezyBoardManager {
 	}
 
 	@Override
-	public void unmountBoard(BreezyBoard breezyBoard) {
+	public void unmountBoardAndSave(BreezyBoard breezyBoard) {
 		mountedBoardManager.unprovisionBoard(breezyBoard);
 		breezyBoard.setMounted(false);
-		
-		// we re-provision the board in an unmounted state so that its inputs and components still appear
-		// in various UI screens using mock values
-		mountedBoardManager.provisionBoard(breezyBoard);
-		
+//		
+//		// we re-provision the board in an unmounted state so that its inputs and components still appear
+//		// in various UI screens using mock values
+//		mountedBoardManager.provisionBoard(breezyBoard);
+//		
 		saveBoard(breezyBoard);
 	}
 
