@@ -69,13 +69,13 @@ public class MCP23S17ExtensionProviderFactoryImpl extends SPIBusExtensionProvide
 		BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
 		byte address = Byte.decode(properties.get(SPIBusProperty.ADDRESS.name()));
 		
-		LOG.debug("Channel: " + spiChannel);
-		LOG.debug("address: " + address);
+//		LOG.debug("Channel: " + spiChannel);
+//		LOG.debug("address: " + address);
 		
 		try {
 			gpioProvider = new MCP23S17GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
 		} catch (IOException e) {
-			LOG.debug("Cannot create MCP23S17GpioProvider, IO Exception thrown: " + e.getMessage());
+//			LOG.debug("Cannot create MCP23S17GpioProvider, IO Exception thrown: " + e.getMessage());
 			
 			throw new EmbeddedControllerException("Cannot create MCP23S17GpioProvider, IO Exception thrown", e);
 		}

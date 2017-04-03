@@ -67,7 +67,7 @@ public class PCA9685ExtensionProviderFactoryImpl extends I2CBusExtensionProvider
 
 	@Override
 	public GpioProvider getGpioProvider(Map<String, String> properties) {
-		LOG.debug("Initializing PCA9685ExtensionProviderImpl");
+//		LOG.debug("Initializing PCA9685ExtensionProviderImpl");
 		
 		GpioProvider gpioProvider = null;
 		String busNumber = properties.get(I2CBusProperty.BUS_NUMBER.name());

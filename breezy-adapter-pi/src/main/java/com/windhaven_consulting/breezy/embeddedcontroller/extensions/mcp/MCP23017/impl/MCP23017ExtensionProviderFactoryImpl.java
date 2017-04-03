@@ -63,7 +63,7 @@ public class MCP23017ExtensionProviderFactoryImpl extends I2CBusExtensionProvide
 
 	@Override
 	public GpioProvider getGpioProvider(Map<String, String> properties) {
-		LOG.debug("Initializing MCP23017ExtensionProviderImpl");
+//		LOG.debug("Initializing MCP23017ExtensionProviderImpl");
 			
 		GpioProvider gpioProvider = null;
 		
@@ -78,7 +78,7 @@ public class MCP23017ExtensionProviderFactoryImpl extends I2CBusExtensionProvide
 			throw new EmbeddedControllerException("Cannot create MCP23017GpioProvider, IO Exception thrown", e);
 		}
 	
-		LOG.debug("End Initializing MCP23017ExtensionProviderImpl");
+//		LOG.debug("End Initializing MCP23017ExtensionProviderImpl");
 		
 		return gpioProvider;
 	}

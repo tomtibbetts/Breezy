@@ -62,7 +62,7 @@ public class MCP23S08ExtensionProviderFactoryImpl extends SPIBusExtensionProvide
 
 	@Override
 	public GpioProvider getGpioProvider(Map<String, String> properties) {
-		LOG.debug("Initializing MCP23S08ExtensionProviderImpl");
+//		LOG.debug("Initializing MCP23S08ExtensionProviderImpl");
 		
 		GpioProvider gpioProvider = null;
 		
@@ -70,18 +70,18 @@ public class MCP23S08ExtensionProviderFactoryImpl extends SPIBusExtensionProvide
 		BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
 		byte address = Byte.decode(properties.get(SPIBusProperty.ADDRESS.name()));
 	
-		LOG.debug("Channel: " + spiChannel);
-		LOG.debug("address: " + address);
+//		LOG.debug("Channel: " + spiChannel);
+//		LOG.debug("address: " + address);
 		
 		try {
 			gpioProvider = new MCP23S08GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
 		} catch (IOException e) {
-			LOG.debug("Cannot create MCP23S17GpioProvider, IO Exception thrown: " + e.getMessage());
+//			LOG.debug("Cannot create MCP23S17GpioProvider, IO Exception thrown: " + e.getMessage());
 			
 			throw new EmbeddedControllerException("Cannot create MCP23S08GpioProvider, IO Exception thrown", e);
 		}
 	
-		LOG.debug("End Initializing MCP23S08ExtensionProviderImpl");
+//		LOG.debug("End Initializing MCP23S08ExtensionProviderImpl");
 		
 		return gpioProvider;
 	}

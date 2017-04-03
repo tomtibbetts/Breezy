@@ -97,12 +97,12 @@ public abstract class BaseExtensionProviderFactory<T extends BreezyPin> implemen
 	}
 	
 	private void initializeInputListener() {
-		LOG.debug("Creating a digital pin listener\n");
+//		LOG.debug("Creating a digital pin listener\n");
 		gpioPinListenerDigital = new GpioPinListenerDigital() {
 		
 			@Override
 			public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
-				LOG.debug("Firing StateChangeEvent: " + event.getPin().getProperty(BreezyPinProperty.NAME.name()) + ", id: " + event.getPin().getProperty(BreezyPinProperty.ID.name()));
+//				LOG.debug("Firing StateChangeEvent: " + event.getPin().getProperty(BreezyPinProperty.NAME.name()) + ", id: " + event.getPin().getProperty(BreezyPinProperty.ID.name()));
 				
 				GpioPin gpioPin = event.getPin();
 				com.pi4j.io.gpio.PinState pinState = event.getState();

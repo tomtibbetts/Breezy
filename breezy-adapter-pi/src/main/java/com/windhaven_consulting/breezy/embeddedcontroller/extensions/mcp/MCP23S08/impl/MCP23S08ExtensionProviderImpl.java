@@ -40,7 +40,7 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider<DigitalO
 
 	@Override
 	public DigitalInputPin provisionDigitalInputPin(String name, String pinName, UUID pinId, PinPullResistance pinPullResistance, Integer debounce, boolean isEventTrigger) {
-		LOG.debug("provisioning Input Pin, name: " + name + ", pinName: " + pinName + ", pinId: " + pinId.toString() + ", isEventTrigger: " + isEventTrigger);
+//		LOG.debug("provisioning Input Pin, name: " + name + ", pinName: " + pinName + ", pinId: " + pinId.toString() + ", isEventTrigger: " + isEventTrigger);
 		
 		BreezyPin breezyPin = MCP23S08Pin.getByName(pinName);
 		com.pi4j.io.gpio.Pin pi4JPin = BreezyToMCP23S08Pin.getPin(breezyPin);
@@ -52,11 +52,11 @@ public class MCP23S08ExtensionProviderImpl implements ExtensionProvider<DigitalO
 		gpioPin.setProperty(BreezyPinProperty.ID.name(), pinId.toString());
 		
 		if(isEventTrigger) {
-			LOG.debug("Adding event trigger. Listener is null = " + (gpioPinListenerDigital == null));
+//			LOG.debug("Adding event trigger. Listener is null = " + (gpioPinListenerDigital == null));
 			gpioPin.addListener(gpioPinListenerDigital);
 		}
 		
-			LOG.debug("end provisioning digital input pin.\n");
+//			LOG.debug("end provisioning digital input pin.\n");
 		return new Pi4JDigitalInputPinProxyImpl(name, pinId, gpioPin);
 	}
 
