@@ -135,11 +135,13 @@ public class MacroBuilderView implements Serializable {
 		boolean result = false;
 		
 		for(MacroStep macroStep : macro.getSteps()) {
-			BreezyBoard breezyBoard = breezyBoardIdToBreezyBoardMap.get(UUID.fromString(macroStep.getMountedBoardId()));
-			
-			if(!breezyBoard.isMounted()) {
-				result = true;
-				break;
+			if(StringUtils.isNotEmpty(macroStep.getMountedBoardId())) {
+				BreezyBoard breezyBoard = breezyBoardIdToBreezyBoardMap.get(UUID.fromString(macroStep.getMountedBoardId()));
+				
+				if(!breezyBoard.isMounted()) {
+					result = true;
+					break;
+				}
 			}
 		}
 		
