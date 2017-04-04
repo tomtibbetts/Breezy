@@ -51,11 +51,20 @@
 						</p:columnGroup>
 
 						<p:column>
-							<h:outputText value="#{triggerEvent.mountedBoardId}" converter="#{eventsBuilderView.mountedBoardConverter}"/>
+		      				<h:outputText 
+		      					style="color: red" 
+		      					value="#{triggerEvent.mountedBoardId}" 
+		      					converter="#{eventsBuilderView.breezyBoardConverter}"
+		      					rendered="#{not eventsBuilderView.getBreezyBoard(triggerEvent.mountedBoardId).isMounted()}"/>
+
+		      				<h:outputText 
+		      					value="#{triggerEvent.mountedBoardId}" 
+		      					converter="#{eventsBuilderView.breezyBoardConverter}"
+		      					rendered="#{eventsBuilderView.getBreezyBoard(triggerEvent.mountedBoardId).isMounted()}"/>
 						</p:column>
 						
 		      			<p:column style="width: 100px;">
-		      				<h:outputText value="#{triggerEvent.inputPinId}" converter="#{eventsBuilderView.digitalInputPinConverter}"/>
+		      				<h:outputText value="#{triggerEvent.inputPinId}" converter="#{eventsBuilderView.inputPinConfigurationConverter}"/>
 		      			</p:column>
 		
 		      			<p:column style="width: 250px;">
@@ -101,7 +110,7 @@
 								<p:selectOneMenu id="mountedBoardId" value="#{eventsBuilderView.workingTriggerEvent.mountedBoardId}" style="width: 500px;">
 									<p:ajax event="change" listener="#{eventsBuilderView.onMountedBoardChange}" update="inputPinId" />
 									<f:selectItem itemLabel="Select Mounted Board" itemValue="" noSelectionOption="true" />
-			                    	<f:selectItems value="#{eventsBuilderView.mountedBoards}" var="mountedBoard" itemLabel="#{mountedBoard.name}" itemValue="#{mountedBoard.id}"/>
+			                    	<f:selectItems value="#{eventsBuilderView.breezyBoards}" var="breezyBoard" itemLabel="#{breezyBoard.name}" itemValue="#{breezyBoard.id}"/>
 								</p:selectOneMenu>
 			            	</p:column>
 
@@ -111,7 +120,7 @@
 							<p:column>
 								<p:selectOneMenu id="inputPinId" value="#{eventsBuilderView.workingTriggerEvent.inputPinId}" style="width: 500px;">
 									<f:selectItem itemLabel="Select Input Pin" itemValue="" noSelectionOption="true" />
-			                    	<f:selectItems value="#{eventsBuilderView.inputPins}" var="inputPin" itemLabel="#{inputPin.name}" itemValue="#{inputPin.id}"/>
+			                    	<f:selectItems value="#{eventsBuilderView.inputPinConfigurations}" var="inputPinConfiguration" itemLabel="#{inputPinConfiguration.name}" itemValue="#{inputPinConfiguration.id}"/>
 								</p:selectOneMenu>
 							</p:column>
 			            	

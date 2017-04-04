@@ -35,16 +35,19 @@ public class Pi4JControllerProxyImpl implements EmbeddedControllerAdapter {
 		if(!isWindowsEnvironment()) {
 			gpioController = GpioFactory.getInstance();
 		}
+		else {
+			gpioController = MockGpioControllerFactory.getController();
+		}
 	}
 
 	@PreDestroy
 	public void preDestroy() {
 		LOG.debug("Shutting down GpioFactory");
 		
-		if(!isWindowsEnvironment()) {
+//		if(!isWindowsEnvironment()) {
 			gpioController.shutdown();
 			gpioController = null;
-		}
+//		}
 	}
 	
 	@Override

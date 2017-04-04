@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -18,15 +18,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.windhaven_consulting.breezy.controller.ui.converter.DigitalInputPinConverter;
-import com.windhaven_consulting.breezy.controller.ui.converter.MountedBoardConverter;
+import com.windhaven_consulting.breezy.controller.ui.converter.BreezyBoardConverter;
+import com.windhaven_consulting.breezy.controller.ui.converter.InputPinConfigurationConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.PinStateConverter;
-import com.windhaven_consulting.breezy.embeddedcontroller.DigitalInputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
+import com.windhaven_consulting.breezy.manager.BreezyBoardManager;
 import com.windhaven_consulting.breezy.manager.MacroManager;
-import com.windhaven_consulting.breezy.manager.MountedBoardManager;
 import com.windhaven_consulting.breezy.manager.TriggerEventManager;
-import com.windhaven_consulting.breezy.manager.impl.MountedBoard;
+import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
+import com.windhaven_consulting.breezy.manager.viewobject.InputPinConfiguration;
 import com.windhaven_consulting.breezy.persistence.domain.Macro;
 import com.windhaven_consulting.breezy.persistence.domain.TriggerEvent;
 
@@ -36,7 +36,7 @@ public class EventsBuilderView {
 	static final Logger LOG = LoggerFactory.getLogger(EventsBuilderView.class);
 
 	@Inject
-	private MountedBoardManager mountedBoardManager;
+	private BreezyBoardManager breezyBoardManager;
 	
 	@Inject
 	private MacroManager macroManager;
@@ -46,27 +46,29 @@ public class EventsBuilderView {
 	
 	private List<TriggerEvent> triggerEvents = new ArrayList<TriggerEvent>();
 	
-	private List<MountedBoard> mountedBoards = new ArrayList<MountedBoard>();
-	
 	private TriggerEvent workingTriggerEvent = new TriggerEvent();
 	
 	private Map<String, Macro> macroIdToMacroMap = new HashMap<String, Macro>();
 	
 	private List<Macro> macros = new ArrayList<>();
 
-	private Map<String, String> digitalInputPinMap = new TreeMap<String, String>();
-	
-	private List<DigitalInputPin> inputPins = new ArrayList<DigitalInputPin>();
-
 	private boolean isNewLineMode;
 
 	private int selectedTriggerEventIndex;
 	
-	private MountedBoardConverter mountedBoardConverter;
-
-	private DigitalInputPinConverter digitalInputPinConverter;
-
 	private PinStateConverter pinStateConverter;
+
+	private List<InputPinConfiguration> inputPinConfigurations = new ArrayList<InputPinConfiguration>();
+
+	private InputPinConfigurationConverter inputPinConfigurationConverter;
+
+	private List<BreezyBoard> breezyBoards = new ArrayList<BreezyBoard>();
+
+	private Map<UUID, BreezyBoard> breezyBoardIdToBreezyBoardMap = new HashMap<UUID, BreezyBoard>();
+
+	private Map<String, String> inputPinConfigurationMap = new HashMap<String, String>();
+
+	private BreezyBoardConverter breezyBoardConverter;
 	
 	@PostConstruct
 	public void postConstruct() {
@@ -91,8 +93,8 @@ public class EventsBuilderView {
 		workingTriggerEvent = copyTriggerEvent(triggerEvents.get(selectedTriggerEventIndex));
 		
 		if(StringUtils.isNotEmpty(workingTriggerEvent.getMountedBoardId())) {
-			MountedBoard mountedBoard = mountedBoardManager.getById(workingTriggerEvent.getMountedBoardId());
-			inputPins = mountedBoard.getInputPins();
+			BreezyBoard breezyBoard = breezyBoardManager.getBreezyBoardById(workingTriggerEvent.getMountedBoardId());
+			inputPinConfigurations  = breezyBoard.getInputPinConfigurations();
 		}
 	}
 
@@ -113,13 +115,13 @@ public class EventsBuilderView {
 	
 	public void onMountedBoardChange(final AjaxBehaviorEvent event) {
 		String mountedBoardId = (String) ((UIOutput) event.getSource()).getValue();
-		MountedBoard mountedBoard = mountedBoardManager.getById(mountedBoardId);
+		BreezyBoard breezyBoard = breezyBoardManager.getBreezyBoardById(mountedBoardId);
 		
-		if(mountedBoard != null) {
-        	inputPins = mountedBoard.getInputPins();
+		if(breezyBoard != null) {
+			inputPinConfigurations = breezyBoard.getInputPinConfigurations();
 		}
 		else {
-			inputPins.clear();
+			inputPinConfigurations.clear();
 		}
 	}
 	
@@ -129,10 +131,6 @@ public class EventsBuilderView {
 	
 	public List<TriggerEvent> getTriggerEvents() {
 		return triggerEvents;
-	}
-	
-	public Map<String, String> getDigitalInputPinMap() {
-		return digitalInputPinMap;
 	}
 	
 	public List<PinState> getPinStates() {
@@ -147,20 +145,30 @@ public class EventsBuilderView {
 		return macroIdToMacroMap.get(macroId);
 	}
 	
-	public List<MountedBoard> getMountedBoards() {
-		return mountedBoards;
+	public List<BreezyBoard> getBreezyBoards() {
+		return breezyBoards;
 	}
 	
-	public MountedBoardConverter getMountedBoardConverter() {
-		return mountedBoardConverter;
+	public BreezyBoardConverter getBreezyBoardConverter() {
+		return breezyBoardConverter;
 	}
 	
-	public List<DigitalInputPin> getInputPins() {
-		return inputPins;
+	public BreezyBoard getBreezyBoard(String id) {
+		BreezyBoard breezyBoard = null;
+		
+		if(StringUtils.isNotEmpty(id)) {
+			breezyBoard = breezyBoardIdToBreezyBoardMap.get(UUID.fromString(id));
+		}
+		
+		return breezyBoard;
 	}
 
-	public DigitalInputPinConverter getDigitalInputPinConverter() {
-		return digitalInputPinConverter;
+	public List<InputPinConfiguration> getInputPinConfigurations() {
+		return inputPinConfigurations;
+	}
+	
+	public InputPinConfigurationConverter getInputPinConfigurationConverter() {
+		return inputPinConfigurationConverter;
 	}
 	
 	public PinStateConverter getPinStateConverter() {
@@ -168,14 +176,16 @@ public class EventsBuilderView {
 	}
 	
 	private void initialize() {
-		mountedBoards = mountedBoardManager.getAllMountedBoards();
-		List<DigitalInputPin> inputPins = new ArrayList<DigitalInputPin>();
-		
-		for(MountedBoard mountedBoard : mountedBoards) {
-			inputPins.addAll(mountedBoard.getInputPins());
+		breezyBoardIdToBreezyBoardMap.clear();
+		breezyBoards = breezyBoardManager.getAllBreezyBoards();
+		inputPinConfigurations = new ArrayList<InputPinConfiguration>();
+		for(BreezyBoard breezyBoard : breezyBoards ) {
+			breezyBoardIdToBreezyBoardMap.put(breezyBoard.getId(), breezyBoard);
 			
-			for(DigitalInputPin digitalInputPin : mountedBoard.getInputPins()) {
-				digitalInputPinMap.put(digitalInputPin.getName(), digitalInputPin.getName());
+			inputPinConfigurations.addAll(breezyBoard.getInputPinConfigurations());
+			
+			for(InputPinConfiguration inputPinConfiguration : inputPinConfigurations) {
+				inputPinConfigurationMap .put(inputPinConfiguration.getName(), inputPinConfiguration.getName());
 			}
 		}
 		
@@ -186,8 +196,8 @@ public class EventsBuilderView {
 		
 		triggerEvents = triggerEventManager.getAll();
 		
-		mountedBoardConverter = new MountedBoardConverter(mountedBoards);
-		digitalInputPinConverter = new DigitalInputPinConverter(inputPins);
+		breezyBoardConverter = new BreezyBoardConverter(breezyBoards);
+		inputPinConfigurationConverter = new InputPinConfigurationConverter(inputPinConfigurations);
 		pinStateConverter = new PinStateConverter();
 	}
 	

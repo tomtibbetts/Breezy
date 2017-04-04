@@ -10,8 +10,6 @@ public interface ExtensionProvider<O extends BreezyPin> {
 
 	DigitalInputPin provisionDigitalInputPin(String name, String pinName, UUID pinId, PinPullResistance pinPullResistance, Integer debounce, boolean isEventTrigger);
 	
-//	DigitalOutputPin provisionDigitalOutputPin(String name, String pinName, UUID pinId);
-	
 	O provisionOutputPin(String name, String pinName, UUID pinId);
 
 	void unprovisionPin(BreezyPin breezyPin);

@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -42,7 +42,7 @@ import com.windhaven_consulting.breezy.manager.viewobject.OutputConfigurationTem
 import com.windhaven_consulting.breezy.manager.viewobject.OutputPinConfiguration;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class BreezyBoardBuilderView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -121,10 +121,6 @@ public class BreezyBoardBuilderView implements Serializable {
 	}
 	
 	public void deleteBoard() throws IOException {
-		if(breezyBoard.isMounted()) {
-			mountedBoardManager.unmount(breezyBoard);
-		}
-
 		breezyBoardManager.deleteBoard(breezyBoard);
 		
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -133,17 +129,13 @@ public class BreezyBoardBuilderView implements Serializable {
 	
 	public void mountBoard() {
 		if(!breezyBoard.isMounted()) {
-			breezyBoard.setMounted(true);
-			breezyBoardManager.saveBoard(breezyBoard);
-			mountedBoardManager.mount(breezyBoard);
+			breezyBoardManager.mountBoardAndSave(breezyBoard);
 		}
 	}
 	
 	public void unmountBoard() {
 		if(breezyBoard.isMounted()) {
-			mountedBoardManager.unmount(breezyBoard);
-			breezyBoard.setMounted(false);
-			breezyBoardManager.saveBoard(breezyBoard);
+			breezyBoardManager.unmountBoardAndSave(breezyBoard);
 		}
 	}
 	

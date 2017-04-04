@@ -17,7 +17,7 @@ public interface MountedBoardManager {
 	@Deprecated
 	MountedBoard getByName(String mountedBoardName);
 
-	void mount(BreezyBoard breezyBoard);
+	void provisionBoard(BreezyBoard breezyBoard);
 
-	void unmount(BreezyBoard breezyBoard);
+	void unprovisionBoard(BreezyBoard breezyBoard);
 }
