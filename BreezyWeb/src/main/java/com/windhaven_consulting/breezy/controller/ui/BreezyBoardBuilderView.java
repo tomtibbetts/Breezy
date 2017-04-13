@@ -205,6 +205,7 @@ public class BreezyBoardBuilderView implements Serializable {
 	}
 
 	public void insertNewExtensionRowBefore(int index) throws IOException {
+		selectedExtensionIndex = index;
 		breezyBoard.getExtensions().add(index, new Extension());
 		workingExtension = new BreezyBoardBuilderExtensionView();
 		isNewLineMode = true;
@@ -214,6 +215,7 @@ public class BreezyBoardBuilderView implements Serializable {
 		Extension extension = new Extension();
 		
 		int nextIndex = index + 1;
+		selectedExtensionIndex = nextIndex;
 		
 		if(nextIndex == breezyBoard.getExtensions().size()) {
 			breezyBoard.getExtensions().add(extension);

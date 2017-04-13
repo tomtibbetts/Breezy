@@ -170,7 +170,7 @@
 				            <h:panelGrid id="tabInputPanelGridId" columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%;">
    								<p:commandButton id="insertFirstInputId"
 									value="Define First Input" 
-									update=":formId:inputEditDialogueId, tabInputPanelGridId"
+									update=":formId:inputEditDialogueId, formId:tabViewId:tabInputPanelGridId"
 									actionListener="#{breezyBoardBuilderView.insertNewDigitalInputPinRowBefore(0)}" 
 									rendered="#{breezyBoardBuilderView.breezyBoard.inputPinConfigurations.size() == 0}"
 			        				onclick="PF('inputEditDialogue').show()"/>
@@ -222,15 +222,15 @@
 					        				icon="ui-icon-circle-triangle-n"
 					        				style="width=15px; height=15px;" 
 					        				actionListener="#{breezyBoardBuilderView.insertNewDigitalInputPinRowBefore(inputRowIndex)}" 
-					        				update="inputEditTableId :formId:inputEditDialogueId"
-					        				onclick="PF('inputPinEditDialogue').show()"/>
+					        				update=":formId:inputEditDialogueId, formId:tabViewId:tabInputPanelGridId"
+					        				onclick="PF('inputEditDialogue').show()"/>
 					        			<br/>
 					        			<p:commandButton id="insertInputAfter" 
 					        				icon="ui-icon-circle-triangle-s"
 					        				style="width=15px; height=15px;" 
 					        				actionListener="#{breezyBoardBuilderView.insertNewDigitalInputPinRowAfter(inputRowIndex)}" 
-					        				update="inputEditTableId :formId:inputEditDialogueId"
-					        				onclick="PF('inputPinEditDialogue').show()"/>
+					        				update=":formId:inputEditDialogueId, formId:tabViewId:tabInputPanelGridId"
+					        				onclick="PF('inputEditDialogue').show()"/>
 									</p:column>
 									
 									<p:column headerText="Delete" style="width: 50px;">
