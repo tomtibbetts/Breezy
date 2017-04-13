@@ -16,6 +16,11 @@ public class MapEntryView<K, V> implements Serializable {
 		this.value = entry.getValue();
 	}
 
+	public MapEntryView(K key, V value) {
+		this.key = key;
+		this.value = value;
+	}
+
 	public K getKey() {
 		return key;
 	}

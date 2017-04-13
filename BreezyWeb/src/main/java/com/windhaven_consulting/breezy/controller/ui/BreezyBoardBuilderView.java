@@ -2,13 +2,16 @@ package com.windhaven_consulting.breezy.controller.ui;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIOutput;
@@ -19,9 +22,11 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 import com.windhaven_consulting.breezy.component.GenericComponent;
+import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionPropertyKeyConverter;
 import com.windhaven_consulting.breezy.controller.ui.converter.ExtensionPropertyValueConverter;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
+import com.windhaven_consulting.breezy.embeddedcontroller.InputType;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionType;
@@ -77,9 +82,9 @@ public class BreezyBoardBuilderView implements Serializable {
 
 	private int selectedExtensionIndex;
 
-	private BreezyBoardBuilderExtensionView workingExtension;
+	private BreezyBoardBuilderExtensionView workingExtension = new BreezyBoardBuilderExtensionView();
 
-	private int selectedInputIndex;
+	private int selectedInputPinIndex;
 
 	private InputPinConfiguration workingInputPinConfiguration = new InputPinConfiguration();
 
@@ -91,9 +96,22 @@ public class BreezyBoardBuilderView implements Serializable {
 
 	private Map<String, ExtensionPropertyValueConverter> extensionPropertyValueConverterByExtensionPropertyMap = new HashMap<String, ExtensionPropertyValueConverter>();
 
+	private boolean isNewLineMode;
+
+	private ExtensionConverter extensionConverter;
+
+	private Map<String, Extension> nameToExtensionMap = new HashMap<String, Extension>();
+
+	@PostConstruct
+	public void postConstruct() {
+		extensionConverter = new ExtensionConverter(nameToExtensionMap);
+	}
+
 	public void preRender() {
 		if("newBoard".equals(action)) {
 			newBoard = true;
+			nameToExtensionMap.clear();
+			
 			selectedBoardTemplateId = StringUtils.EMPTY;
 			
 			breezyBoard = new BreezyBoard();
@@ -139,6 +157,25 @@ public class BreezyBoardBuilderView implements Serializable {
 		}
 	}
 	
+	public ExtensionConverter getExtensionConverter() {
+		return extensionConverter;
+	}
+	
+	public List<Extension> getExtensionsByInputType(String inputTypeString) {
+		List<Extension> extensions = new ArrayList<Extension>();
+		InputType inputType = InputType.valueOf(inputTypeString);
+		
+		if(inputType != null) {
+			for(Extension extension : breezyBoard.getExtensions()) {
+				if(inputType == extension.getExtensionType().getInputType()) {
+					extensions.add(extension);
+				}
+			}
+		}
+		
+		return extensions;
+	}
+
 	/**
 	 * First page
 	 */
@@ -156,6 +193,10 @@ public class BreezyBoardBuilderView implements Serializable {
 	public void saveExtension() {
 		Extension extension = getExtension(workingExtension);
 		breezyBoard.getExtensions().set(selectedExtensionIndex, extension);
+		
+		if(!nameToExtensionMap.containsKey(extension.getName())) {
+			nameToExtensionMap.put(extension.getName(), extension);
+		}
 	}
 	
 	public void editExtension(int index) {
@@ -163,17 +204,134 @@ public class BreezyBoardBuilderView implements Serializable {
 		workingExtension = getExtensionDecorator(breezyBoard.getExtensions().get(index));
 	}
 
+	public void insertNewExtensionRowBefore(int index) throws IOException {
+		breezyBoard.getExtensions().add(index, new Extension());
+		workingExtension = new BreezyBoardBuilderExtensionView();
+		isNewLineMode = true;
+	}
+	
+	public void insertNewExtensionRowAfter(int index) throws IOException {
+		Extension extension = new Extension();
+		
+		int nextIndex = index + 1;
+		
+		if(nextIndex == breezyBoard.getExtensions().size()) {
+			breezyBoard.getExtensions().add(extension);
+		}
+		else {
+			breezyBoard.getExtensions().add(nextIndex, extension);
+		}
+
+		workingExtension = new BreezyBoardBuilderExtensionView();
+		isNewLineMode = true;
+	}
+
+	public void deleteExtensionRow(int index) {
+		Extension extension = breezyBoard.getExtensions().get(index);
+		
+//		if(extension != null) {
+//			nameToExtensionTemplateMap.remove(extension);
+//			
+//			// TODO: do the same for components as for inputs?
+//			for(InputConfigurationTemplate inputConfigurationTemplate : breezyBoardTemplate.getInputConfigurationTemplates()) {
+//				if(inputConfigurationTemplate.getExtensionTemplate() != null && inputConfigurationTemplate.getExtensionTemplate().equals(extension)) {
+//					inputConfigurationTemplate.setExtensionTemplate(null);
+//					inputConfigurationTemplate.setMappedPin(StringUtils.EMPTY);
+//					inputConfigurationTemplate.setPinPullResistance(null);
+//				}
+//			}
+//		}
+		
+		breezyBoard.getExtensions().remove(index);
+	}
+
+	public List<ExtensionType> getExtensionTypes() {
+		List<ExtensionType> extensionTypes = Arrays.asList(ExtensionType.values());
+		
+		return extensionTypes;
+	}
+	
+	public void onExtensionTypeChange(final AjaxBehaviorEvent event) {
+		ExtensionType extensionType = (ExtensionType) ((UIOutput) event.getSource()).getValue();
+		buildExtensionPropertyKeyConverter(extensionType);
+		
+		workingExtension.getPropertyEntries().clear();
+		
+		List<PropertyValueEnum> propertyValueEnums = extensionProviderManager.getProperties(extensionType);
+		
+		for(PropertyValueEnum propertyValueEnum : propertyValueEnums) {
+			MapEntryView<String, String> mapEntryView = new MapEntryView<String, String>(propertyValueEnum.getName(), "");
+			
+			workingExtension.getPropertyEntries().add(mapEntryView);
+		}
+	}
+	
+	public void cancelExtensionEdit() {
+		if(isNewLineMode) {
+			deleteExtensionRow(selectedExtensionIndex);
+			isNewLineMode = false;
+		}
+	}
+	
 	/**
 	 * Input Section
 	 * 
 	 */
 	public void saveInput() {
-		breezyBoard.getInputPinConfigurations().set(selectedInputIndex, workingInputPinConfiguration);
+		breezyBoard.getInputPinConfigurations().set(selectedInputPinIndex, workingInputPinConfiguration);
 	}
 	
 	public void editInput(int index) {
-		selectedInputIndex = index;
+		selectedInputPinIndex = index;
 		workingInputPinConfiguration = getInputPinConfiguration(breezyBoard.getInputPinConfigurations().get(index));
+	}
+	
+	public void cancelInputPin() {
+		if(isNewLineMode) {
+			deleteDigitalInputPinConfigurationRow(selectedInputPinIndex);
+			isNewLineMode = false;
+		}
+	}
+
+	public void insertNewDigitalInputPinRowBefore(int index) throws IOException {
+		selectedInputPinIndex = index;
+
+		// create a scratch configuration
+		workingInputPinConfiguration = new InputPinConfiguration();
+		
+		// and add a placeholder in the breezy board
+		breezyBoard.getInputPinConfigurations().add(index, new InputPinConfiguration());
+		isNewLineMode = true;
+	}
+	
+	public void insertNewDigitalInputPinRowAfter(int index) throws IOException {
+		InputPinConfiguration inputConfigurationTemplate = new InputPinConfiguration();
+		int nextIndex = index + 1;
+		selectedInputPinIndex = nextIndex;
+		
+		if(nextIndex == breezyBoard.getExtensions().size()) {
+			breezyBoard.getInputPinConfigurations().add(inputConfigurationTemplate);
+		}
+		else {
+			breezyBoard.getInputPinConfigurations().add(nextIndex, inputConfigurationTemplate);
+		}
+		
+		workingInputPinConfiguration = new InputPinConfiguration();
+		isNewLineMode = true;
+	}
+	
+	public void deleteDigitalInputPinConfigurationRow(int index) { 
+		breezyBoard.getInputPinConfigurations().remove(index);
+	}
+	
+	public List<BreezyPin> getPins(Extension extension) {
+		List<BreezyPin> results = Collections.emptyList();
+		
+		if(extension != null && extension.getExtensionType() != null) {
+			results = extensionProviderManager.getAvailablePins(extension.getExtensionType());
+		}
+		
+		return results;
 	}
 
 	/**
@@ -476,11 +634,14 @@ public class BreezyBoardBuilderView implements Serializable {
 
 		for(Extension extension : breezyBoard.getExtensions()) {
 			buildExtensionPropertyKeyConverter(extension.getExtensionType());
+			
+			nameToExtensionMap.put(extension.getName(), extension);
 		}
+
 	}
 
 	private void buildExtensionPropertyKeyConverter(ExtensionType extensionType) {
-		if(!extensionPropertyKeyConverterByExtensionTypeMap.containsKey(extensionType)) {
+		if(extensionType != null && !extensionPropertyKeyConverterByExtensionTypeMap.containsKey(extensionType)) {
 			List<PropertyValueEnum> properties = extensionProviderManager.getProperties(extensionType);
 			ExtensionPropertyKeyConverter extensionPropertyKeyConverter = new ExtensionPropertyKeyConverter(properties);
 			extensionPropertyKeyConverterByExtensionTypeMap.put(extensionType, extensionPropertyKeyConverter);
