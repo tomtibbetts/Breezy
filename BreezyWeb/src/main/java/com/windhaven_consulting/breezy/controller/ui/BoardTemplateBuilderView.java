@@ -291,7 +291,7 @@ public class BoardTemplateBuilderView implements Serializable {
 		int nextIndex = index + 1;
 		selectedComponentIndex = nextIndex;
 		
-		if(nextIndex == breezyBoardTemplate.getExtensionTemplates().size()) {
+		if(nextIndex == breezyBoardTemplate.getComponentConfigurationTemplates().size()) {
 			breezyBoardTemplate.getComponentConfigurationTemplates().add(componentConfigurationTemplate);
 		}
 		else {
