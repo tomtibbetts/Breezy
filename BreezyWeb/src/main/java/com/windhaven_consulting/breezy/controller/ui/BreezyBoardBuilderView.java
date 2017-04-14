@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +21,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.windhaven_consulting.breezy.component.Component;
 import com.windhaven_consulting.breezy.component.GenericComponent;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplate;
 import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibraryManager;
@@ -228,7 +226,9 @@ public class BreezyBoardBuilderView implements Serializable {
 	 * 
 	 */
 	public void saveExtension() {
-		Extension extension = getExtension(workingExtension);
+		Extension extension = breezyBoard.getExtensions().get(selectedExtensionIndex);
+		extension = workingExtension.updateExtensionFromView(extension);
+		
 		breezyBoard.getExtensions().set(selectedExtensionIndex, extension);
 		
 		if(!nameToExtensionMap.containsKey(extension.getName())) {
@@ -238,14 +238,15 @@ public class BreezyBoardBuilderView implements Serializable {
 	
 	public void editExtension(int index) {
 		selectedExtensionIndex = index;
-		workingExtension = getExtensionDecorator(breezyBoard.getExtensions().get(index));
+		workingExtension = new BreezyBoardBuilderExtensionView(breezyBoard.getExtensions().get(index));
 		isNewLineMode = false;
 	}
 
 	public void insertNewExtensionRowBefore(int index) throws IOException {
 		selectedExtensionIndex = index;
-		breezyBoard.getExtensions().add(index, new Extension());
-		workingExtension = new BreezyBoardBuilderExtensionView();
+		Extension extension = new Extension();
+		breezyBoard.getExtensions().add(index, extension);
+		workingExtension = new BreezyBoardBuilderExtensionView(extension);
 		isNewLineMode = true;
 	}
 	
@@ -262,7 +263,7 @@ public class BreezyBoardBuilderView implements Serializable {
 			breezyBoard.getExtensions().add(nextIndex, extension);
 		}
 
-		workingExtension = new BreezyBoardBuilderExtensionView();
+		workingExtension = new BreezyBoardBuilderExtensionView(extension);
 		isNewLineMode = true;
 	}
 
@@ -644,46 +645,6 @@ public class BreezyBoardBuilderView implements Serializable {
 	 * Extension helper methods
 	 */
 
-	/**
-	 * Factory method to create a BreezyBoardBuilderExtensionView from an Extension
-	 * @param extension
-	 * @return
-	 */
-	private BreezyBoardBuilderExtensionView getExtensionDecorator(Extension extension) {
-		BreezyBoardBuilderExtensionView boardBuilderExtensionDecorator = new BreezyBoardBuilderExtensionView();
-		boardBuilderExtensionDecorator.setDescription(extension.getDescription());
-		boardBuilderExtensionDecorator.setId(extension.getId());
-		boardBuilderExtensionDecorator.setName(extension.getName());
-		boardBuilderExtensionDecorator.setType(extension.getExtensionType());
-		
-		for(Entry<String, String> entry : extension.getProperties().entrySet()) {
-			MapEntryView<String, String> mapEntryView = new MapEntryView<String, String>(entry);
-			boardBuilderExtensionDecorator.getPropertyEntries().add(mapEntryView);
-		}
-		
-		return boardBuilderExtensionDecorator;
-	}
-
-	/**
-	 * Factory method to create an Extension from a BreezyBoardBuilderExtensionView
-	 * 
-	 * @param boardBuilderExtensionView
-	 * @return
-	 */
-	private Extension getExtension(BreezyBoardBuilderExtensionView boardBuilderExtensionView) {
-		Extension extension = new Extension();
-		
-		extension.setDescription(boardBuilderExtensionView.getDescription());
-		extension.setId(boardBuilderExtensionView.getId());
-		extension.setName(boardBuilderExtensionView.getName());
-		extension.setExtensionType(boardBuilderExtensionView.getType());
-		
-		for(MapEntryView<String, String> mapEntryView : boardBuilderExtensionView.getPropertyEntries()) {
-			extension.getProperties().put(mapEntryView.getKey(), mapEntryView.getValue());
-		}
-
-		return extension;
-	}
 	
 	/**
 	 * Input pin configuration helper methods

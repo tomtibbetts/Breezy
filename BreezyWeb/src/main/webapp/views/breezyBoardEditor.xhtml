@@ -247,7 +247,7 @@
 					      		</p:dataTable>
 				            </h:panelGrid>
 				        </p:tab>
-				        <p:tab title="Components">
+				        <p:tab title="Components" id="tabComponentsId">
 				            <h:panelGrid id="tabComponentPanelGridId" 
 				            	columns="1" cellpadding="10" styleClass="ui-noborder" style="width: 75%">
    								<p:commandButton id="insertFirstComponentId"
@@ -416,9 +416,11 @@
 						      			</p:column>
 						      		</p:dataTable>
 				      			</p:column>
-
 			              		<p:column>
-				        			<p:commandButton id="saveExtensionEditsId" value="Save" actionListener="#{breezyBoardBuilderView.saveExtension()}" update=":formId:tabViewId:extensionEditTableId" onclick="PF('extensionEditDialogue').hide();"/>
+				        			<p:commandButton id="saveExtensionEditsId" value="Save" 
+				        				actionListener="#{breezyBoardBuilderView.saveExtension()}" 
+				        				update=":formId:tabViewId:extensionEditTableId, :formId:tabViewId:inputEditTableId, :formId:tabViewId:tabComponentPanelGridId" 
+				        				onclick="PF('extensionEditDialogue').hide();"/>
 			              		</p:column>
 
 			              		<p:column>
