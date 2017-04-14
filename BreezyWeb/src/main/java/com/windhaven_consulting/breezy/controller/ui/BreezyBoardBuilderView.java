@@ -274,18 +274,27 @@ public class BreezyBoardBuilderView implements Serializable {
 		 * iterate through all dependant inputs and components and delete those too.
 		 */
 		
-//		if(extension != null) {
-//			nameToExtensionTemplateMap.remove(extension);
-//			
-//			// TODO: do the same for components as for inputs?
-//			for(InputConfigurationTemplate inputConfigurationTemplate : breezyBoardTemplate.getInputConfigurationTemplates()) {
-//				if(inputConfigurationTemplate.getExtensionTemplate() != null && inputConfigurationTemplate.getExtensionTemplate().equals(extension)) {
-//					inputConfigurationTemplate.setExtensionTemplate(null);
-//					inputConfigurationTemplate.setMappedPin(StringUtils.EMPTY);
-//					inputConfigurationTemplate.setPinPullResistance(null);
-//				}
-//			}
-//		}
+		if(extension != null) {
+			nameToExtensionMap.remove(extension);
+			
+			// TODO: do the same for components as for inputs?
+			for(InputPinConfiguration inputPinConfigurationTemplate : breezyBoard.getInputPinConfigurations()) {
+				if(inputPinConfigurationTemplate.getExtension() != null && inputPinConfigurationTemplate.getExtension().equals(extension)) {
+					inputPinConfigurationTemplate.setExtension(null);
+					inputPinConfigurationTemplate.setExtensionMappedPin(StringUtils.EMPTY);
+					inputPinConfigurationTemplate.setPinPullResistance(null);
+				}
+			}
+			
+			for(ComponentConfiguration componentConfiguration : breezyBoard.getComponentConfigurations()) {
+				for(OutputPinConfiguration outputPinConfiguration : componentConfiguration.getOutputPinConfigurations()) {
+					if(outputPinConfiguration.getExtension() != null && outputPinConfiguration.getExtension().equals(extension)) {
+						outputPinConfiguration.setExtension(null);
+						outputPinConfiguration.setExtensionMappedPin(StringUtils.EMPTY);
+					}
+				}
+			}
+		}
 		
 		breezyBoard.getExtensions().remove(index);
 	}

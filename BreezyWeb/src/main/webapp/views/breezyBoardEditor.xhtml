@@ -100,7 +100,7 @@
 				            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%" id="tabExtensionPanelGridId">
    								<p:commandButton id="insertFirstExtensionId"
 									value="Define First Extension" 
-									update="tabExtensionPanelGridId"
+									update=":formId:extensionEditDialogueId, formId:tabViewId:tabExtensionPanelGridId"
 									actionListener="#{breezyBoardBuilderView.insertNewExtensionRowBefore(0)}" 
 									rendered="#{(breezyBoardBuilderView.breezyBoard.extensions.size() == 0) and (not breezyBoardBuilderView.breezyBoard.mounted)}"
 			        				onclick="PF('extensionEditDialogue').show()"/>
@@ -159,7 +159,7 @@
 									<p:column headerText="Delete" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
 					        			<p:commandButton id="deleteExtensionRow" icon="ui-icon-circle-close" style="width=15px; height=15px;" 
 					        				actionListener="#{breezyBoardBuilderView.deleteExtensionRow(extensionTableRowIndex)}" 
-					        					update="formId:tabViewId:tabExtensionPanelGridId, formId:tabViewId:inputEditTableId">
+					        					update="formId:tabViewId:tabExtensionPanelGridId, formId:tabViewId:inputEditTableId, formId:tabViewId:componentEditTableId">
 					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this extension definition?" icon="ui-icon-alert" />
 					        			</p:commandButton>
 									</p:column>
