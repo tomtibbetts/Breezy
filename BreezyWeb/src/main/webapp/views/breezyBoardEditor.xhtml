@@ -103,7 +103,7 @@
 									update=":formId:extensionEditDialogueId, formId:tabViewId:tabExtensionPanelGridId"
 									actionListener="#{breezyBoardBuilderView.insertNewExtensionRowBefore(0)}" 
 									rendered="#{(breezyBoardBuilderView.breezyBoard.extensions.size() == 0) and (not breezyBoardBuilderView.breezyBoard.mounted)}"
-			        				onclick="PF('extensionEditDialogue').show()"/>
+			        				oncomplete="PF('extensionEditDialogue').show()"/>
 
 					      		<p:dataTable id="extensionEditTableId"
 					      			rendered="#{breezyBoardBuilderView.breezyBoard.extensions.size() > 0}"
@@ -149,11 +149,11 @@
 					        			<p:commandButton id="insertExtensionBefore" icon="ui-icon-circle-triangle-n" style="width=15px; height=15px;" 
 					        				actionListener="#{breezyBoardBuilderView.insertNewExtensionRowBefore(extensionTableRowIndex)}" 
 					        				update="extensionEditTableId :formId:extensionEditDialogueId"
-					        				onclick="PF('extensionEditDialogue').show()"/>
+					        				oncomplete="PF('extensionEditDialogue').show()"/>
 					        			<p:commandButton id="insertExtensionAfter" icon="ui-icon-circle-triangle-s" style="width=15px; height=15px;" 
 					        				actionListener="#{breezyBoardBuilderView.insertNewExtensionRowAfter(extensionTableRowIndex)}" 
 					        				update="extensionEditTableId :formId:extensionEditDialogueId"
-					        				onclick="PF('extensionEditDialogue').show()"/>
+					        				oncomplete="PF('extensionEditDialogue').show()"/>
 									</p:column>
 									
 									<p:column headerText="Delete" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
@@ -238,7 +238,7 @@
 									<p:column headerText="Delete" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
 					        			<p:commandButton id="deleteInputRow" icon="ui-icon-circle-close" style="width=15px; height=15px;"
 					        				rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}" 
-					        				actionListener="#{breezyBoardBuilderView.deleteDigitalInputPinConfigurationRow(inputPinTableRowIndex)}" 
+					        				actionListener="#{breezyBoardBuilderView.deleteDigitalInputPinConfigurationRow(inputRowIndex)}" 
 					        				update="formId:tabViewId:tabInputPanelGridId">
 					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this input configuration?" icon="ui-icon-alert" />
 					        			</p:commandButton>

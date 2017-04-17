@@ -189,8 +189,10 @@ public class BreezyBoardBuilderView implements Serializable {
 		
 		if(inputType != null) {
 			for(Extension extension : breezyBoard.getExtensions()) {
-				if(inputType == extension.getExtensionType().getInputType()) {
-					extensions.add(extension);
+				if(extension.getExtensionType() != null) {
+					if(inputType == extension.getExtensionType().getInputType()) {
+						extensions.add(extension);
+					}
 				}
 			}
 		}
