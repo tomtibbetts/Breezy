@@ -20,6 +20,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezySPIChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.SPIBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.SPIBusExtensionProviderFactory;
@@ -50,13 +51,13 @@ public class MCP23S17ExtensionProviderFactoryImpl extends SPIBusExtensionProvide
 	}
 
 	@Override
-	public void validateProperties(Map<String, String> properties) {
+	public void validateProperties(Map<String, String> properties) throws EmbeddedControllerException {
 		if(!properties.containsKey(SPIBusProperty.CHANNEL.name())) {
-			throw new EmbeddedControllerException("MCP23S17 extension channel number was not provided");
+			throw new EmbeddedControllerException("MCP23S17 extension channel number was not provided.");
 		}
 		
 		if(!properties.containsKey(SPIBusProperty.ADDRESS.name())) {
-			throw new EmbeddedControllerException("MCP23S17 extension address was not provided");
+			throw new EmbeddedControllerException("MCP23S17 extension address was not provided.");
 		}
 	}
 
@@ -69,15 +70,12 @@ public class MCP23S17ExtensionProviderFactoryImpl extends SPIBusExtensionProvide
 		BreezySPIChannel breezySPIChannel = BreezySPIChannel.valueOf(spiChannel);
 		byte address = Byte.decode(properties.get(SPIBusProperty.ADDRESS.name()));
 		
-//		LOG.debug("Channel: " + spiChannel);
-//		LOG.debug("address: " + address);
-		
 		try {
 			gpioProvider = new MCP23S17GpioProvider(address, BreezyToPi4JSPIChannel.getChannel(breezySPIChannel));
 		} catch (IOException e) {
 //			LOG.debug("Cannot create MCP23S17GpioProvider, IO Exception thrown: " + e.getMessage());
 			
-			throw new EmbeddedControllerException("Cannot create MCP23S17GpioProvider, IO Exception thrown", e);
+			throw new EmbeddedControllerRuntimeException("Cannot create MCP23S17GpioProvider, IO Exception thrown", e);
 		}
 		
 		return gpioProvider;

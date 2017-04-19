@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.PinPullResistance;
-import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 
 public class BreezyToPi4JPinPullResistance {
 
@@ -20,7 +20,7 @@ public class BreezyToPi4JPinPullResistance {
 		com.pi4j.io.gpio.PinPullResistance result = breezyToPi4JPinPullResistanceMap.get(pinPullResistance);
 		
 		if(result == null) {
-			throw new EmbeddedControllerException("Breezy PinPullResistance, '" + pinPullResistance.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
+			throw new EmbeddedControllerRuntimeException("Breezy PinPullResistance, '" + pinPullResistance.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
 		}
 		
 		return result;

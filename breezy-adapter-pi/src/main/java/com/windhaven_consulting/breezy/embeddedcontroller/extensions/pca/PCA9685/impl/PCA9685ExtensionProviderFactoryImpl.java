@@ -23,6 +23,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezyI2CBus;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.I2CBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.I2CBusExtensionProviderFactory;
@@ -55,13 +56,13 @@ public class PCA9685ExtensionProviderFactoryImpl extends I2CBusExtensionProvider
 	}
 
 	@Override
-	public void validateProperties(Map<String, String> properties) {
+	public void validateProperties(Map<String, String> properties) throws EmbeddedControllerException {
 		if(!properties.containsKey(I2CBusProperty.BUS_NUMBER.name())) {
-			throw new EmbeddedControllerException("PCA9685 extension bus number was not provided");
+			throw new EmbeddedControllerException("PCA9685 extension bus number was not provided.");
 		}
 		
 		if(!properties.containsKey(I2CBusProperty.ADDRESS.name())) {
-			throw new EmbeddedControllerException("PCA9685 extension address was not provided");
+			throw new EmbeddedControllerException("PCA9685 extension address was not provided.");
 		}
 	}
 
@@ -79,7 +80,7 @@ public class PCA9685ExtensionProviderFactoryImpl extends I2CBusExtensionProvider
 			
 			gpioProvider = new PCA9685GpioProvider(i2cBus, address, DEFAULT_FREQUENCY, DEFAULT_FREQUENCY_CORRECTION_FACTOR);
 		} catch (IOException e) {
-			throw new EmbeddedControllerException("Cannot create MCP23017GpioProvider, IO Exception thrown", e);
+			throw new EmbeddedControllerRuntimeException("Cannot create MCP23017GpioProvider, IO Exception thrown", e);
 		}
 		
 		return gpioProvider;

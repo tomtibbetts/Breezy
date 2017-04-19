@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioProvider;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.BaseExtensionProviderFactory;
@@ -37,9 +40,12 @@ public class MockPWMExtensionProviderFactoryImpl extends BaseExtensionProviderFa
 	}
 
 	@Override
-	public void validateProperties(Map<String, String> properties) {
-		// TODO Auto-generated method stub
-
+	public void validateProperties(Map<String, String> properties) throws EmbeddedControllerException {
+		for(String propertyKey : properties.keySet()) {
+			if(StringUtils.isEmpty(properties.get(propertyKey))) {
+				throw new EmbeddedControllerException("MockPWMExtensionProviderFactory:: Property value for key: '" + propertyKey + "' is not provided.");
+			}
+		}
 	}
 
 	@Override

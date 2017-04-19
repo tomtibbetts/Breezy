@@ -8,6 +8,7 @@ import com.pi4j.io.gpio.GpioProvider;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 
 public interface ExtensionProviderFactory<T extends BreezyPin> {
 
@@ -23,7 +24,7 @@ public interface ExtensionProviderFactory<T extends BreezyPin> {
 
 	List<PropertyValueEnum> getPropertyValues(String property);
 
-	void validateProperties(Map<String, String> properties);
+	void validateProperties(Map<String, String> properties) throws EmbeddedControllerException;
 
 	GpioProvider getGpioProvider(Map<String, String> properties);
 

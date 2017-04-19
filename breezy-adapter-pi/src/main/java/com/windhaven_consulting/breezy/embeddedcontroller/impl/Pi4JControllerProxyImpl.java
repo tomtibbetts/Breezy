@@ -17,7 +17,7 @@ import com.pi4j.system.NetworkInfo;
 import com.pi4j.system.SystemInfo;
 import com.windhaven_consulting.breezy.embeddedcontroller.EmbeddedControllerAdapter;
 import com.windhaven_consulting.breezy.embeddedcontroller.SystemStatus;
-import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 
 @ApplicationScoped
 public class Pi4JControllerProxyImpl implements EmbeddedControllerAdapter {
@@ -73,11 +73,11 @@ public class Pi4JControllerProxyImpl implements EmbeddedControllerAdapter {
 			}
 			
 			} catch (IOException e) {
-				throw new EmbeddedControllerException("IO Exception caught", e);
+				throw new EmbeddedControllerRuntimeException("IO Exception caught", e);
 			} catch (InterruptedException e) {
-				throw new EmbeddedControllerException("Interrupted Exception caught", e);
+				throw new EmbeddedControllerRuntimeException("Interrupted Exception caught", e);
 			} catch (Exception e) {
-				throw new EmbeddedControllerException("Exception caught", e);
+				throw new EmbeddedControllerRuntimeException("Exception caught", e);
 			}
 		}
 		

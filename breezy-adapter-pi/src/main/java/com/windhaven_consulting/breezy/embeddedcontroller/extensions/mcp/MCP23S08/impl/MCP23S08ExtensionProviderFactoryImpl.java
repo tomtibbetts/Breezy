@@ -19,6 +19,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezySPIChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.SPIBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.SPIBusExtensionProviderFactory;
@@ -50,13 +51,13 @@ public class MCP23S08ExtensionProviderFactoryImpl extends SPIBusExtensionProvide
 	}
 
 	@Override
-	public void validateProperties(Map<String, String> properties) {
-			if(!properties.containsKey(SPIBusProperty.CHANNEL.name())) {
-			throw new EmbeddedControllerException("MCP23S08 extension channel number was not provided");
+	public void validateProperties(Map<String, String> properties) throws EmbeddedControllerException {
+		if(!properties.containsKey(SPIBusProperty.CHANNEL.name())) {
+			throw new EmbeddedControllerException("MCP23S08 extension channel number was not provided.");
 		}
 		
 		if(!properties.containsKey(SPIBusProperty.ADDRESS.name())) {
-			throw new EmbeddedControllerException("MCP23S08 extension address was not provided");
+			throw new EmbeddedControllerException("MCP23S08 extension address was not provided.");
 		}
 	}
 
@@ -78,7 +79,7 @@ public class MCP23S08ExtensionProviderFactoryImpl extends SPIBusExtensionProvide
 		} catch (IOException e) {
 //			LOG.debug("Cannot create MCP23S17GpioProvider, IO Exception thrown: " + e.getMessage());
 			
-			throw new EmbeddedControllerException("Cannot create MCP23S08GpioProvider, IO Exception thrown", e);
+			throw new EmbeddedControllerRuntimeException("Cannot create MCP23S08GpioProvider, IO Exception thrown", e);
 		}
 	
 //		LOG.debug("End Initializing MCP23S08ExtensionProviderImpl");

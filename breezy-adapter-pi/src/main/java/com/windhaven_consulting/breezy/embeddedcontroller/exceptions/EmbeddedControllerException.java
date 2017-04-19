@@ -1,7 +1,6 @@
 package com.windhaven_consulting.breezy.embeddedcontroller.exceptions;
 
-public class EmbeddedControllerException extends RuntimeException {
-
+public class EmbeddedControllerException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public EmbeddedControllerException() {
@@ -15,4 +14,5 @@ public class EmbeddedControllerException extends RuntimeException {
 	public EmbeddedControllerException(String message, Throwable cause) {
 		super(message, cause);
 	}
+
 }
