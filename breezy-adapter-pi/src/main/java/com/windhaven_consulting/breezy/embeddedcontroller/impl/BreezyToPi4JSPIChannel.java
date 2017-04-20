@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.pi4j.io.spi.SpiChannel;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezySPIChannel;
-import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 
 public class BreezyToPi4JSPIChannel {
 	private static Map<BreezySPIChannel, SpiChannel> breezyToPi4JSPIChannelMap = new HashMap<BreezySPIChannel, SpiChannel>();
@@ -19,7 +19,7 @@ public class BreezyToPi4JSPIChannel {
 		SpiChannel result = breezyToPi4JSPIChannelMap.get(breezySPIChannel);
 		
 		if(result == null) {
-			throw new EmbeddedControllerException("Breezy SPI Channel, '" + breezySPIChannel.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
+			throw new EmbeddedControllerRuntimeException("Breezy SPI Channel, '" + breezySPIChannel.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
 		}
 		
 		return result;

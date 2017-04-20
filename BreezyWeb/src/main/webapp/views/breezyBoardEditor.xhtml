@@ -98,7 +98,17 @@
 				        </p:tab>
 				        <p:tab title="Extensions" id="tabExtensionsId">
 				            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%" id="tabExtensionPanelGridId">
-					      		<p:dataTable id="extensionEditTableId" var="extension" value="#{breezyBoardBuilderView.breezyBoard.extensions}" 
+   								<p:commandButton id="insertFirstExtensionId"
+									value="Define First Extension" 
+									update=":formId:extensionEditDialogueId, formId:tabViewId:tabExtensionPanelGridId"
+									actionListener="#{breezyBoardBuilderView.insertNewExtensionRowBefore(0)}" 
+									rendered="#{(breezyBoardBuilderView.breezyBoard.extensions.size() == 0) and (not breezyBoardBuilderView.breezyBoard.mounted)}"
+			        				oncomplete="PF('extensionEditDialogue').show()"/>
+
+					      		<p:dataTable id="extensionEditTableId"
+					      			rendered="#{breezyBoardBuilderView.breezyBoard.extensions.size() > 0}"
+					      			var="extension"
+					      			value="#{breezyBoardBuilderView.breezyBoard.extensions}" 
 					      			editable="false" scrollable="false" 
 					      			scrollHeight="350" rowIndexVar="extensionTableRowIndex">
 					      			<p:column headerText="Type" style="width: 50%;">
@@ -134,12 +144,44 @@
 											actionListener="#{breezyBoardBuilderView.editExtension(extensionTableRowIndex)}" 
 											onclick="PF('extensionEditDialogue').show();"/>
 					      			</p:column>
+
+									<p:column headerText="Insert" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
+					        			<p:commandButton id="insertExtensionBefore" icon="ui-icon-circle-triangle-n" style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.insertNewExtensionRowBefore(extensionTableRowIndex)}" 
+					        				update="extensionEditTableId :formId:extensionEditDialogueId"
+					        				oncomplete="PF('extensionEditDialogue').show()"/>
+					        			<p:commandButton id="insertExtensionAfter" icon="ui-icon-circle-triangle-s" style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.insertNewExtensionRowAfter(extensionTableRowIndex)}" 
+					        				update="extensionEditTableId :formId:extensionEditDialogueId"
+					        				oncomplete="PF('extensionEditDialogue').show()"/>
+									</p:column>
+									
+									<p:column headerText="Delete" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
+					        			<p:commandButton id="deleteExtensionRow" icon="ui-icon-circle-close" style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.deleteExtensionRow(extensionTableRowIndex)}" 
+					        					update="formId:tabViewId:tabExtensionPanelGridId, formId:tabViewId:inputEditTableId, formId:tabViewId:componentEditTableId">
+					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this extension definition?" icon="ui-icon-alert" />
+					        			</p:commandButton>
+									</p:column>
 					      		</p:dataTable>
 				            </h:panelGrid>
 				        </p:tab>
-				        <p:tab title="Inputs" id="tabInputsId">
-				            <h:panelGrid columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%;">
-					      		<p:dataTable id="inputEditTableId" var="inputConfiguration" value="#{breezyBoardBuilderView.breezyBoard.inputPinConfigurations}" editable="false" scrollable="false" rowIndexVar="inputRowIndex">
+				        <p:tab title="Digital Inputs" id="tabInputsId">
+				            <h:panelGrid id="tabInputPanelGridId" columns="2" cellpadding="10" styleClass="ui-noborder" style="width: 75%;">
+   								<p:commandButton id="insertFirstInputId"
+									value="Define First Input" 
+									update=":formId:inputEditDialogueId, formId:tabViewId:tabInputPanelGridId"
+									actionListener="#{breezyBoardBuilderView.insertNewDigitalInputPinRowBefore(0)}" 
+									rendered="#{(breezyBoardBuilderView.breezyBoard.inputPinConfigurations.size() == 0) and (not breezyBoardBuilderView.breezyBoard.mounted)}"
+			        				onclick="PF('inputEditDialogue').show()"/>
+				        	
+					      		<p:dataTable id="inputEditTableId"
+					      			var="inputConfiguration" 
+					      			value="#{breezyBoardBuilderView.breezyBoard.inputPinConfigurations}" 
+					      			editable="false" 
+					      			scrollable="false" 
+					      			rowIndexVar="inputRowIndex"
+					      			rendered="#{breezyBoardBuilderView.breezyBoard.inputPinConfigurations.size() > 0}">
 					      			<p:column headerText="Name" style="width: 150px;">
 				      					<h:outputText value="#{inputConfiguration.name}"/>
 					      			</p:column>
@@ -175,12 +217,53 @@
 											onclick="PF('inputEditDialogue').show();" />
 					      			</p:column>
 					      			
+									<p:column headerText="Insert" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
+					        			<p:commandButton id="insertInputBefore"
+					        			 	rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}" 
+					        				icon="ui-icon-circle-triangle-n"
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.insertNewDigitalInputPinRowBefore(inputRowIndex)}" 
+					        				update=":formId:inputEditDialogueId, formId:tabViewId:tabInputPanelGridId"
+					        				onclick="PF('inputEditDialogue').show()"/>
+					        			<br/>
+					        			<p:commandButton id="insertInputAfter" 
+					        				rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}"
+					        				icon="ui-icon-circle-triangle-s"
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.insertNewDigitalInputPinRowAfter(inputRowIndex)}" 
+					        				update=":formId:inputEditDialogueId, formId:tabViewId:tabInputPanelGridId"
+					        				onclick="PF('inputEditDialogue').show()"/>
+									</p:column>
+									
+									<p:column headerText="Delete" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
+					        			<p:commandButton id="deleteInputRow" icon="ui-icon-circle-close" style="width=15px; height=15px;"
+					        				rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}" 
+					        				actionListener="#{breezyBoardBuilderView.deleteDigitalInputPinConfigurationRow(inputRowIndex)}" 
+					        				update="formId:tabViewId:tabInputPanelGridId">
+					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this input configuration?" icon="ui-icon-alert" />
+					        			</p:commandButton>
+									</p:column>
+					      			
 					      		</p:dataTable>
 				            </h:panelGrid>
 				        </p:tab>
-				        <p:tab title="Components">
-				            <h:panelGrid columns="1" cellpadding="10" styleClass="ui-noborder" style="width: 75%">
-					      		<p:dataTable id="componentEditTableId" var="componentConfiguration" value="#{breezyBoardBuilderView.breezyBoard.componentConfigurations}" editable="false" scrollable="false" scrollHeight="350" rowIndexVar="componentTableRowIndex">
+				        <p:tab title="Components" id="tabComponentsId">
+				            <h:panelGrid id="tabComponentPanelGridId" 
+				            	columns="1" cellpadding="10" styleClass="ui-noborder" style="width: 75%">
+   								<p:commandButton id="insertFirstComponentId"
+									value="Define First Component" 
+									update="tabComponentPanelGridId, :formId:componentEditDialogueId"
+									actionListener="#{breezyBoardBuilderView.insertNewComponentConfigurationRowBefore(0)}" 
+									rendered="#{(breezyBoardBuilderView.breezyBoard.componentConfigurations.size() == 0) and (not breezyBoardBuilderView.breezyBoard.mounted)}"
+					        		onclick="PF('componentEditDialogue').show()"/>
+
+					      		<p:dataTable id="componentEditTableId" 
+					      			var="componentConfiguration" 
+					      			value="#{breezyBoardBuilderView.breezyBoard.componentConfigurations}"
+					      			rendered="#{breezyBoardBuilderView.breezyBoard.componentConfigurations.size() > 0}" 
+					      			editable="false" scrollable="false" scrollHeight="350" 
+					      			rowIndexVar="componentTableRowIndex">
+					      			
 							        <p:columnGroup type="header">
 							            <p:row>
 							                <p:column rowspan="2" headerText="Component Name" />
@@ -190,6 +273,8 @@
 							                <p:column rowspan="2" headerText="Component Description" />
 							                <p:column rowspan="2" headerText="Test" rendered="#{breezyBoardBuilderView.breezyBoard.mounted}" />
 							                <p:column rowspan="2" headerText="Edit" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}" />
+							                <p:column rowspan="2" headerText="Insert" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}"/>
+							                <p:column rowspan="2" headerText="Delete" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}"/>
 							            </p:row>
 							            <p:row>
 							                <p:column headerText="Pin Name" />
@@ -235,17 +320,46 @@
 				      					<h:outputText value="#{componentConfiguration.description}"/>
 					      			</p:column>
 
-					      			<p:column headerText="Test" style="width: 75px;" rendered="#{breezyBoardBuilderView.breezyBoard.mounted}">
+					      			<p:column headerText="Test" style="width: 75px;" 
+					      				rendered="#{breezyBoardBuilderView.breezyBoard.mounted}">
 										<p:commandButton id="testComponentButtonId" value="Test"
 											actionListener="#{breezyBoardBuilderView.testComponent(componentTableRowIndex)}" />
 					      			</p:column>
 					      			
-					      			<p:column headerText="Edit" style="width: 75px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
+					      			<p:column headerText="Edit" style="width: 75px;" 
+					      				rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
 										<p:commandButton id="editComponentButtonId" value="Edit"
 											update=":formId:componentEditDialogueId"
 											actionListener="#{breezyBoardBuilderView.editComponent(componentTableRowIndex)}" 
 											onclick="PF('componentEditDialogue').show();" />
 					      			</p:column>
+					      			
+									<p:column headerText="Insert" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
+					        			<p:commandButton id="insertBefore" 
+					        				icon="ui-icon-circle-triangle-n" 
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.insertNewComponentConfigurationRowBefore(componentTableRowIndex)}" 
+					        				update="componentEditTableId, :formId:componentEditDialogueId"
+						      				rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}"
+					        				onclick="PF('componentEditDialogue').show()"/>
+					        			<br/>
+					        			<p:commandButton id="insertAfter" 
+					        				icon="ui-icon-circle-triangle-s" 
+					        				style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.insertNewComponentConfigurationRowAfter(componentTableRowIndex)}" 
+					        				update="componentEditTableId, :formId:componentEditDialogueId"
+						      				rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}"
+					        				onclick="PF('componentEditDialogue').show()"/>
+									</p:column>
+									
+									<p:column headerText="Delete" style="width: 50px;" rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}">
+					        			<p:commandButton id="deleteRow" icon="ui-icon-circle-close" style="width=15px; height=15px;" 
+					        				actionListener="#{breezyBoardBuilderView.deleteComponentConfigurationRow(componentTableRowIndex)}" 
+						      				rendered="#{not breezyBoardBuilderView.breezyBoard.mounted}"
+					        				update="formId:tabViewId:tabComponentPanelGridId">
+					        				<p:confirm header="Confirmation" message="Are you sure you want to delete this component configuration?" icon="ui-icon-alert" />
+					        			</p:commandButton>
+									</p:column>
 					      		</p:dataTable>
 				            </h:panelGrid>
 				        </p:tab>
@@ -257,21 +371,27 @@
 			                    	<h:outputText for="extensionTypeId" value="Extension Type: " style="font-weight: bold;"/>
 			              		</p:column>
 			              		<p:column>
-			                    	<h:outputText id="extensionTypeId" value="#{breezyBoardBuilderView.workingExtension.type.label}" required="false" label="Type"/>
+                    				<p:selectOneMenu id="typeId" value="#{breezyBoardBuilderView.workingExtension.type}">
+
+									<p:ajax event="change" listener="#{breezyBoardBuilderView.onExtensionTypeChange}" update="extensionPropertyEditTableId" />
+
+										<f:selectItem itemLabel="Select Extension Type" itemValue="" noSelectionOption="true" />
+				                    	<f:selectItems value="#{breezyBoardBuilderView.extensionTypes}" var="extensionType" itemLabel="#{extensionType.label}"/>
+									</p:selectOneMenu>
 			              		</p:column>
-			              		
+ 			              		
 			              		<p:column>
 			                    	<h:outputText for="extensionNameId" value="Extension Name: " style="font-weight: bold;"/>
 			              		</p:column>
 			              		<p:column>
-			                    	<h:outputText for="extensionNameId" value="#{breezyBoardBuilderView.workingExtension.name}" label="Name"/>
+			                    	<p:inputText id="extensionNameId" value="#{breezyBoardBuilderView.workingExtension.name}" style="width:100%"/>
 			              		</p:column>
-								
+<!-- 								
 								<p:column rendered="#{breezyBoardBuilderView.workingExtension.propertyEntries.size() > 0}">
 			                    	<h:outputText for="extensionPropertyEditTableId" value="Properties: "  style="font-weight: bold;"/>
 								</p:column>
-								
-								<p:column rendered="#{breezyBoardBuilderView.workingExtension.propertyEntries.size() > 0}">
+ -->								
+								<p:column>
 						      		<p:dataTable id="extensionPropertyEditTableId"
 						      			var="extensionPropertyEntry" 
 						      			value="#{breezyBoardBuilderView.workingExtension.propertyEntries}" 
@@ -296,13 +416,19 @@
 						      			</p:column>
 						      		</p:dataTable>
 				      			</p:column>
-
 			              		<p:column>
-				        			<p:commandButton id="saveExtensionEditsId" value="Save" actionListener="#{breezyBoardBuilderView.saveExtension()}" update=":formId:tabViewId:extensionEditTableId" onclick="PF('extensionEditDialogue').hide();"/>
+				        			<p:commandButton id="saveExtensionEditsId" value="Save" 
+				        				actionListener="#{breezyBoardBuilderView.saveExtension()}" 
+				        				update="msgs, :formId:tabViewId:extensionEditTableId, :formId:tabViewId:inputEditTableId, :formId:tabViewId:tabComponentPanelGridId" 
+				        				onclick="PF('extensionEditDialogue').hide();"/>
 			              		</p:column>
 
 			              		<p:column>
-				        			<p:commandButton id="cancelExtensionEditsId" value="Cancel" onclick="PF('extensionEditDialogue').hide();"/>
+				        			<p:commandButton id="cancelExtensionEditsId" 
+				        				actionListener="#{breezyBoardBuilderView.cancelExtensionEdit}"
+					        			value="Cancel" 
+					        			update=":formId:tabViewId:tabExtensionPanelGridId"
+					        			onclick="PF('extensionEditDialogue').hide();"/>
 			              		</p:column>
 			            </p:panelGrid>
 		            </p:dialog>
@@ -319,16 +445,25 @@
 			              		<p:column>
 			                    	<h:outputText for="extensionId" value="Extension: " style="font-weight: bold;"/>
 			              		</p:column>
-			              		<p:column>
-			                    	<h:outputText id="extensionId" value="#{breezyBoardBuilderView.workingInputPinConfiguration.extension.name}" required="false" label="Extension"/>
-			              		</p:column>
+
+				      			<p:column style="width: 150px;">
+									<p:selectOneMenu id="inputPinExtensionId" converter="#{breezyBoardBuilderView.extensionConverter}" value="#{breezyBoardBuilderView.workingInputPinConfiguration.extension}">
+										<p:ajax event="change" update="extensionMappedPinId" />
+										<f:selectItem itemLabel="Select Extension" itemValue="" noSelectionOption="true"/>
+				                    	<f:selectItems value="#{breezyBoardBuilderView.getExtensionsByInputType('DIGITAL_INPUT')}" var="extension" itemLabel="#{extension.name}" itemValue="#{extension}"/>
+	
+									</p:selectOneMenu>
+				      			</p:column>
 			              		
 			              		<p:column>
 			                    	<h:outputText for="extensionMappedPinId" value="Extension Mapped Pin: " style="font-weight: bold;"/>
 			              		</p:column>
-			              		<p:column>
-			                    	<h:outputText id="extensionMappedPinId" value="#{breezyBoardBuilderView.workingInputPinConfiguration.extensionMappedPin}" required="false" label="Extension Mapped Pin"/>
-			              		</p:column>
+				      			<p:column style="width: 150px;">
+									<p:selectOneMenu id="extensionMappedPinId" value="#{breezyBoardBuilderView.workingInputPinConfiguration.extensionMappedPin}">
+										<f:selectItem itemLabel="Select Pin" itemValue="" noSelectionOption="true"/>
+				                    	<f:selectItems value="#{breezyBoardBuilderView.getPins(breezyBoardBuilderView.workingInputPinConfiguration.extension)}" var="breezyPin" itemLabel="#{breezyPin.name}" itemValue="#{breezyPin.name}"/>
+									</p:selectOneMenu>
+				      			</p:column>
 
 			              		<p:column>
 			                    	<h:outputText for="inputPinPullResistanceId" value="Pull Up/Down Resistance: " style="font-weight: bold;"/>
@@ -366,7 +501,11 @@
 			              		</p:column>
 
 			              		<p:column>
-				        			<p:commandButton id="cancelInputEditsId" value="Cancel" onclick="PF('inputEditDialogue').hide();"/>
+				        			<p:commandButton id="cancelInputEditsId" 
+										actionListener="#{breezyBoardBuilderView.cancelInputPin}"
+				        				value="Cancel"
+				        				update=":formId:tabViewId:tabInputPanelGridId" 
+				        				onclick="PF('inputEditDialogue').hide();"/>
 			              		</p:column>
 			            </p:panelGrid>
 		            </p:dialog>
@@ -385,7 +524,11 @@
 			                    	<h:outputText for="componentTypeId" value="Component Type: " style="font-weight: bold;"/>
 			              		</p:column>
 			              		<p:column>
-									<h:outputText id="componentTypeId" value="#{breezyBoardBuilderView.workingComponentConfiguration.componentType}"/>
+									<p:selectOneMenu id="componentTypeId" value="#{breezyBoardBuilderView.workingComponentConfiguration.componentType}">
+										<p:ajax event="change" listener="#{breezyBoardBuilderView.onComponentConfigurationComponentTypeChange}" update="outputPinsEditTableId" />
+										<f:selectItem itemLabel="Select Component Type" itemValue="" noSelectionOption="true" />
+					                   	<f:selectItems value="#{breezyBoardBuilderView.componentTypes}" var="componentType" itemLabel="#{componentType.componentName}" itemValue="#{componentType.componentName}"/>
+									</p:selectOneMenu>
 			              		</p:column>
 
 			              		<p:column>
@@ -397,10 +540,19 @@
 			      							<p:inputText id="outputPinNameId" value="#{outputConfiguration.name}" required="false" label="Name"/>
 						      			</p:column>
 						      			<p:column headerText="Extension">
-											<h:outputText id="outputConfigurationExtensionId" value="#{outputConfiguration.extension.name}"/>
+											<p:selectOneMenu id="outputConfigurationExtensionId" 
+												converter="#{breezyBoardBuilderView.extensionConverter}" 
+												value="#{outputConfiguration.extension}">
+												<p:ajax event="change" update="outputConfigurationMappedPinId" />
+												<f:selectItem itemLabel="Select Extension" itemValue="" noSelectionOption="true" />
+						                    	<f:selectItems value="#{breezyBoardBuilderView.getExtensionsByComponentType(breezyBoardBuilderView.workingComponentConfiguration.componentType)}" 
+						                    		var="extension" itemLabel="#{extension.name}" itemValue="#{extension}"/>
+											</p:selectOneMenu>
 						      			</p:column>
 						      			<p:column headerText="Mapped Pin">
-											<h:outputText id="outputConfigurationMappedPinId" value="#{outputConfiguration.extensionMappedPin}" style="width:100%"/>
+											<p:selectOneMenu id="outputConfigurationMappedPinId" value="#{outputConfiguration.extensionMappedPin}" style="width:100%">
+						                    	<f:selectItems value="#{breezyBoardBuilderView.getPins(outputConfiguration.extension)}" var="outputConfigurationPin" itemLabel="#{outputConfigurationPin.name}" itemValue="#{outputConfigurationPin.name}"/>
+											</p:selectOneMenu>
 						      			</p:column>
 						      			<p:column headerText="Pin Description">
 											<p:inputText id="outputConfigurationPinDescriptionId" value="#{outputConfiguration.description}" style="width:100%"/>
@@ -427,7 +579,11 @@
 			              		</p:column>
 
 			              		<p:column>
-				        			<p:commandButton id="cancelComponentEditsId" value="Cancel" onclick="PF('componentEditDialogue').hide();"/>
+				        			<p:commandButton id="cancelComponentEditsId" 
+				        				value="Cancel" 
+				        				 actionListener="#{breezyBoardBuilderView.cancelComponent}"
+				        				 update=":formId:tabViewId:tabComponentPanelGridId"
+				        				 onclick="PF('componentEditDialogue').hide();"/>
 			              		</p:column>
 			            </p:panelGrid>
 		            </p:dialog>

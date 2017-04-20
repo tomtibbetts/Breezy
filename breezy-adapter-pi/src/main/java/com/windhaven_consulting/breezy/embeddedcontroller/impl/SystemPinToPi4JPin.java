@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.pi4j.io.gpio.RaspiPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.system.SystemPin;
 
 
@@ -84,7 +84,7 @@ public class SystemPinToPi4JPin {
 		com.pi4j.io.gpio.Pin pin = breezyPinToPi4JPinMap.get(breezyPin);
 		
 		if(pin == null) {
-			throw new EmbeddedControllerException("Breezy Pin, '" + breezyPin.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
+			throw new EmbeddedControllerRuntimeException("Breezy Pin, '" + breezyPin.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
 		}
 		
 		return pin;

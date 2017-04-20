@@ -20,6 +20,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.BreezyI2CBus;
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.I2CBusProperty;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.impl.I2CBusExtensionProviderFactory;
@@ -51,13 +52,13 @@ public class MCP23017ExtensionProviderFactoryImpl extends I2CBusExtensionProvide
 	}
 
 	@Override
-	public void validateProperties(Map<String, String> properties) {
-			if(!properties.containsKey(I2CBusProperty.BUS_NUMBER.name())) {
-			throw new EmbeddedControllerException("MCP23017 extension bus number was not provided");
+	public void validateProperties(Map<String, String> properties) throws EmbeddedControllerException {
+		if(!properties.containsKey(I2CBusProperty.BUS_NUMBER.name())) {
+			throw new EmbeddedControllerException("MCP23017 extension bus number was not provided.");
 		}
 		
 		if(!properties.containsKey(I2CBusProperty.ADDRESS.name())) {
-			throw new EmbeddedControllerException("MCP23017 extension address was not provided");
+			throw new EmbeddedControllerException("MCP23017 extension address was not provided.");
 		}
 	}
 
@@ -75,7 +76,7 @@ public class MCP23017ExtensionProviderFactoryImpl extends I2CBusExtensionProvide
 		try {
 			gpioProvider = new MCP23017GpioProvider(BreezyToPi4JI2CBus.getBusAsInteger(breezyI2CBus).intValue(), address);
 		} catch (IOException e) {
-			throw new EmbeddedControllerException("Cannot create MCP23017GpioProvider, IO Exception thrown", e);
+			throw new EmbeddedControllerRuntimeException("Cannot create MCP23017GpioProvider, IO Exception thrown", e);
 		}
 	
 //		LOG.debug("End Initializing MCP23017ExtensionProviderImpl");

@@ -25,6 +25,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
 import com.windhaven_consulting.breezy.embeddedcontroller.StateChange;
 import com.windhaven_consulting.breezy.embeddedcontroller.StateChangeEvent;
 import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderAbstractFactory;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderFactory;
@@ -94,7 +95,7 @@ public class ExtensionProviderAbstractFactoryImpl implements ExtensionProviderAb
 	/**
 	 * returns a new instance of an ExtensionProvider (prototype pattern)
 	 */
-	public ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties) {
+	public ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties) throws EmbeddedControllerException {
 		
 		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = null;
 		ExtensionProvider<BreezyPin> extensionProvider = null;
@@ -114,6 +115,8 @@ public class ExtensionProviderAbstractFactoryImpl implements ExtensionProviderAb
 		}
 		else {
 			extensionProviderFactory = getMockExtensionProviderFactory(extensionType);
+			extensionProviderFactory.validateProperties(properties);
+
 			extensionProvider = extensionProviderFactory.getExtensionProvider(null, null, null);
 		}
 		
@@ -175,7 +178,7 @@ public class ExtensionProviderAbstractFactoryImpl implements ExtensionProviderAb
 		ExtensionProviderFactory<BreezyPin> extensionProviderFactory = extensionTypeToProviderFactoryMap.get(extensionType);
 
 		if(extensionProviderFactory == null) {
-			throw new EmbeddedControllerException("No Extension Provider Factory found for '" + extensionType.name() + "'.");
+			throw new EmbeddedControllerRuntimeException("No Extension Provider Factory found for '" + extensionType.name() + "'.");
 		}
 		
 		return extensionProviderFactory;
@@ -185,7 +188,7 @@ public class ExtensionProviderAbstractFactoryImpl implements ExtensionProviderAb
 		ExtensionProviderFactory<BreezyPin> mockExtensionProviderFactory = mockExtensionTypeToProviderFactoryMap.get(extensionType);
 
 		if(mockExtensionProviderFactory == null) {
-			throw new EmbeddedControllerException("No Mock Extension Provider Factory found for '" + extensionType.name() + "'.");
+			throw new EmbeddedControllerRuntimeException("No Mock Extension Provider Factory found for '" + extensionType.name() + "'.");
 		}
 		
 		return mockExtensionProviderFactory;

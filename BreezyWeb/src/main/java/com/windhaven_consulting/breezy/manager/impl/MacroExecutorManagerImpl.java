@@ -14,9 +14,11 @@ import org.slf4j.LoggerFactory;
 
 import com.windhaven_consulting.breezy.component.library.ComponentTemplateLibraryManager;
 import com.windhaven_consulting.breezy.macrocontroller.MacroExecutor;
+import com.windhaven_consulting.breezy.manager.AlertManager;
 import com.windhaven_consulting.breezy.manager.MacroExecutorManager;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
 import com.windhaven_consulting.breezy.persistence.domain.Macro;
+import com.windhaven_consulting.breezy.persistence.domain.MacroStep;
 
 @ApplicationScoped
 public class MacroExecutorManagerImpl implements MacroExecutorManager {
@@ -27,19 +29,19 @@ public class MacroExecutorManagerImpl implements MacroExecutorManager {
 	
 	@Inject
 	private MountedBoardManager mountedBoardManager;
+	
+	@Inject
+	private AlertManager alertManager;
 
 	private Map<Macro, MacroExecutor> macroMap = Collections.synchronizedMap(new HashMap<Macro, MacroExecutor>());
 	
 	@Override
 	public void runMacro(Macro macro) {
-		if(macro.isEnabled() && !macroMap.containsKey(macro)) {
+		if(isValidMacro(macro)) {
 			MacroExecutor macroExecutor = getMacroExecutor(macro);
 			macroMap.put(macro, macroExecutor);
 			
 			macroExecutor.start();
-		}
-		else {
-			LOG.debug("A failed attempt to start the macro: " + macro.getName() + " was made.  Macro enable state is: " + macro.isEnabled());
 		}
 	}
 
@@ -84,6 +86,33 @@ public class MacroExecutorManagerImpl implements MacroExecutorManager {
 		MacroExecutor macroExecutor = new MacroExecutor(macro, this, mountedBoardManager, componentTemplateLibraryManager);
 		
 		return macroExecutor;
+	}
+
+	private boolean isValidMacro(Macro macro) {
+		boolean result = true;
+		
+		if(!macro.isEnabled()) {
+			alertManager.addAlert("Cannot execute macro, '" + macro.getName() + "',. Macro is not enabled.");
+			result = false;
+		}
+		
+		else if(macroMap.containsKey(macro)) {
+			alertManager.addAlert("Cannot execute macro, '" + macro.getName() + "',. Macro is already running.");
+		}
+		
+		else {
+			for(MacroStep macroStep : macro.getSteps()) {
+				MountedBoard mountedBoard = mountedBoardManager.getById(macroStep.getMountedBoardId());
+				
+				if(mountedBoard == null || !mountedBoard.isMounted()) {
+					alertManager.addAlert("Cannot execute macro, '" + macro.getName() + "',. Macro references a board that either does not exist or is not mounted.");
+					result = false;
+					break;
+				}
+			}
+		}
+		
+		return result;
 	}
 
 }

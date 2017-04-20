@@ -12,7 +12,7 @@ import com.pi4j.io.gpio.Pin;
 import com.windhaven_consulting.breezy.concurrent.PWMScheduledExecutor;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PWMPinState;
-import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 
 public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implements PWMOutputPin {
 	static final Logger LOG = LoggerFactory.getLogger(Pi4JPCA9685PWMOutputPinProxyImpl.class);
@@ -140,7 +140,7 @@ public class Pi4JPCA9685PWMOutputPinProxyImpl extends Pi4JPinProxyImpl  implemen
 			try {
 				Thread.sleep(duration);
 			} catch (InterruptedException e) {
-				throw new EmbeddedControllerException("InterruptedException Thrown.", e);
+				throw new EmbeddedControllerRuntimeException("InterruptedException Thrown.", e);
 			}
 		}
 	}

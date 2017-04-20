@@ -5,10 +5,11 @@ import java.util.Map;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PropertyValueEnum;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
 
 public interface ExtensionProviderAbstractFactory {
 	
-	ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties);
+	ExtensionProvider<BreezyPin> getNewExtensionProvider(ExtensionType extensionType, Map<String, String> properties) throws EmbeddedControllerException;
 	
 	List<String> getPropertyFieldNames(ExtensionType extensionType);
 

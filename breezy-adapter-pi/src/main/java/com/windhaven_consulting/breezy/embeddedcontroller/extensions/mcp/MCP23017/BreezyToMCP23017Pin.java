@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.BreezyPin;
-import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 
 public class BreezyToMCP23017Pin {
 	private static Map<BreezyPin, com.pi4j.io.gpio.Pin> breezyToMCP23017Pin = new HashMap<BreezyPin, com.pi4j.io.gpio.Pin>();
@@ -32,7 +32,7 @@ public class BreezyToMCP23017Pin {
 		com.pi4j.io.gpio.Pin pin = breezyToMCP23017Pin.get(breezyPin);
 		
 		if(pin == null) {
-			throw new EmbeddedControllerException("Breezy Pin, '" + breezyPin.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
+			throw new EmbeddedControllerRuntimeException("Breezy Pin, '" + breezyPin.toString() + "' has no Pi4J (Raspberry Pi) equivalent.");
 		}
 		
 		return pin;

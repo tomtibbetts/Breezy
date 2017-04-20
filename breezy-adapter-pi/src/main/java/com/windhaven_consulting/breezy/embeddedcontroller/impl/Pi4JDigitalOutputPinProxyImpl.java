@@ -6,7 +6,7 @@ import com.pi4j.io.gpio.GpioPin;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.windhaven_consulting.breezy.embeddedcontroller.DigitalOutputPin;
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
-import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerException;
+import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedControllerRuntimeException;
 
 public class Pi4JDigitalOutputPinProxyImpl extends Pi4JPinProxyImpl implements DigitalOutputPin {
 
@@ -52,7 +52,7 @@ public class Pi4JDigitalOutputPinProxyImpl extends Pi4JPinProxyImpl implements D
 			try {
 				Thread.sleep(duration);
 			} catch (InterruptedException e) {
-				throw new EmbeddedControllerException("InterruptedException Thrown.", e);
+				throw new EmbeddedControllerRuntimeException("InterruptedException Thrown.", e);
 			}
 		}
 	}
