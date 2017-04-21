@@ -1,13 +1,16 @@
 package com.windhaven_consulting.breezy.manager.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ import com.windhaven_consulting.breezy.manager.MountedBoardManager;
 import com.windhaven_consulting.breezy.persistence.domain.Macro;
 import com.windhaven_consulting.breezy.persistence.domain.MacroStep;
 
+@Named("copyOfMacroExecutorManager")
 @ApplicationScoped
 public class MacroExecutorManagerImpl implements MacroExecutorManager {
 	static final Logger LOG = LoggerFactory.getLogger(MacroExecutorManagerImpl.class);
@@ -33,15 +37,24 @@ public class MacroExecutorManagerImpl implements MacroExecutorManager {
 	@Inject
 	private AlertManager alertManager;
 
-	private Map<Macro, MacroExecutor> macroMap = Collections.synchronizedMap(new HashMap<Macro, MacroExecutor>());
+	private Map<Macro, MacroExecutor> macroMap = new ConcurrentHashMap<Macro, MacroExecutor>();
+
+	private ExecutorService cachedServicePool;
+	
+	@PostConstruct
+	public void postConstruct() {
+		cachedServicePool = Executors.newCachedThreadPool();
+	}
 	
 	@Override
 	public void runMacro(Macro macro) {
 		if(isValidMacro(macro)) {
-			MacroExecutor macroExecutor = getMacroExecutor(macro);
-			macroMap.put(macro, macroExecutor);
-			
-			macroExecutor.start();
+			if(!macroMap.containsKey(macro)) {
+				MacroExecutor macroExecutor = getMacroExecutor(macro);
+				macroMap.putIfAbsent(macro, macroExecutor);
+				
+				cachedServicePool.execute(macroExecutor);
+			}
 		}
 	}
 

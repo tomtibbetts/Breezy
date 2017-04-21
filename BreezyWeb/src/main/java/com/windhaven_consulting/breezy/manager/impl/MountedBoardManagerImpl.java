@@ -23,6 +23,7 @@ import com.windhaven_consulting.breezy.embeddedcontroller.exceptions.EmbeddedCon
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProvider;
 import com.windhaven_consulting.breezy.embeddedcontroller.extensions.ExtensionProviderAbstractFactory;
 import com.windhaven_consulting.breezy.macrocontroller.MacroExecutor;
+import com.windhaven_consulting.breezy.macrocontroller.SystemComponent;
 import com.windhaven_consulting.breezy.manager.AlertManager;
 import com.windhaven_consulting.breezy.manager.MountedBoardManager;
 import com.windhaven_consulting.breezy.manager.MountedComponent;
@@ -175,6 +176,10 @@ public class MountedBoardManagerImpl implements MountedBoardManager, Serializabl
 					GenericComponent<BreezyPin> component = componentLibraryManager.getNewComponentByType(componentConfiguration.getComponentType());
 					component.setName(componentConfiguration.getName());
 					component.setId(componentConfiguration.getId().toString());
+					
+					if(component instanceof SystemComponent) {
+						((SystemComponent) component).setMountedBoardManager(this);
+					}
 					
 	//				LOG.debug("component: name = " + componentConfiguration.getName() + ", id = " + componentConfiguration.getId().toString());
 					
