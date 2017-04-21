@@ -72,6 +72,7 @@ public class ComponentTemplateLibraryManager implements Serializable {
 		return componentTemplates;
 	}
 
+	@SuppressWarnings("unchecked")
 	public GenericComponent<BreezyPin> getNewComponentByType(String type) {
 		ComponentTemplate componentDescriptor = componentDescriptorByTypeMap.get(type);
 		
