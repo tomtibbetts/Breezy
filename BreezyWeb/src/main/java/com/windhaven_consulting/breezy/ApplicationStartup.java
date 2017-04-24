@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.windhaven_consulting.breezy.manager.BreezyBoardManager;
 import com.windhaven_consulting.breezy.manager.MacroManager;
+import com.windhaven_consulting.breezy.manager.RevisionManager;
 import com.windhaven_consulting.breezy.manager.viewobject.BreezyBoard;
 import com.windhaven_consulting.breezy.persistence.domain.Macro;
 
@@ -23,6 +24,9 @@ public class ApplicationStartup implements ServletContextListener {
 	@Inject
 	private BreezyBoardManager breezyBoardManager;
 	
+	@Inject
+	private RevisionManager revisionManager;
+	
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 		LOG.debug("DEBUG: ********************* Application Shutdown ***********************");
@@ -33,9 +37,14 @@ public class ApplicationStartup implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		LOG.debug("DEBUG: ********************* Application Startup ***********************");
-		
+
+		checkRevision();
 		mountBoards();
 		autoStartMacros();
+	}
+
+	private void checkRevision() {
+		revisionManager.createIfNotExist();
 	}
 
 	private void autoStartMacros() {

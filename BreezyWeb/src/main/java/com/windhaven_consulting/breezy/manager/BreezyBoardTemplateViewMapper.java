@@ -29,7 +29,6 @@ public class BreezyBoardTemplateViewMapper implements ViewDiskObjectMapper<Breez
 		breezyBoardTemplateDO.setId(breezyBoardTemplate.getId());
 		breezyBoardTemplateDO.setName(breezyBoardTemplate.getName());
 		breezyBoardTemplateDO.setInactive(breezyBoardTemplate.isInactive());
-		breezyBoardTemplateDO.setReleaseRevisionNumber(breezyBoardTemplate.getReleaseRevisionNumber());
 		
 		for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
 			ExtensionTemplateDO extensionTemplateDO = getExtensionTemplateDO(extensionTemplate);
@@ -60,7 +59,6 @@ public class BreezyBoardTemplateViewMapper implements ViewDiskObjectMapper<Breez
 		breezyBoardTemplate.setDescription(breezyBoardTemplateDO.getDescription());
 		breezyBoardTemplate.setInactive(breezyBoardTemplateDO.isInactive());
 		breezyBoardTemplate.setId(breezyBoardTemplateDO.getId());
-		breezyBoardTemplate.setReleaseRevisionNumber(breezyBoardTemplateDO.getReleaseRevisionNumber());
 		
 		for(ExtensionTemplateDO extensionTemplateDO : breezyBoardTemplateDO.getExtensionTemplateDOs()) {
 			ExtensionTemplate extensionTemplate = getExtensionTemplate(extensionTemplateDO);

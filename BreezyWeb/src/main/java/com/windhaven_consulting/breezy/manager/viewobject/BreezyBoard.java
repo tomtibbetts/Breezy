@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
 import com.windhaven_consulting.breezy.persistence.domain.PersistentObject;
 
-public class BreezyBoard extends PersistentObject implements Serializable, Revisionable {
+public class BreezyBoard extends PersistentObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,8 +19,6 @@ public class BreezyBoard extends PersistentObject implements Serializable, Revis
 	private List<ComponentConfiguration> componentConfigurations = new ArrayList<ComponentConfiguration>();
 	
 	private List<Extension> extensions = new ArrayList<Extension>();
-
-	private String releaseRevisionNumber;
 
 	private boolean restricted = false;
 
@@ -63,16 +60,6 @@ public class BreezyBoard extends PersistentObject implements Serializable, Revis
 
 	public void setExtensions(List<Extension> extensions) {
 		this.extensions = extensions;
-	}
-
-	@Override
-	public String getReleaseRevisionNumber() {
-		return releaseRevisionNumber;
-	}
-
-	@Override
-	public void setReleaseRevisionNumber(String releaseRevisionNumber) {
-		this.releaseRevisionNumber = releaseRevisionNumber;
 	}
 
 	public boolean isRestricted() {

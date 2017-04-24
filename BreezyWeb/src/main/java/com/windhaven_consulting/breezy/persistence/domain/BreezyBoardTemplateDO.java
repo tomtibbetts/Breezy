@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
 
-public class BreezyBoardTemplateDO extends PersistentObject implements Revisionable {
+public class BreezyBoardTemplateDO extends PersistentObject {
 
 	private List<ExtensionTemplateDO> extensionTemplateDOs = new ArrayList<ExtensionTemplateDO>();
 	
@@ -17,8 +16,6 @@ public class BreezyBoardTemplateDO extends PersistentObject implements Revisiona
 	private String description;
 	
 	private boolean inactive;
-
-	private String releaseRevisionNumber;
 
 	@JsonProperty("extensionTemplates")
 	public List<ExtensionTemplateDO> getExtensionTemplateDOs() {
@@ -64,16 +61,6 @@ public class BreezyBoardTemplateDO extends PersistentObject implements Revisiona
 
 	public void setInactive(boolean inactive) {
 		this.inactive = inactive;
-	}
-
-	@Override
-	public String getReleaseRevisionNumber() {
-		return releaseRevisionNumber;
-	}
-
-	@Override
-	public void setReleaseRevisionNumber(String releaseRevisionNumber) {
-		this.releaseRevisionNumber = releaseRevisionNumber;
 	}
 	
 }

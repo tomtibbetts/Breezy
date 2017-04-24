@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
 
-public class BreezyBoardDO extends PersistentObject implements Revisionable {
+public class BreezyBoardDO extends PersistentObject {
 	private boolean mounted;
 	
 	private String description;
@@ -16,8 +15,6 @@ public class BreezyBoardDO extends PersistentObject implements Revisionable {
 	private List<ComponentConfigurationDO> componentConfigurationDOs = new ArrayList<ComponentConfigurationDO>();
 	
 	private List<ExtensionDO> extensionDOs = new ArrayList<ExtensionDO>();
-
-	private String releaseRevisionNumber;
 
 	private boolean restricted = false;
 
@@ -73,16 +70,6 @@ public class BreezyBoardDO extends PersistentObject implements Revisionable {
 
 	public void setRestricted(boolean restricted) {
 		this.restricted = restricted;
-	}
-
-	@Override
-	public String getReleaseRevisionNumber() {
-		return releaseRevisionNumber;
-	}
-
-	@Override
-	public void setReleaseRevisionNumber(String releaseRevisionNumber) {
-		this.releaseRevisionNumber = releaseRevisionNumber;
 	}
 
 }

@@ -41,7 +41,10 @@ public class TriggerEventObserver {
 					&& StringUtils.isNotEmpty(triggerEvent.getInputPinId()) 
 					&& triggerEvent.getInputPinId().equals(stateChangeEvent.getId()) 
 					&& triggerEvent.getState() == stateChangeEvent.getPinState()) {
-				macro = macroManager.getMacroById(triggerEvent.getMacroId());
+				if(!triggerEvent.getMacroIds().isEmpty()) {
+					String macroId = triggerEvent.getMacroIds().get(0);
+					macro = macroManager.getMacroById(macroId);
+				}
 				break;
 			}
 		}

@@ -17,7 +17,6 @@ public class BoardTemplateUtility {
 		newBreezyBoardTemplate.setDescription(breezyBoardTemplate.getDescription());
 		newBreezyBoardTemplate.setInactive(breezyBoardTemplate.isInactive());
 		newBreezyBoardTemplate.setName(breezyBoardTemplate.getName());
-		newBreezyBoardTemplate.setReleaseRevisionNumber(breezyBoardTemplate.getReleaseRevisionNumber());
 		
 		HashMap<UUID, ExtensionTemplate> idToExtensionTemplateMap = new HashMap<UUID, ExtensionTemplate>();
 		

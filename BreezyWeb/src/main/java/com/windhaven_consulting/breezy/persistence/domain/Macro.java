@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
-
-public class Macro extends PersistentObject implements Serializable, Revisionable {
+public class Macro extends PersistentObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String description;
@@ -16,8 +14,6 @@ public class Macro extends PersistentObject implements Serializable, Revisionabl
 	private boolean enabled;
 	
 	private List<MacroStep> steps = new ArrayList<MacroStep>();
-
-	private String releaseRevisionNumber;
 
 	public List<MacroStep> getSteps() {
 		return steps;
@@ -74,16 +70,6 @@ public class Macro extends PersistentObject implements Serializable, Revisionabl
 		} else if (!getId().equals(other.getId()))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String getReleaseRevisionNumber() {
-		return releaseRevisionNumber;
-	}
-
-	@Override
-	public void setReleaseRevisionNumber(String releaseRevisionNumber) {
-		this.releaseRevisionNumber = releaseRevisionNumber;
 	}
 
 }

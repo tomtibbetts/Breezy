@@ -175,6 +175,25 @@ public class EventsBuilderView {
 		return pinStateConverter;
 	}
 	
+	public String getSelectedMacroId() {
+		String result = StringUtils.EMPTY;
+		
+		if(!workingTriggerEvent.getMacroIds().isEmpty()) {
+			result = workingTriggerEvent.getMacroIds().get(0);
+		}
+		
+		return result;
+	}
+	
+	public void setSelectedMacroId(String macroId) {
+		if(workingTriggerEvent.getMacroIds().isEmpty()) {
+			workingTriggerEvent.getMacroIds().add(macroId);
+		}
+		else {
+			workingTriggerEvent.getMacroIds().set(0, macroId);
+		}
+	}
+	
 	private void initialize() {
 		breezyBoardIdToBreezyBoardMap.clear();
 		breezyBoards = breezyBoardManager.getAllBreezyBoards();
@@ -210,7 +229,10 @@ public class EventsBuilderView {
 		destinationTriggerEvent.setEnabled(sourceTriggerEvent.isEnabled());
 		destinationTriggerEvent.setId(sourceTriggerEvent.getId());
 		destinationTriggerEvent.setInputPinId(sourceTriggerEvent.getInputPinId());
-		destinationTriggerEvent.setMacroId(sourceTriggerEvent.getMacroId());
+		
+		destinationTriggerEvent.getMacroIds().clear();
+		destinationTriggerEvent.getMacroIds().addAll(sourceTriggerEvent.getMacroIds());
+		
 		destinationTriggerEvent.setMountedBoardId(sourceTriggerEvent.getMountedBoardId());
 		destinationTriggerEvent.setName(sourceTriggerEvent.getName());
 		destinationTriggerEvent.setState(sourceTriggerEvent.getState());

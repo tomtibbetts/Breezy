@@ -31,7 +31,7 @@
 						value="Create New Event" 
 						actionListener="#{eventsBuilderView.newEvent}" 
 						update="eventEditDialogueId"
-						onclick="PF('eventEditDialogue').show();"/>
+						oncomplete="PF('eventEditDialogue').show();"/>
 		
 		      		<p:dataTable id="eventEditTableId" var="triggerEvent" value="#{eventsBuilderView.triggerEvents}" editable="false" rowIndexVar="eventEditTableRowIndex">
 						<p:columnGroup type="header">
@@ -72,7 +72,7 @@
 		      			</p:column>
 		      			
 		      			<p:column style="width: 200px;">
-			      			<h:outputText value="#{eventsBuilderView.getMacroById(triggerEvent.macroId).name}" />
+			      			<h:outputText value="#{eventsBuilderView.getMacroById(triggerEvent.macroIds.get(0)).name}" />
 		      			</p:column>
 		      			
 		      			<p:column style="width: 75px;">
@@ -95,7 +95,7 @@
 		        				icon="ui-icon-circle-close" 
 		        				style="width=15px; height=15px;" 
 		        				actionListener="#{eventsBuilderView.deleteRow(eventEditTableRowIndex)}" 
-		        				update="eventEditTableId">
+		        				update=":formId:eventEditTableId">
 		        				<p:confirm header="Confirmation" message="Are you sure you wish to delete this trigger?" icon="ui-icon-alert" />
 		        			</p:commandButton>
 						</p:column>
@@ -138,7 +138,7 @@
 		                    	<h:outputText for="macroId" value="Macro: " style="font-weight: bold;"/>
 		              		</p:column>
 		              		<p:column>
-								<p:selectOneMenu id="macroId" value="#{eventsBuilderView.workingTriggerEvent.macroId}" style="width:100%">
+								<p:selectOneMenu id="macroId" value="#{eventsBuilderView.selectedMacroId}" style="width:100%">
 									<f:selectItem itemLabel="Select Macro" itemValue="" noSelectionOption="true"/>
 			                    	<f:selectItems value="#{eventsBuilderView.macros}" var="macro" itemLabel="#{macro.name}" itemValue="#{macro.id.toString()}"/>
 								</p:selectOneMenu>
@@ -163,7 +163,7 @@
 			        				value="Save" 
 			        				actionListener="#{eventsBuilderView.saveTriggerEvent()}" 
 			        				update=":formId:eventEditTableId" 
-			        				onclick="PF('eventEditDialogue').hide();"/>
+			        				oncomplete="PF('eventEditDialogue').hide();"/>
 		              		</p:column>
 
 		              		<p:column>
@@ -171,7 +171,7 @@
 			        				value="Cancel" 
 			        				actionListener="#{eventsBuilderView.cancelTriggerEventEdit()}" 
 			        				update=":formId:eventEditTableId" 
-			        				onclick="PF('eventEditDialogue').hide();"/>
+			        				oncomplete="PF('eventEditDialogue').hide();"/>
 		              		</p:column>
 			            </p:panelGrid>
 		            </p:dialog>
