@@ -33,9 +33,13 @@
 			
 				    <p:toolbar id="macroEditToolBarId">
 				        <f:facet name="left">
-							<p:commandButton id="saveMacroId" value="Save" actionListener="#{macroBuilderView.saveMacro}"/>
+							<p:commandButton id="saveMacroId" value="Save" 
+								actionListener="#{macroBuilderView.saveMacro}"
+								update="formId"/>
 							<p:spacer width="10"/>
-							<p:commandButton id="deleteMacroId" value="Delete" actionListener="#{macroBuilderView.deleteMacro}">
+							<p:commandButton id="deleteMacroId" value="Delete" 
+								actionListener="#{macroBuilderView.deleteMacro}"
+								update="formId">
 				            	<p:confirm header="Confirmation" message="Are you sure you wish to permanently delete this macro?" icon="ui-icon-alert" />
 							</p:commandButton>
 							<ui:fragment rendered="#{not macroBuilderView.hasUnmountedBoards()}">
@@ -56,10 +60,11 @@
 				                    <p:inputText id="macroName" value="#{macroBuilderView.macro.name}" required="false" label="Name" style="width: 100%"/>
 		                		</p:column>
 		                		<p:column>
-				                    <h:outputText for="macroId" value="Id: " />
+				                    <h:outputText for="macroId" value="File Name: " />
 		                		</p:column>
 		                		<p:column>
 				                    <h:outputText id="macroId" value="#{macroBuilderView.macro.id}" style="width: 100%"/>
+				                    <h:outputText value=".macro" />
 		                		</p:column>
 
 		                		<p:column>
