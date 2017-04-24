@@ -561,10 +561,10 @@
 								</p:column>
 
 			              		<p:column>
-			                    	<h:outputText for="functionInvertedId" value="Is Function Inverted?: " style="font-weight: bold;"/>
+			                    	<h:outputText for="functionInvertedId" value="Is Function Inverted?: " style="font-weight: bold;" rendered="false"/>
 			              		</p:column>
 			              		<p:column>
-			                    	<p:selectBooleanCheckbox id="functionInvertedId" value="#{breezyBoardBuilderView.workingComponentConfiguration.inverted}" required="false" label="Is Function Inverted?"/>
+			                    	<p:selectBooleanCheckbox id="functionInvertedId" value="#{breezyBoardBuilderView.workingComponentConfiguration.inverted}" required="false" label="Is Function Inverted?" rendered="false"/>
 			              		</p:column>
 			              		
 			              		<p:column>
