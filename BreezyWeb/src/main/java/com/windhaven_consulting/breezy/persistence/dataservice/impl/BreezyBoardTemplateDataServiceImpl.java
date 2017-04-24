@@ -33,7 +33,6 @@ public class BreezyBoardTemplateDataServiceImpl extends BaseDataServiceImpl<Bree
 		breezyBoardTemplateDODataService.save(boardTemplateDO);
 		
 		breezyBoardTemplate.setId(boardTemplateDO.getId());
-		breezyBoardTemplate.setReleaseRevisionNumber(boardTemplateDO.getReleaseRevisionNumber());
 	}
 
 	@Override
@@ -73,7 +72,6 @@ public class BreezyBoardTemplateDataServiceImpl extends BaseDataServiceImpl<Bree
 		breezyBoardTemplate.setDescription(breezyBoardTemplateDO.getDescription());
 		breezyBoardTemplate.setInactive(breezyBoardTemplateDO.isInactive());
 		breezyBoardTemplate.setId(breezyBoardTemplateDO.getId());
-		breezyBoardTemplate.setReleaseRevisionNumber(breezyBoardTemplateDO.getReleaseRevisionNumber());
 		
 		for(ExtensionTemplateDO extensionTemplateDO : breezyBoardTemplateDO.getExtensionTemplateDOs()) {
 			ExtensionTemplate extensionTemplate = getExtensionTemplate(extensionTemplateDO);
@@ -156,7 +154,6 @@ public class BreezyBoardTemplateDataServiceImpl extends BaseDataServiceImpl<Bree
 		breezyBoardTemplateDO.setId(breezyBoardTemplate.getId());
 		breezyBoardTemplateDO.setName(breezyBoardTemplate.getName());
 		breezyBoardTemplateDO.setInactive(breezyBoardTemplate.isInactive());
-		breezyBoardTemplateDO.setReleaseRevisionNumber(breezyBoardTemplate.getReleaseRevisionNumber());
 		
 		for(ExtensionTemplate extensionTemplate : breezyBoardTemplate.getExtensionTemplates()) {
 			ExtensionTemplateDO extensionTemplateDO = getExtensionTemplateDO(extensionTemplate);

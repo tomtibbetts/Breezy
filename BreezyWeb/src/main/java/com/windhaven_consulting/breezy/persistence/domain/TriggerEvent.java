@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
-import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
 import com.windhaven_consulting.breezy.persistence.enumeration.EventTriggerType;
 
-public class TriggerEvent extends PersistentObject implements Serializable, Revisionable {
+public class TriggerEvent extends PersistentObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

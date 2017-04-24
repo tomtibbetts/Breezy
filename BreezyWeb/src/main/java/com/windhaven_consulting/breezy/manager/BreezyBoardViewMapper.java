@@ -26,7 +26,6 @@ public class BreezyBoardViewMapper implements ViewDiskObjectMapper<BreezyBoard, 
 		breezyBoardDO.setDescription(breezyBoard.getDescription());
 		breezyBoardDO.setId(breezyBoard.getId());
 		breezyBoardDO.setName(breezyBoard.getName());
-		breezyBoardDO.setReleaseRevisionNumber(breezyBoard.getReleaseRevisionNumber());
 		breezyBoardDO.setMounted(breezyBoard.isMounted());
 		breezyBoardDO.setRestricted(breezyBoard.isRestricted());
 		
@@ -71,7 +70,6 @@ public class BreezyBoardViewMapper implements ViewDiskObjectMapper<BreezyBoard, 
 			breezyBoard.setName(breezyBoardDO.getName());
 			breezyBoard.setDescription(breezyBoardDO.getDescription());
 			breezyBoard.setId(breezyBoardDO.getId());
-			breezyBoard.setReleaseRevisionNumber(breezyBoardDO.getReleaseRevisionNumber());
 			breezyBoard.setMounted(breezyBoardDO.isMounted());
 			breezyBoard.setRestricted(breezyBoardDO.isRestricted());
 			

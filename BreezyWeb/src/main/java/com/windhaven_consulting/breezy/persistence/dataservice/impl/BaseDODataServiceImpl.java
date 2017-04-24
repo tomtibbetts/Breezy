@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.persistence.PersistenceException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,14 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.windhaven_consulting.breezy.persistence.dataservice.GenericDataService;
-import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
 import com.windhaven_consulting.breezy.persistence.domain.PersistentObject;
 import com.windhaven_consulting.breezy.persistence.exceptions.BreezyPersistenceException;
 
 public abstract class BaseDODataServiceImpl <T extends PersistentObject> implements GenericDataService<T> {
-
-	@Resource(name="breezy.releaseRevisionNumber")
-	private String releaseRevisionNumber;
 
 	private Class<T> persistentClass;
 	
@@ -56,11 +51,6 @@ public abstract class BaseDODataServiceImpl <T extends PersistentObject> impleme
         try {
         	if(persistentObject.getId() == null) {
         		persistentObject.setId(UUID.randomUUID());
-        		
-        		if(persistentObject instanceof Revisionable) {
-        			Revisionable revisionable = (Revisionable) persistentObject;
-        			revisionable.setReleaseRevisionNumber(releaseRevisionNumber);
-        		}
         	}
         	
             Path path = Paths.get(getResoucePath(), persistentObject.getId() + "." + getFileExtension());
