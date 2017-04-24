@@ -23,7 +23,7 @@
 		      	<h:form id="homeForm">
 		            <h:panelGrid columns="1" cellpadding="10">
 					    <p:dataList value="#{homeManagedView.systemStatus.ipAddresses}" var="ipAddress" type="definition">
-					        <f:facet name="header">Hello Breezy User! You can find me at: </f:facet>
+					        <f:facet name="header">Welcome to Breezy4pi revision #{homeManagedView.currentFormattedRevision}. You can find me at: </f:facet>
 					        #{ipAddress}
 					    </p:dataList>
 		            </h:panelGrid>

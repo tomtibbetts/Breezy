@@ -34,9 +34,34 @@
 	</web:env-entry>
 	
 	<web:env-entry>
+		<web:env-entry-name>breezy.revisionResourcePath</web:env-entry-name>
+		<web:env-entry-type>java.lang.String</web:env-entry-type>
+		<web:env-entry-value>/Breezy/Resources</web:env-entry-value>
+	</web:env-entry>
+	
+	
+	<web:env-entry>
 		<web:env-entry-name>breezy.releaseRevisionNumber</web:env-entry-name>
 		<web:env-entry-type>java.lang.String</web:env-entry-type>
 		<web:env-entry-value>.8</web:env-entry-value>
+	</web:env-entry>
+	
+	<web:env-entry>
+		<web:env-entry-name>breezy.releaseRevisionMajor</web:env-entry-name>
+		<web:env-entry-type>java.lang.Integer</web:env-entry-type>
+		<web:env-entry-value>0</web:env-entry-value>
+	</web:env-entry>
+	
+	<web:env-entry>
+		<web:env-entry-name>breezy.releaseRevisionMinor</web:env-entry-name>
+		<web:env-entry-type>java.lang.Integer</web:env-entry-type>
+		<web:env-entry-value>8</web:env-entry-value>
+	</web:env-entry>
+	
+	<web:env-entry>
+		<web:env-entry-name>breezy.releaseRevisionFix</web:env-entry-name>
+		<web:env-entry-type>java.lang.Integer</web:env-entry-type>
+		<web:env-entry-value>0</web:env-entry-value>
 	</web:env-entry>
 	
 	<error-page>

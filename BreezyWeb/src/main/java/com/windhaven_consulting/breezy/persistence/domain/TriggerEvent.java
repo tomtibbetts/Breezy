@@ -1,6 +1,8 @@
 package com.windhaven_consulting.breezy.persistence.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.windhaven_consulting.breezy.embeddedcontroller.PinState;
 import com.windhaven_consulting.breezy.persistence.dataservice.Revisionable;
@@ -16,7 +18,7 @@ public class TriggerEvent extends PersistentObject implements Serializable, Revi
 	
 	private PinState pinState;
 	
-	private String macroId;
+	private List<String> macroIds = new ArrayList<String>();
 	
 	private String comment;
 
@@ -50,12 +52,12 @@ public class TriggerEvent extends PersistentObject implements Serializable, Revi
 		this.pinState = pinState;
 	}
 
-	public String getMacroId() {
-		return macroId;
+	public List<String> getMacroIds() {
+		return macroIds;
 	}
 
-	public void setMacroId(String macroId) {
-		this.macroId = macroId;
+	public void setMacroIds(List<String> macroIds) {
+		this.macroIds = macroIds;
 	}
 
 	public String getComment() {
