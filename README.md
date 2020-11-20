@@ -7,3 +7,5 @@ As with all good independent software projects, the documentation sometimes lags
 Also, immmediate plans are to add licensing for open source.  I'm thinking of using GNU, but will need to research it a bit more.  In the meantime, I ask that your use or modification of this application be restricted for non-commercial use only.  If you wish to use or modify this application for commercial use, please contact me at: tomtibbetts@gmail.com.
 
 Thank you.
+
+
