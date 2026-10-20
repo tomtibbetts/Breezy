@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="macroMonitorFormId">
+					<p:poll interval="1" listener="#{macroMonitorManagedBean.refreshPage}" update="macroMonitorFormId" />
+        			<p:commandButton id="endAllMacrosId" value="Stop All Macros" actionListener="#{macroMonitorManagedBean.stopAllMacros}"/>
+   					
+		      		<p:dataTable id="monitorMacroTable" var="macro" value="#{macroMonitorManagedBean.runningMacros}" editable="false" rowIndexVar="rowIndex">
+		
+		      			<p:column headerText="Macro" style="width: 100px;">
+	      					<h:outputText value="#{macro.name}"/>
+		      			</p:column>
+		
+		      			<p:column headerText="Description" style="width: 300px;">
+	      					<h:outputText value="#{macro.description}"/>
+		      			</p:column>
+		
+						<p:column headerText="End Macro" style="width: 50px;">
+		        			<p:commandButton id="endMacroId" value="End Macro" actionListener="#{macroMonitorManagedBean.endMacro(rowIndex)}"/>
+						</p:column>
+		      		</p:dataTable>
+		      	</h:form>
+    		</ui:define>
+    	</ui:composition>
+
+    </h:body>
+    </f:view>
+      
+</html>  

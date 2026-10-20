@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Validation</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="alertsExampleForm">
+			 	
+				<p:dataTable id="alertsDataTableId" 
+					var="alert" value="#{alertsView.alerts}" 
+					selection="#{alertsView.selectedAlerts}" 
+					rowKey="#{alert.id}">
+					<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+					
+					<p:column>
+						<h:outputText value="#{alert.id.toString().substring(0, 8)}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{alert.message}" />
+					</p:column>
+				</p:dataTable>
+
+	            <p:commandButton process="alertsDataTableId"  value="Clear Selected Alerts"
+	            	action="#{alertsView.clearAll()}"
+	            	update="alertsDataTableId, :tabbedMenuForm"/>
+		
+
+		      	</h:form>
+		      	
+		      	
+    		</ui:define>
+    	</ui:composition>
+    </h:body>
+    </f:view>
+      
+</html>  

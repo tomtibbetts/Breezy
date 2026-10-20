@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  	<f:view contentType="text/html">
+    <h:head>  
+  		<title>
+  			<ui:insert name="title">Windhaven Consulting: Validation</ui:insert>
+  		</title>
+  		
+  		<style type="text/css">
+  			.hide-column-names table thead tr {
+			    display: none;
+			}
+  		</style>
+    </h:head>  
+      
+    <h:body>
+    	<ui:composition template="tabbedmenutemplate.xhtml">
+	   		<ui:define name="content">
+		      	<h:form id="validationExampleForm">
+			 	
+			    <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+			 	
+			 	<p:commandButton id="initiateDialogId" value="Start Dialog" actionListener="#{userLoginView.preload()}" oncomplete="PF('loginDialog').show()" immediate="true" update=":validationExampleForm:loginDialogId"/>
+			 	
+			    <p:dialog header="Login" widgetVar="loginDialog" resizable="false" id="loginDialogId" modal="true">
+			        <h:panelGrid columns="2" cellpadding="5">
+			        	<h:outputLabel for="id" value="Id:" />
+			        	<h:outputText id="id" value="#{userLoginView.id}" />
+			        	
+			            <h:outputLabel for="username" value="Username:" />
+			            <p:inputText id="username" value="#{userLoginView.username}" required="true" label="username" />
+			 
+			            <h:outputLabel for="password" value="Password:" />
+			            <p:password id="password" value="#{userLoginView.password}" required="true" label="password" />
+			 
+			            <f:facet name="footer">
+			                <p:commandButton value="Login" update="growl" actionListener="#{userLoginView.login}"
+			                    oncomplete="handleLoginRequest(xhr, status, args)" />
+
+			                <p:commandButton value="Cancel" update="growl" actionListener="#{userLoginView.cancel}" immediate="true"
+			                    oncomplete="PF('loginDialog').hide();" />
+			                <p:commandButton type="reset" value="Restore" update="loginDialogId" immediate="true"/>
+			            </f:facet>  
+			                    
+			        </h:panelGrid>
+			    </p:dialog>
+
+
+		      	</h:form>
+		      	
+				<script type="text/javascript">
+				    function handleLoginRequest(xhr, status, args) {
+//					    alert('handleLoginRequest. validationFailed: ' + args.validationFailed + ', loggedIn: ' + args.loggedIn);
+					    
+				        if(args.validationFailed || !args.loggedIn) {
+				            PF('loginDialog').jq.effect("shake", {times:5}, 100);
+				        }
+				        else {
+				            PF('loginDialog').hide();
+//				            PF('dlg').content.empty();
+				            $('#loginLink').fadeOut();
+				        }
+				    }
+				</script>		      	
+		      	
+    		</ui:define>
+    	</ui:composition>
+    </h:body>
+    </f:view>
+      
+</html>  

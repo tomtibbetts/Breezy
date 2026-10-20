@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">  
+  
+  <f:view>
+  	<h:form>
+  	
+	    <h:head>  
+	  		<title>
+	  			<ui:insert name="title">Windhaven Consulting: Breezy</ui:insert>
+	  		</title>
+	  		
+	  		<style type="text/css">
+	  			.hide-column-names table thead tr {
+				    display: none;
+				}
+	  		</style>
+	    </h:head>  
+      
+		<h:body>
+		    <div class="highlighted errorMessage">
+		        <h:outputText escape="false" 
+		                      value="Error Page"/>
+		    </div>
+		    <br/><br/>
+		    <div class="errorDetails">
+		        Error details: <br/><h:outputText value="#{flash.keep.message.summary}"/>
+		        
+		    </div>
+		</h:body>
+		</h:form>
+</f:view>		
+</html>	
