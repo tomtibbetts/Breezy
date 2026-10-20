@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Akamai University International</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="contact">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="utility-bar">
+    <div class="container utility-inner">
+      <div class="utility-links"><a href="experience.html">Students</a><a href="about.html">Faculty &amp; Staff</a><a href="about.html">Alumni</a></div>
+      <div class="utility-actions"><button type="button" data-open-info>Request Info</button><a href="admissions.html">Apply</a><button type="button" data-open-search>Search</button></div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span class="brand-text"><span class="brand-name">Akamai University</span><span class="brand-sub">International</span></span></a>
+      <nav class="site-nav" aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="academics.html" data-page="academics">Academics</a></li>
+          <li><a href="admissions.html" data-page="admissions">Admissions</a></li>
+          <li><a href="experience.html" data-page="experience">Experience</a></li>
+          <li><a href="about.html" data-page="about">About</a></li>
+          <li><a href="news.html" data-page="news">News</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions"><a class="btn btn-gold" href="admissions.html">Apply Now</a><button class="menu-toggle" type="button" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero" style="--page-image:url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1800&q=80')">
+      <div class="container">
+        <div class="breadcrumb"><a href="index.html">Home</a> / Contact</div>
+        <h1>Contact Admissions</h1>
+        <p class="lede" style="color:#e8dfc8;">The Office of Admissions is ready to help. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split">
+        <div>
+          <span class="eyebrow">Write to us</span>
+          <h2>Request a conversation</h2>
+          <div class="form-success">Thank you. An admissions counselor will reply shortly. Lorem ipsum dolor sit amet.</div>
+          <form data-aui-form>
+            <div class="form-grid">
+              <div>
+                <label for="c-first">First name</label>
+                <input id="c-first" required>
+              </div>
+              <div>
+                <label for="c-last">Last name</label>
+                <input id="c-last" required>
+              </div>
+              <div>
+                <label for="c-email">Email</label>
+                <input id="c-email" type="email" required>
+              </div>
+              <div>
+                <label for="c-phone">Phone</label>
+                <input id="c-phone" type="tel">
+              </div>
+              <div class="full">
+                <label for="c-program">Program of interest</label>
+                <select id="c-program">
+                  <option>Global Leadership</option>
+                  <option>Public Health</option>
+                  <option>Learning Design</option>
+                  <option>Environmental Sustainability</option>
+                  <option>Data Science &amp; Society</option>
+                  <option>Counseling &amp; Human Development</option>
+                </select>
+              </div>
+              <div class="full">
+                <label for="c-message">How can we help?</label>
+                <textarea id="c-message" rows="5" placeholder="Lorem ipsum dolor sit amet..."></textarea>
+              </div>
+            </div>
+            <p class="form-note">Lorem ipsum dolor sit amet, consectetur adipiscing elit. This demonstration form does not send data to a server.</p>
+            <button class="btn btn-gold" type="submit">Send message</button>
+          </form>
+        </div>
+        <div>
+          <article class="req-card">
+            <h3>Office of Admissions</h3>
+            <p>1000 University Way<br>Honolulu, HI 96813<br>+1 (808) 555-0140<br>admissions@akamai-university.example</p>
+          </article>
+          <article class="req-card" style="margin-top:1rem;">
+            <h3>Hours</h3>
+            <p>Monday–Friday, 8:00 am–6:00 pm HT<br>Virtual appointments available across time zones. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><div class="footer-brand"><img src="assets/logo.svg" alt=""><div><strong>Akamai University International</strong></div></div><p>1000 University Way, Honolulu, HI 96813</p></div>
+      <div><h3>Study</h3><a href="academics.html">Programs</a></div>
+      <div><h3>University</h3><a href="about.html">About</a></div>
+      <div><h3>Resources</h3><a href="contact.html">Contact</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© 2026 Akamai University International.</span><span>Privacy</span></div>
+  </footer>
+
+  <div class="overlay" id="searchOverlay"><div class="search-panel"><div class="search-head"><h2>Search AUI</h2><button class="icon-btn" type="button" data-close-overlay aria-label="Close">×</button></div><form data-aui-form><label for="site-search">Search</label><input id="site-search" type="search"><button class="btn btn-navy" type="submit">Search</button></form></div></div>
+  <div class="overlay" id="infoOverlay"><div class="modal"><div class="modal-head"><h2>Request Information</h2><button class="icon-btn" type="button" data-close-overlay aria-label="Close">×</button></div><div class="form-success">Thank you.</div><form data-aui-form><div class="form-grid"><div><label for="info-first">First name</label><input id="info-first" required></div><div><label for="info-last">Last name</label><input id="info-last" required></div><div class="full"><label for="info-email">Email</label><input id="info-email" type="email" required></div></div><button class="btn btn-gold" type="submit">Submit</button></form></div></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
